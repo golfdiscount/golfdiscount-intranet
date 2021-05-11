@@ -22,6 +22,11 @@ CREATE TABLE recipient(
 	ship_to_zip VARCHAR(15) NOT NULL
 );
 
+CREATE TABLE pick_ticket_header(
+	pick_ticket_num VARCHAR(30) PRIMARY KEY,
+	order_num VARCHAR(30) UNIQUE
+);
+
 CREATE TABLE `order`(
 	order_num VARCHAR(30) PRIMARY KEY,
 	sold_to VARCHAR(128),
@@ -32,14 +37,9 @@ CREATE TABLE `order`(
 		ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT orderToRecipient FOREIGN KEY (ship_to)
 		REFERENCES recipient(ship_to_name)
-		ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-CREATE TABLE pick_ticket_header(
-	pick_ticket_num VARCHAR(30) PRIMARY KEY,
-	order_num VARCHAR(30) UNIQUE,
-	CONSTRAINT headerToOrder FOREIGN KEY (order_num)
-		REFERENCES `order`(order_num)
+		ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT orderToHeader FOREIGN KEY (order_num)
+		REFERENCES pick_ticket_header(order_num)
 		ON UPDATE CASCADE ON DELETE CASCADE
 );
 
