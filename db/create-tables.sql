@@ -28,9 +28,19 @@ CREATE TABLE `order`(
 	ship_to VARCHAR(128),
 	ship_method VARCHAR(5) NOT NULL,
 	CONSTRAINT orderToCustomer FOREIGN KEY (sold_to)
-		REFERENCES customer(sold_to_name),
+		REFERENCES customer(sold_to_name)
+		ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT orderToRecipient FOREIGN KEY (ship_to)
 		REFERENCES recipient(ship_to_name)
+		ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE pick_ticket_header(
+	pick_ticket_num VARCHAR(30) PRIMARY KEY,
+	order_num VARCHAR(30) UNIQUE,
+	CONSTRAINT headerToOrder FOREIGN KEY (order_num)
+		REFERENCES `order`(order_num)
+		ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE product(
@@ -41,7 +51,10 @@ CREATE TABLE product(
 
 CREATE TABLE pick_ticket_detail(
 	pick_ticket_num VARCHAR(30) PRIMARY KEY,
-	date_last_modified DATETIME DEFAULT NOW()
+	date_last_modified DATETIME DEFAULT NOW(),
+	CONSTRAINT detailToHeader FOREIGN KEY (pick_ticket_num)
+		REFERENCES pick_ticket_header(pick_ticket_num)
+		ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE line_item(
@@ -52,17 +65,20 @@ CREATE TABLE line_item(
 	units_to_ship INT DEFAULT 1,
 	PRIMARY KEY (pick_ticket_num, line_num),
 	CONSTRAINT lineToSku FOREIGN KEY (sku)
-		REFERENCES product(sku),
+		REFERENCES product(sku)
+		ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT lineToTicket FOREIGN KEY (pick_ticket_num)
 		REFERENCES pick_ticket_detail(pick_ticket_num)
+		ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE pick_ticket_header(
-	pick_ticket_num VARCHAR(30) PRIMARY KEY,
-	order_num VARCHAR(30) UNIQUE,
-	detail VARCHAR(30) UNIQUE,
-	CONSTRAINT headerToOrder FOREIGN KEY (order_num)
-		REFERENCES `order`(order_num),
-	CONSTRAINT headerToDetail FOREIGN KEY (detail)
-		REFERENCES pick_ticket_detail(pick_ticket_num)
+CREATE TABLE shipping_conf(
+	pick_ticket_num VARCHAR(30),
+	line_num INT,
+	tracking_num TEXT,
+	ship_date DATETIME,
+	PRIMARY KEY (pick_ticket_num, line_num),
+	CONSTRAINT confToTicket FOREIGN KEY (pick_ticket_num)
+		REFERENCES pick_ticket_header(pick_ticket_num)
+		ON UPDATE CASCADE ON DELETE CASCADE
 );
