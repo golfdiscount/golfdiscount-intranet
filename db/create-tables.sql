@@ -75,8 +75,8 @@ CREATE TABLE line_item(
 CREATE TABLE shipping_conf(
 	pick_ticket_num VARCHAR(30),
 	line_num INT,
-	tracking_num TEXT,
-	ship_date DATETIME,
+	tracking_num TEXT DEFAULT "Not yet shipped",
+	ship_date DATETIME DEFAULT NULL,
 	PRIMARY KEY (pick_ticket_num, line_num),
 	CONSTRAINT confToTicket FOREIGN KEY (pick_ticket_num)
 		REFERENCES pick_ticket_header(pick_ticket_num)
