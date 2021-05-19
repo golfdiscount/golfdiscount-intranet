@@ -2,6 +2,8 @@
 <html>
   <head>
     <title>WSI Order Interface</title>
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
     <script src="index.js"></script>
   </head>
   <body>
@@ -9,6 +11,20 @@
       <h1>WSI Order Interface</h1>
     </nav>
     <main>
+      <div id="order-viewer">
+        <div id="searcher">
+          <h1>Enter Order Information</h1>
+          <form method="GET">
+            <div class="form-element">
+              <label for="order-number">Order number:</label>
+              <input type="text">
+            </div>
+          </form>
+        </div>
+        <div id="viewer">
+          <h1>Order Viewer</h1>
+        </div>
+      </div>
     </main>
   </body>
 </html>
