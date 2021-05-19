@@ -7,6 +7,8 @@ Insert order:
 3) pick_ticket_header
 4) order
 */
+
+-- PK: customer_id
 INSERT INTO customer(sold_to_name,
 	sold_to_address_1,
     sold_to_city,
@@ -22,8 +24,9 @@ VALUES (
     "49345"
 );
 
+-- PK: recipient_id
 INSERT INTO recipient(ship_to_name,
-	ship_to_address,
+		ship_to_address,
     ship_to_city,
     ship_to_state,
     ship_to_country,
@@ -37,13 +40,18 @@ VALUES (
     "49345"
 );
 
+-- PK: pick_ticket_num
 INSERT INTO pick_ticket_header(pick_ticket_num,
 	order_num)
-VALUES(
+VALUES (
 	"C1000692572",
     "1000692572"
 );
 
+-- PK: order_num
+-- FK: order_num - pick_ticket_header(order_num)
+-- FK: sold_to - customer(customer_id)
+-- FK: ship_to - recipient(recipient_id)
 INSERT INTO `order`(order_num,
 	sold_to,
     ship_to,
