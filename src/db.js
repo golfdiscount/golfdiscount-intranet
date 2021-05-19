@@ -20,14 +20,7 @@ exports.connect = function () {
 }
 
 exports.executeQuery = function(query, handler) {
-  try {
-    connection.query(query, function(error, results, fields) {
-      if (error) {
-        console.log(error);
-      }
-      handler(results);
-    });
-  } catch (e) {
-    console.log("There was an error with your query\n")
-  }
+  connection.query(query, function(error, results, fields) {
+      handler(results, error);
+  });
 }
