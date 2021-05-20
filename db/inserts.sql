@@ -52,7 +52,7 @@ VALUES (
 -- FK: order_num - pick_ticket_header(order_num)
 -- FK: sold_to - customer(customer_id)
 -- FK: ship_to - recipient(recipient_id)
-INSERT INTO `order`(order_num,
+INSERT INTO wsi_stack(order_num,
 	sold_to,
     ship_to,
     ship_method)
