@@ -5,7 +5,7 @@ CREATE TABLE customer(
 	customer_id INT AUTO_INCREMENT PRIMARY KEY,
 	sold_to_name VARCHAR(128),
 	sold_to_id VARCHAR(30) DEFAULT "",
-	sold_to_address_1 VARCHAR(128) NOT NULL,
+	sold_to_address VARCHAR(128) NOT NULL,
 	sold_to_city VARCHAR(30) NOT NULL,
 	sold_to_state VARCHAR(36) NOT NULL,
 	sold_to_country VARCHAR(36) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE pick_ticket_header(
 	order_num VARCHAR(30) UNIQUE
 );
 
-CREATE TABLE `order`(
+CREATE TABLE wsi_order(
 	order_num VARCHAR(30) PRIMARY KEY,
 	sold_to INT,
 	ship_to INT,
