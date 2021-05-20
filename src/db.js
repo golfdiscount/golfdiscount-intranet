@@ -6,7 +6,7 @@ dbConnection = {
   multipleStatements: true
 }
 
-let mysql = require("mysql");
+let mysql = require("mysql2");
 let connection = mysql.createConnection(dbConnection)
 
 exports.connect = function () {

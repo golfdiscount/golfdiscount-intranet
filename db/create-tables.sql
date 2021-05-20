@@ -1,4 +1,3 @@
-DROP DATABASE wsi_stack;
 CREATE DATABASE IF NOT EXISTS wsi_stack;
 USE wsi_stack;
 
