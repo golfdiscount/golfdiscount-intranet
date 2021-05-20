@@ -80,6 +80,7 @@ CREATE TABLE shipping_conf(
 	line_num INT,
 	ship_date DATETIME DEFAULT NULL,
     tracking_num TEXT,
+	sent_to_shipstation INT DEFAULT 0
 	PRIMARY KEY (pick_ticket_num, line_num),
 	CONSTRAINT confToTicket FOREIGN KEY (pick_ticket_num)
 		REFERENCES pick_ticket_header(pick_ticket_num)
