@@ -192,62 +192,9 @@ module.exports = function(app) {
     }
   });
 
-  app.get("/customers", (req, res) => {
-    let name = req.query.name;
-    try{
-      if(req.query.name){
-        let qry = `SELECT c.customer_id AS "Customer ID",
-            c.sold_to_name AS "Name",
-            c.sold_to_address_1 AS "Address",
-            c.sold_to_state AS "State",
-            c.sold_to_country AS "Country",
-            c.sold_to_zip AS "Zip"
-          FROM customer AS c
-          WHERE c.sold_to_name LIKE "${req.query.name}";`
-        db.executeQuery(qry, (results) => {
-          res.status(200).type("JSON").send(JSON.stringify(results));
-        });
-      } else{
-        let qry = `SELECT c.customer_id AS "Customer ID",
-            c.sold_to_name AS "Name",
-            c.sold_to_address_1 AS "Address",
-            c.sold_to_state AS "State",
-            c.sold_to_country AS "Country",
-            c.sold_to_zip AS "Zip"
-          FROM customer AS c;`
-        db.executeQuery(qry, (results) => {
-          res.status(200).type("JSON").send(JSON.stringify(results));
-        });
-      }
-    } catch (e) {
-      handleError(e);
-    }
-  });
-
   app.get("/order", (req, res) => {
     try{
-      let qry;
-      if (req.order_num) {
-        qry = `SELECT wsi_order.order_num AS "Order Number",
-            c.sold_to_name AS "Customer Name",
-            c.sold_to_address AS "Customer Address",
-            c.sold_to_city AS "Customer City",
-            c.sold_to_state AS "Customer State",
-            c.sold_to_country AS "Customer Country",
-            c.sold_to_zip AS "Customer Zip",
-            r.ship_to_name AS "Recipient Name",
-            r.ship_to_address AS "Recipient Address",
-            r.ship_to_city AS "Recipient City",
-            r.ship_to_state AS "Recipient State",
-            r.ship_to_country AS "Recipient Country",
-            r.ship_to_zip AS "Recipient Zip"
-        FROM wsi_order
-        JOIN pick_ticket_header AS pth ON pth.order_num = wsi_order.order_num
-        JOIN customer AS c ON c.customer_id = wsi_order.sold_to
-        JOIN recipient AS r ON r.recipient_id = wsi_order.ship_to
-        WHERE wsi_order.order_num = ${req.body.order_num};`
-      } else {
-        qry = `SELECT wsi_order.order_num AS "Order Number",
+      let qry = `SELECT wsi_order.order_num AS "Order Number",
           c.sold_to_name AS "Customer Name",
           c.sold_to_address AS "Customer Address",
           c.sold_to_city AS "Customer City",
@@ -259,11 +206,26 @@ module.exports = function(app) {
           r.ship_to_city AS "Recipient City",
           r.ship_to_state AS "Recipient State",
           r.ship_to_country AS "Recipient Country",
-          r.ship_to_zip AS "Recipient Zip"
+          r.ship_to_zip AS "Recipient Zip",
+          line_item.line_num AS "Line Number",
+          product.sku AS "SKU",
+          product.sku_name AS "SKU Description",
+          line_item.quantity AS "Quantity",
+          product.unit_price AS "Unit Price",
+          shipping_conf.tracking_num AS "Tracking number",
+          shipping_conf.sent_to_shipstation AS "Sent to ShipStation"
         FROM wsi_order
         JOIN pick_ticket_header AS pth ON pth.order_num = wsi_order.order_num
         JOIN customer AS c ON c.customer_id = wsi_order.sold_to
-        JOIN recipient AS r ON r.recipient_id = wsi_order.ship_to;`
+        JOIN recipient AS r ON r.recipient_id = wsi_order.ship_to
+        JOIN pick_ticket_detail AS ptd ON ptd.pick_ticket_num = pth.pick_ticket_num
+        JOIN line_item ON line_item.pick_ticket_num = ptd.pick_ticket_num
+        JOIN product ON product.sku = line_item.sku
+        JOIN shipping_conf ON shipping_conf.pick_ticket_num = pth.pick_ticket_num`;
+      if (req.order_num) {
+        qry = qry + `WHERE wsi_order.order_num = ${req.body.order_num}`;
+      } else {
+        qry = qry + ";";
       }
 
       db.executeQuery(qry, (results) => {
@@ -272,7 +234,7 @@ module.exports = function(app) {
     } catch (e) {
       handleError(e);
     }
-  })
+  });
 }
 
 function handleError(e) {
