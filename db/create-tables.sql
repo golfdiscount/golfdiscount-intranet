@@ -25,7 +25,7 @@ CREATE TABLE recipient(
     date_added DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE pick_ticket_header(
+CREATE TABLE pick_ticket(
 	pick_ticket_num VARCHAR(30) PRIMARY KEY,
 	order_num VARCHAR(30) UNIQUE
 );
@@ -42,7 +42,7 @@ CREATE TABLE wsi_order(
 		REFERENCES recipient(recipient_id)
 		ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT orderToHeader FOREIGN KEY (order_num)
-		REFERENCES pick_ticket_header(order_num)
+		REFERENCES pick_ticket(order_num)
 		ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -50,14 +50,6 @@ CREATE TABLE product(
 	sku VARCHAR(32) PRIMARY KEY,
 	sku_name TEXT NOT NULL,
 	unit_price FLOAT NOT NULL
-);
-
-CREATE TABLE pick_ticket_detail(
-	pick_ticket_num VARCHAR(30) PRIMARY KEY,
-	date_last_modified DATETIME DEFAULT NOW(),
-	CONSTRAINT detailToHeader FOREIGN KEY (pick_ticket_num)
-		REFERENCES pick_ticket_header(pick_ticket_num)
-		ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE line_item(
@@ -71,7 +63,7 @@ CREATE TABLE line_item(
 		REFERENCES product(sku)
 		ON UPDATE CASCADE ON DELETE CASCADE,
 	CONSTRAINT lineToTicket FOREIGN KEY (pick_ticket_num)
-		REFERENCES pick_ticket_detail(pick_ticket_num)
+		REFERENCES pick_ticket(pick_ticket_num)
 		ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -80,9 +72,9 @@ CREATE TABLE shipping_conf(
 	line_num INT,
 	ship_date DATETIME DEFAULT NULL,
     tracking_num TEXT,
-	sent_to_shipstation INT DEFAULT 0
+	sent_to_shipstation INT DEFAULT 0,
 	PRIMARY KEY (pick_ticket_num, line_num),
 	CONSTRAINT confToTicket FOREIGN KEY (pick_ticket_num)
-		REFERENCES pick_ticket_header(pick_ticket_num)
+		REFERENCES pick_ticket(pick_ticket_num)
 		ON UPDATE CASCADE ON DELETE CASCADE
 );
