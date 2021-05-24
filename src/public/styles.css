@@ -2,16 +2,6 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-#searcher {
-  float:left;
-  width: 50%;
-}
-
-#viewer {
-  float:right;
-  width: 50%;
-}
-
 nav {
   text-align: center;
 }
