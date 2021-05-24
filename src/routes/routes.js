@@ -21,8 +21,9 @@ module.exports = function(app) {
           "${req.body.sold_to_zip}"
       );`
       db.executeQuery(qry, (results) => {
-        res.status(201).type("text")
-        .send(`Customer ${req.body.sold_to_name} successfully added with ID ${results.insertId}`);
+        res.status(201).type("JSON")
+        .send({"response": `Customer ${req.body.sold_to_name} successfully added with ID ${results.insertId}`,
+          "insertId": results.insertId});
       });
     } catch (e) {
       handleError(e);
@@ -46,8 +47,9 @@ module.exports = function(app) {
         "${req.body.ship_to_zip}"
       );`
       db.executeQuery(qry, (results) => {
-        res.status(201).type("text")
-          .send(`Recipient ${req.body.ship_to_name} successfully added with ID ${results.insertId}`);
+        res.status(201).type("JSON")
+          .send({"response": `Recipient ${req.body.ship_to_name} successfully added with ID ${results.insertId}`,
+              "insertId": results.insertId});
       });
     } catch (e) {
       handleError(e);
@@ -56,17 +58,17 @@ module.exports = function(app) {
 
   app.post("/addHeader", (req, res) => {
     try{
-      let qry = `INSERT INTO pick_ticket_header(pick_ticket_num,
+      let qry = `INSERT INTO pick_ticket(pick_ticket_num,
           order_num)
         VALUES ("${req.body.pick_ticket_num}",
           "${req.body.order_num}");`
       db.executeQuery(qry, (results, error) => {
         if (error){
-          res.status(400).type("text")
-            .send(`This header has already been added or you gave bad parameters\n${error.sqlMessage}`);
+          res.status(400).type("JSON")
+            .send({"response":`${error.sqlMessage}`});
         } else {
-          res.status(201).type("text")
-            .send(`Successfully added pick ticket header ${req.body.pick_ticket_num}`);
+          res.status(201).type("JSON")
+            .send({"response":`Successfully added pick ticket header ${req.body.pick_ticket_num}`});
         }
       });
     } catch (e) {
@@ -79,17 +81,20 @@ module.exports = function(app) {
       let qry = `INSERT INTO wsi_order(order_num,
             sold_to,
             ship_to,
-            ship_method)
-          VALUES (${req.body.order_num},
-            ${req.body.sold_to},
-            ${req.body.ship_to},
-            "${req.body.ship_method}")`
+            ship_method,
+            order_date)
+          VALUES ("${req.body.order_num}",
+            "${req.body.sold_to}",
+            "${req.body.ship_to}",
+            "${req.body.ship_method}",
+            STR_TO_DATE("${req.body.order_date}", "%m/%d/%Y"));`
       db.executeQuery(qry, (results, error) => {
         if (error) {
-          handlePostError(res, error);
+          res.status(400).type("JSON")
+            .send({"response": `${error.sqlMessage}`});
         } else {
-          res.status(201).type("text")
-            .send(`Successfully added order ${req.body.order_num}`);
+          res.status(201).type("JSON")
+            .send({"response": `Successfully added order ${req.body.order_num}`});
         }
       })
     } catch {
@@ -100,48 +105,6 @@ module.exports = function(app) {
   /*
   ADD PICK TICKET DETAIL
   */
-  app.post("/addDetail", (req, res) => {
-    try {
-      let qry = `INSERT INTO pick_ticket_detail(pick_ticket_num)
-        VALUES("${req.body.pick_ticket_num}");`
-      db.executeQuery(qry, (results, error) => {
-        if (error) {
-          res.status(400).type("text")
-            .send(`This product has already been added or you gave bad parameters\n${error.sqlMessage}`);
-        } else {
-          res.status(201).type("text")
-            .send(`The pick ticket detail ${req.body.pick_ticket_num}`);
-        }
-      });
-    } catch (e) {
-      handleError(e);
-    }
-  });
-
-  app.post("/addLineItem", (req, res) => {
-    try {
-      let qry = `INSERT INTO line_item (pick_ticket_num,
-          line_num,
-          sku,
-          units_to_ship)
-        VALUES ("${req.body.pick_ticket_num}",
-          "${req.body.line_num}",
-          "${req.body.sku}",
-          "${req.body.units_to_ship}");`
-        db.executeQuery(qry, (results, error) => {
-          if (error) {
-            res.status(400).type("text")
-              .send(`Line item could not be added\n${error.sqlMessage}`);
-          } else {
-            res.status(201).type("text")
-              .send(`Line number ${req.body.line_num} added to order number ${req.body.pick_ticket_num}`);
-          }
-        });
-    } catch (e) {
-      handleError(e);
-    }
-  });
-
   app.post("/addProduct", (req, res) => {
     try{
       let qry = `INSERT INTO product(sku,
@@ -152,16 +115,42 @@ module.exports = function(app) {
         "${req.body.unit_price}");`
       db.executeQuery(qry, (results, error) => {
         if (error) {
-          res.status(400).type("text")
-            .send(`There was an error adding a product:\n${error.errno}`);
+          res.status(400).type("JSON")
+            .send({"response": `There was an error adding a product:\n${error.sqlMessage}`});
         } else {
-          res.status(201).type("text")
-            .send(`A product with sku ${req.body.sku} was successfully created`);
+          res.status(201).type("JSON")
+            .send({"response": `A product with sku ${req.body.sku} was successfully created`});
         }
       })
     } catch (e) {
-      res.status(500).type("text")
-        .send("Internal Server Error");
+      res.status(500).type("JSON")
+        .send({"response": "Internal Server Error"});
+    }
+  });
+
+  app.post("/addLineItem", (req, res) => {
+    try {
+      let qry = `INSERT INTO line_item (pick_ticket_num,
+          line_num,
+          sku,
+          units_to_ship,
+          quantity)
+        VALUES ("${req.body.pick_ticket_num}",
+          "${req.body.line_num}",
+          "${req.body.sku}",
+          "${req.body.units_to_ship}",
+          "${req.body.quantity}");`
+        db.executeQuery(qry, (results, error) => {
+          if (error) {
+            res.status(400).type("JSON")
+              .send({"response": `Line item could not be added\n${error.sqlMessage}`});
+          } else {
+            res.status(201).type("JSON")
+              .send({"response": `Line number ${req.body.line_num} added to order number ${req.body.pick_ticket_num}`});
+          }
+        });
+    } catch (e) {
+      handleError(e);
     }
   });
 
@@ -192,7 +181,7 @@ module.exports = function(app) {
     }
   });
 
-  app.get("/order", (req, res) => {
+  app.get("/orders", (req, res) => {
     try{
       let qry = `SELECT wsi_order.order_num AS "Order Number",
           c.sold_to_name AS "Customer Name",
@@ -215,13 +204,12 @@ module.exports = function(app) {
           shipping_conf.tracking_num AS "Tracking number",
           shipping_conf.sent_to_shipstation AS "Sent to ShipStation"
         FROM wsi_order
-        JOIN pick_ticket_header AS pth ON pth.order_num = wsi_order.order_num
+        JOIN pick_ticket AS pt ON pt.order_num = wsi_order.order_num
         JOIN customer AS c ON c.customer_id = wsi_order.sold_to
         JOIN recipient AS r ON r.recipient_id = wsi_order.ship_to
-        JOIN pick_ticket_detail AS ptd ON ptd.pick_ticket_num = pth.pick_ticket_num
-        JOIN line_item ON line_item.pick_ticket_num = ptd.pick_ticket_num
+        JOIN line_item ON line_item.pick_ticket_num = pt.pick_ticket_num
         JOIN product ON product.sku = line_item.sku
-        JOIN shipping_conf ON shipping_conf.pick_ticket_num = pth.pick_ticket_num`;
+        LEFT OUTER JOIN shipping_conf ON shipping_conf.pick_ticket_num = pt.pick_ticket_num;`;
       if (req.order_num) {
         qry = qry + `WHERE wsi_order.order_num = ${req.body.order_num}`;
       } else {
