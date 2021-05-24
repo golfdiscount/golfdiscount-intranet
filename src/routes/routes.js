@@ -181,7 +181,7 @@ module.exports = function(app) {
     }
   });
 
-  app.get("/orders", (req, res) => {
+  app.get("/orders/:order_num", (req, res) => {
     try{
       let qry = `SELECT wsi_order.order_num AS "Order Number",
           c.sold_to_name AS "Customer Name",
@@ -209,18 +209,19 @@ module.exports = function(app) {
         JOIN recipient AS r ON r.recipient_id = wsi_order.ship_to
         JOIN line_item ON line_item.pick_ticket_num = pt.pick_ticket_num
         JOIN product ON product.sku = line_item.sku
-        LEFT OUTER JOIN shipping_conf ON shipping_conf.pick_ticket_num = pt.pick_ticket_num;`;
-      if (req.order_num) {
-        qry = qry + `WHERE wsi_order.order_num = ${req.body.order_num}`;
-      } else {
-        qry = qry + ";";
-      }
-
-      db.executeQuery(qry, (results) => {
-        res.status(200).type("JSON").send(JSON.stringify(results));
+        LEFT OUTER JOIN shipping_conf ON shipping_conf.pick_ticket_num = pt.pick_ticket_num
+        WHERE wsi_order.order_num = "${req.params.order_num}";`;
+      
+      db.executeQuery(qry, (results, error) => {
+        if (error) {
+          res.status(400).type("JSON").send(error.sqlMessage)
+        } else {
+          res.status(200).type("JSON").send(JSON.stringify(results));
+        }
       })
     } catch (e) {
-      handleError(e);
+      res.status(500).type("text")
+        .send(`Internal Server Error\n${e}`);
     }
   });
 }
