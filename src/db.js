@@ -1,8 +1,8 @@
 dbConnection = {
-  host: "localhost",
-  user: "root",
-  password: "R@YaLagpjgeWsG]^ce)c",
-  database: 'wsi_stack',
+  host: "wsi-stack.database.windows.net",
+  user: "harmeet-pgd",
+  password: "%a5xe2*S4xxd^MDmyqFFd!qrwSGKBPN&QCPiXtDV&&=xE7=SyumA%>:zLGEuo].E",
+  database: 'wsi-orders',
   multipleStatements: true
 }
 
