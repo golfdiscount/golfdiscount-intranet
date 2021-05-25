@@ -24,7 +24,7 @@ CREATE TABLE recipient(
 	ship_to_state VARCHAR(36) NOT NULL,
 	ship_to_country VARCHAR(36) NOT NULL,
 	ship_to_zip VARCHAR(15) NOT NULL,
-    date_added DATETIME DEFAULT CURRENT_TIMESTAMP
+  date_added DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE pick_ticket(

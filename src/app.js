@@ -12,8 +12,8 @@ require("./routes/routes")(app);
 
 db.connect();
 
-const PORT = process.env.PORT;
-const HOSTNAME = process.env.HOSTNAME;
+const PORT = process.env.PORT | 8000;
+const HOSTNAME = process.env.HOSTNAME | "wsi-orders.mysql.database.azure.com";
 app.listen(PORT, HOSTNAME, () => {
   console.log(`API up and running on port ${PORT}`)
 })

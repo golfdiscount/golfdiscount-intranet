@@ -1,9 +1,15 @@
+let fs = require("fs")
+const serverCa = [fs.readFileSync("certs\\BaltimoreCyberTrustRoot.crt.pem", "utf8")];
 dbConnection = {
-  host: "wsi-stack.database.windows.net",
-  user: "harmeet-pgd",
+  host: "wsi-orders.mysql.database.azure.com",
+  user: "harmeet@wsi-orders",
   password: "%a5xe2*S4xxd^MDmyqFFd!qrwSGKBPN&QCPiXtDV&&=xE7=SyumA%>:zLGEuo].E",
-  database: 'wsi-orders',
-  multipleStatements: true
+  database: 'wsi_stack',
+  multipleStatements: true,
+  ssl: {
+    rejectUnauthorized: true,
+    ca: serverCa
+  }
 }
 
 let mysql = require("mysql2");

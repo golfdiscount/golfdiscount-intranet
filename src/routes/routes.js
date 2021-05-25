@@ -111,7 +111,7 @@ module.exports = function(app) {
   */
   app.post("/addProduct", (req, res) => {
     try{
-      let qry = `INSERT INTO product(sku,
+      let qry = `INSERT IGNORE INTO product(sku,
         sku_name,
         unit_price)
       VALUES ("${req.body.sku}",

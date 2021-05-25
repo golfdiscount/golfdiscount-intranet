@@ -10,7 +10,7 @@ CREATE TABLE customer(
 	sold_to_state VARCHAR(36) NOT NULL,
 	sold_to_country VARCHAR(36) NOT NULL,
 	sold_to_zip VARCHAR(15) NOT NULL,
-    date_added DATETIME DEFAULT CURRENT_TIMESTAMP
+  date_added DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE recipient(
