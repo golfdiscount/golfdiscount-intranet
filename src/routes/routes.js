@@ -26,7 +26,7 @@ module.exports = function(app) {
           "insertId": results.insertId});
       });
     } catch (e) {
-      handleError(e);
+      handleError(e, res);
     }
   });
 
@@ -52,7 +52,7 @@ module.exports = function(app) {
               "insertId": results.insertId});
       });
     } catch (e) {
-      handleError(e);
+      handleError(e, res);
     }
   });
 
@@ -72,7 +72,7 @@ module.exports = function(app) {
         }
       });
     } catch (e) {
-      handleError(e);
+      handleError(e, res);
     }
   });
 
@@ -98,7 +98,7 @@ module.exports = function(app) {
         }
       })
     } catch {
-      handleError(e)
+      handleError(e, res)
     }
   });
 
@@ -150,7 +150,7 @@ module.exports = function(app) {
           }
         });
     } catch (e) {
-      handleError(e);
+      handleError(e, res);
     }
   });
 
@@ -177,32 +177,32 @@ module.exports = function(app) {
         }
       });
     } catch (e) {
-      handleError(e);
+      handleError(e, res);
     }
   });
 
   app.get("/orders/:order_num", (req, res) => {
     try{
       let qry = `SELECT wsi_order.order_num AS "Order Number",
-          c.sold_to_name AS "Customer Name",
-          c.sold_to_address AS "Customer Address",
-          c.sold_to_city AS "Customer City",
-          c.sold_to_state AS "Customer State",
-          c.sold_to_country AS "Customer Country",
-          c.sold_to_zip AS "Customer Zip",
-          r.ship_to_name AS "Recipient Name",
-          r.ship_to_address AS "Recipient Address",
-          r.ship_to_city AS "Recipient City",
-          r.ship_to_state AS "Recipient State",
-          r.ship_to_country AS "Recipient Country",
-          r.ship_to_zip AS "Recipient Zip",
-          line_item.line_num AS "Line Number",
-          product.sku AS "SKU",
-          product.sku_name AS "SKU Description",
-          line_item.quantity AS "Quantity",
-          product.unit_price AS "Unit Price",
-          shipping_conf.tracking_num AS "Tracking number",
-          shipping_conf.sent_to_shipstation AS "Sent to ShipStation"
+          c.sold_to_name,
+          c.sold_to_address,
+          c.sold_to_city,
+          c.sold_to_state,
+          c.sold_to_country,
+          c.sold_to_zip,
+          r.ship_to_name,
+          r.ship_to_address,
+          r.ship_to_city,
+          r.ship_to_state,
+          r.ship_to_country,
+          r.ship_to_zip,
+          line_item.line_num,
+          product.sku,
+          product.sku_name,
+          line_item.quantity,
+          product.unit_price,
+          shipping_conf.tracking_num,
+          shipping_conf.sent_to_shipstation
         FROM wsi_order
         JOIN pick_ticket AS pt ON pt.order_num = wsi_order.order_num
         JOIN customer AS c ON c.customer_id = wsi_order.sold_to
@@ -211,22 +211,20 @@ module.exports = function(app) {
         JOIN product ON product.sku = line_item.sku
         LEFT OUTER JOIN shipping_conf ON shipping_conf.pick_ticket_num = pt.pick_ticket_num
         WHERE wsi_order.order_num = "${req.params.order_num}";`;
-      
       db.executeQuery(qry, (results, error) => {
         if (error) {
-          res.status(400).type("JSON").send(JSON.stringify(error.sqlMessage))
+          res.status(400).json(error.sqlMessage)
         } else {
           res.status(200).json(results[0]);
         }
       })
     } catch (e) {
-      res.status(500).type("text")
-        .send(`Internal Server Error\n${e}`);
+      handleError(e, res)
     }
   });
 }
 
-function handleError(e) {
+function handleError(e, res) {
   res.status(500).type("text")
     .send(`Internal Server Error\n${e}`);
 }
