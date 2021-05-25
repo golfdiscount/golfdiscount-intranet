@@ -20,10 +20,14 @@ module.exports = function(app) {
           "${req.body.sold_to_country}",
           "${req.body.sold_to_zip}"
       );`
-      db.executeQuery(qry, (results) => {
-        res.status(201).type("JSON")
-        .send({"response": `Customer ${req.body.sold_to_name} successfully added with ID ${results.insertId}`,
-          "insertId": results.insertId});
+      db.executeQuery(qry, (results, error) => {
+        if (error) {
+          res.status(400).json(error)
+        } else {
+          res.status(201).type("JSON")
+            .send({"response": `Customer ${req.body.sold_to_name} successfully added with ID ${results.insertId}`,
+            "insertId": results.insertId});
+        }
       });
     } catch (e) {
       handleError(e, res);
