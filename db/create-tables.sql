@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS wsi_stack;
+CREATE DATABASE wsi_stack;
 USE wsi_stack;
 
 CREATE TABLE customer(
@@ -35,6 +35,7 @@ CREATE TABLE wsi_order(
 	sold_to INT,
 	ship_to INT,
 	ship_method VARCHAR(5) NOT NULL,
+	order_date DATETIME,
 	CONSTRAINT orderToCustomer FOREIGN KEY (sold_to)
 		REFERENCES customer(customer_id)
 		ON UPDATE CASCADE ON DELETE CASCADE,
