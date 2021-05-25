@@ -216,7 +216,7 @@ module.exports = function(app) {
         if (error) {
           res.status(400).type("JSON").send(JSON.stringify(error.sqlMessage))
         } else {
-          res.status(200).json({message: "ok"});
+          res.status(200).json(results[0]);
         }
       })
     } catch (e) {
@@ -224,10 +224,6 @@ module.exports = function(app) {
         .send(`Internal Server Error\n${e}`);
     }
   });
-
-  app.get("/test", (req, res) => {
-    res.json({username: "test"})
-  })
 }
 
 function handleError(e) {

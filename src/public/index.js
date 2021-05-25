@@ -7,18 +7,18 @@
     idSel("search").addEventListener('submit', searchOrder);
   });
 
-  function searchOrder(e) {
-    let url = new URL(DOMAIN + "/test")
+  async function searchOrder(e) {
+    e.preventDefault();
+    let url = new URL(DOMAIN + "/orders/1000692635")
 
-    fetch(url, {mode: 'no-cors'})
-      .then(res => res.text())
-      .then(res => {
-        console.log(res)
-      })
+    let order =
+    await fetch(url, {mode: 'no-cors'})
+      .then(res => res.json())
       .catch(e => {
         console.log(e)
       })
-    e.preventDefault();
+    
+    console.log(order.SKU)
   }
 
   function idSel(id) {
