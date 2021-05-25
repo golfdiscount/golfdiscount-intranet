@@ -12,7 +12,8 @@ require("./routes/routes")(app);
 
 db.connect();
 
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
+const PORT = process.env.PORT;
+const HOSTNAME = process.env.HOSTNAME;
+app.listen(PORT, HOSTNAME, () => {
   console.log(`API up and running on port ${PORT}`)
 })
