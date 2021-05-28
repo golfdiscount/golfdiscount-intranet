@@ -5,9 +5,7 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm install express multer mysql2 && npm install --save-dev nodemon",
-    "start": "node app.js",
-    "monitor": "nodemon app.js"
+    "build": "npm install express multer mysql2 && npm install --save-dev nodemon"
   },
   "repository": {
     "type": "git",
