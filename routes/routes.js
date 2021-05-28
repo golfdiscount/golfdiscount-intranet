@@ -185,6 +185,9 @@ module.exports = function(app) {
     }
   });
 
+  /*
+  GET INFORMATION ABOUT ORDERS
+  */
   app.get("/orders/:order_num", (req, res) => {
     try{
       let qry = `SELECT wsi_order.order_num AS "Order Number",
