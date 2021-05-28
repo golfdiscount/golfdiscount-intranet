@@ -1,7 +1,7 @@
 "use strict";
 
 (function() {
-  const DOMAIN = 'http://localhost:8000'
+  const DOMAIN = 'http://wsistack-env.eba-vyfp9vy3.us-west-2.elasticbeanstalk.com:8080'
 
   window.addEventListener("load", () => {
     id("search").addEventListener('submit', searchOrder);
