@@ -13,9 +13,9 @@ exports.connect = function () {
   connection.connect((err) => {
     if (err) {
       console.error('error connecting:\n' + err.stack);
-      return;
+    } else {
+      console.log('connected as id ' + connection.threadId);
     }
-    console.log('connected as id ' + connection.threadId);
   });
 }
 
