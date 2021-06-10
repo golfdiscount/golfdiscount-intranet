@@ -2,9 +2,9 @@ let fs = require("fs")
 
 dbConnection = {
   host: "wsi-orders.mysql.database.azure.com",
-  user: "harmeet@wsi-orders",
+  user: "harmeet_pgd@wsi-orders",
   password: "%a5xe2*S4xxd^MDmyqFFd!qrwSGKBPN&QCPiXtDV&&=xE7=SyumA%>:zLGEuo].E",
-  database: 'wsi_stack',
+  database: 'wsi_orders',
   multipleStatements: true,
   ssl: {
     cert: fs.readFileSync('BaltimoreCyberTrustRoot.crt.pem'),
@@ -13,7 +13,7 @@ dbConnection = {
 }
 
 let mysql = require("mysql2");
-let connection = mysql.createConnection(dbConnection)
+let connection = mysql.createConnection(dbConnection);
 
 exports.connect = function () {
   connection.connect((err) => {
@@ -22,7 +22,7 @@ exports.connect = function () {
       return;
     }
     console.log('connected as id ' + connection.threadId);
-  })
+  });
 }
 
 exports.executeQuery = function(query, handler) {
