@@ -1,5 +1,3 @@
-let fs = require("fs")
-
 dbConnection = {
   host: "wsi-orders.mysql.database.azure.com",
   user: "harmeet_pgd@wsi-orders",
