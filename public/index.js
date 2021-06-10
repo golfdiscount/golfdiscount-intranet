@@ -1,7 +1,7 @@
 'use strict';
 
 (function() {
-  const DOMAIN = 'http://localhost:8000'
+  const DOMAIN = 'https://wsi-stack.azurewebsites.net:80'
 
   /**
    * Sets initial state of the window and adds necessary listeners
