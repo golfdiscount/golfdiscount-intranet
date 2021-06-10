@@ -2,10 +2,31 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-nav {
+nav h1 {
   text-align: center;
+  margin: 7px;
+}
+
+nav img {
+  height: 45px;
+}
+
+nav div {
+  display: flex;
+  flex-direction: row;
+}
+
+.selector-tab {
+  padding: 2px;
+  margin-right: 150px;
+  margin-left: 0px;
+}
+
+#menu-selector{
+  display: flex;
+  flex-direction: row;
 }
 
 .hidden {
-  visibility: hidden;
+  display: none;
 }

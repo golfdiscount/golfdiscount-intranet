@@ -7,14 +7,27 @@
     <script src="index.js"></script>
   </head>
   <body>
-    <nav>
-      <h1>WSI Order Interface</h1>
-    </nav>
-    <hr>
+    <header>
+      <nav>
+        <div>
+          <img src="gd_logo.webp">
+          <h1>WSI Order Interface</h1>
+        </div>
+        <div id="menu-selector">
+          <div class="selector-tab" id="orders">
+            <h2>Order Viewer</h2>
+          </div>
+          <div class="selector-tab" id="shipping">
+            <h2>Shipping Confirmations</h2>
+          </div>
+        </div>
+      </nav>
+      <hr>
+    </header>  
     <main>
       <div id="order-viewer">
         <div id="searcher">
-          <h1>Enter Order Information</h1>
+          <h2>Enter Order Information</h2>
           <form method="GET" id="search">
             <div class="form-element">
               <label>Order number:
@@ -110,6 +123,16 @@
             <output for="tracking"></output>
           </div>
         </div>
+      </div>
+      <div id="shipping-conf" class="hidden">
+        <p>Upload a file containing shipping confirmations to be sent to ShipStation. Please upload CSV (comma separated values) files only.</p>
+        <form>
+          <label for="shippingFile">Upload shipping confirmations: </label>
+          <input type="file" id="shippingFile" name="shippingFile" accept=".csv">
+          <div>
+            <button id="submit-file" type="button">Submit</button>
+          </div>
+        </form>
       </div>
     </main>
   </body>
