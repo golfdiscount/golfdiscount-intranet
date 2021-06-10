@@ -4,7 +4,8 @@
   "main": "app.js",
   "description": "",
   "scripts": {
-    "build": "npm install express multer mysql2 && npm install --save-dev nodemon"
+    "build": "npm install express multer mysql2 && npm install --save-dev nodemon",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
