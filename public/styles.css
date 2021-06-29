@@ -30,3 +30,8 @@ nav div {
 .hidden {
   display: none;
 }
+
+/* For information that is not yet available */
+.not-avail {
+  color: red;
+}

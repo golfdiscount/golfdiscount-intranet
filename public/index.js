@@ -1,4 +1,4 @@
-const DOMAIN = 'https://wsi-stack.azurewebsites.net:80'
+const DOMAIN = 'http://wsi-stack.azurewebsites.net:80'
 
 /**
  * Sets initial state of the window and adds necessary listeners
@@ -18,13 +18,13 @@ async function searchOrder(e) {
   e.preventDefault();
   let url = new URL(DOMAIN + '/orders/' + qs('#order-num').value)
 
-  let order = await fetch(url, {mode: 'no-cors'})
+  await fetch(url, {mode: 'no-cors'})
     .then(res => res.json())
+    .then(res => displayOrder(res))
     .catch(e => {
-      console.log(e)
-    })
-
-  displayOrder(order)
+      console.log(`There was an error completing your request:\n${e}`);
+      alert(`There was an error completing your request:\n${e}`);
+    });
 }
 
 /**
@@ -51,20 +51,22 @@ function displayOrder(order) {
   // Product info
   qs('#sku-name output').textContent = order.sku_name
   qs('#sku output').textContent = order.sku
-  qs('#price output').textContent = order.unit_price
+  qs('#price output').textContent = `$${order.unit_price}`
   qs('#quantity output').textContent = order.quantity
 
   // Shipping info
   let ship_date_field = qs('#ship-date output')
   if (order.ship_date == null) {
-    ship_date_field.textContent = 'Not yet uploaded'
+    ship_date_field.classList.add('not-avail');
+    ship_date_field.textContent = 'Not yet shipped'
   } else {
     ship_date_field.textContent = order.ship_date
   }
 
   let tracking_field = qs('#tracking output')
   if (order.tracking_num == null) {
-    tracking_field.textContent = 'Not yet uploaded'
+    tracking_field.classList.add('not-avail');
+    tracking_field.textContent = 'Tracking number has not yet been generated'
   } else {
     tracking_field = order.tracking_num
   }
