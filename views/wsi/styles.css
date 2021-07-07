@@ -39,6 +39,10 @@ a:visited {
   margin-left: 0px;
 }
 
+.selector-tab:hover {
+  cursor: pointer;
+}
+
 .hidden {
   display: none;
 }
