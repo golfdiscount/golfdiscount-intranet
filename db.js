@@ -2,7 +2,7 @@ dbConnection = {
   host: "wsi-orders.mysql.database.azure.com",
   user: "harmeet_pgd@wsi-orders",
   password: "%a5xe2*S4xxd^MDmyqFFd!qrwSGKBPN&QCPiXtDV&&=xE7=SyumA%>:zLGEuo].E",
-  database: 'wsi_orders',
+  database: 'wsi',
   multipleStatements: true
 }
 
