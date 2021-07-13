@@ -1,4 +1,4 @@
-const DOMAIN = 'http://wsi-stack.azurewebsites.net:80'
+const DOMAIN = 'http://wsi-stack.azurewebsites.net:8000'
 
 /**
  * Sets initial state of the window and adds necessary listeners
