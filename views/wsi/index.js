@@ -18,7 +18,7 @@ async function searchOrder(e) {
   e.preventDefault();
   let url = new URL(DOMAIN + '/wsi/orders/' + qs('#order-num').value);
 
-  await fetch(url, {mode: 'no-cors'})
+  await fetch(url)
     .then(res => res.json())
     .then(res => displayOrder(res))
     .catch(e => {
