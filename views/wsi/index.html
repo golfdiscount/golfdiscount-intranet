@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WSI Order Interface</title>
+    <link href="styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <script src="index.js"></script>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div>
+          <a href="/"><img src="gd_logo.webp"></a>
+          <h1>WSI Order Interface</h1>
+        </div>
+        <div id="menu-selector">
+          <div class="selector-tab" id="orders">
+            <h2>Order Viewer</h2>
+          </div>
+          <div class="selector-tab" id="shipping">
+            <h2>Shipping Confirmations</h2>
+          </div>
+          <div class="selector-tab" id="home">
+            <a href="/"><h2>Back to home</h2></a>
+          </div>
+        </div>
+      </nav>
+      <hr>
+    </header>  
+    <main>
+      <div id="order-viewer">
+        <div id="searcher">
+          <h2>Enter Order Information</h2>
+          <form method="GET" id="search">
+            <div class="form-element">
+              <label>Order number:
+                <input type="text" id="order-num">
+                <input type="submit" id="order-submit">
+              </label>
+            </div>
+          </form>
+        </div>
+        <div id="customer">
+          <h2>Customer</h2>
+          <form>
+            <div id="c-name">
+              <label for="c-name">Name: </label>
+              <output for="c-name"></output>
+            </div>
+            <div id="c-address">
+              <label for="c-address">Address: </label>
+              <output for="c-address"></output>
+            </div>
+            <div id="c-city">
+              <label for="c-city">City: </label>
+              <output for="c-city"></output>
+            </div>
+            <div id="c-state">
+              <label for="c-state">State: </label>
+              <output for="c-state"></output>
+            </div>
+            <div id="c-country">
+              <label for="c-country">Country: </label>
+              <output for="c-country"></output>
+            </div>
+            <div id="c-zip">
+              <label for="c-zip">Zip: </label>
+              <output for="c-zip"></output>
+            </div>
+          </form>
+        </div>
+        <div id="recipient">
+          <h2>Recipient</h2>
+          <div id="r-name">
+            <label for="r-name">Name: </label>
+            <output for="r-name"></output>
+          </div>
+          <div id="r-address">
+            <label for="r-address">Address: </label>
+            <output for="r-address"></output>
+          </div>
+          <div id="r-city">
+            <label for="r-city">City: </label>
+            <output for="r-city"></output>
+          </div>
+          <div id="r-state">
+            <label for="r-state">State: </label>
+            <output for="r-state"></output>
+          </div>
+          <div id="r-country">
+            <label for="r-country">Country: </label>
+            <output for="r-country"></output>
+          </div>
+          <div id="r-zip">
+            <label for="r-zip">Zip: </label>
+            <output for="r-zip"></output>
+          </div>
+        </div>
+        <div id="product">
+          <h2>Product</h2>
+          <div id="sku-name">
+            <label for="sku-name">SKU Name: </label>
+            <output for="sku-name"></output>
+          </div>
+          <div id="sku">
+            <label for="sku">SKU: </label>
+            <output for="sku"></output>
+          </div>
+          <div id="price">
+            <label for="price">Unit Price: </label>
+            <output for="price"></output>
+          </div>
+          <div id="quantity">
+            <label for="quantity">Quantity: </label>
+            <output for="quantity"></output>
+          </div>
+        </div>
+        <div id="shipping">
+          <h2>Shipping</h2>
+          <div id="ship-date">
+            <label for="ship-date">Ship Date: </label>
+            <output for="ship-date"></output>
+          </div>
+          <div id="tracking">
+            <label for="tracking">Tracking Number: </label>
+            <output for="tracking"></output>
+          </div>
+        </div>
+      </div>
+      <div id="shipping-conf" class="hidden">
+        <p>Upload a file containing shipping confirmations to be sent to ShipStation. Please upload CSV (comma separated values) files only.</p>
+        <form>
+          <label for="shippingFile">Upload shipping confirmations: </label>
+          <input type="file" id="shippingFile" name="shippingFile" accept=".csv">
+          <div>
+            <button id="submit-file" type="button">Submit</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

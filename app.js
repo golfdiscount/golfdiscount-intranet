@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 8000;
 let db = require("./db");
 
 app.use(express.static("public"));
+app.use(express.static('views'));
 app.use(express.json());
 require("./routes/routes")(app);
 

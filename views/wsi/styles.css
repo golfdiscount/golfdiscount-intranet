@@ -1,0 +1,53 @@
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+nav h1 {
+  text-align: center;
+  margin: 7px;
+}
+
+nav img {
+  height: 45px;
+}
+
+nav div {
+  display: flex;
+  flex-direction: row;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:visited {
+  color: black;
+}
+#menu-selector{
+  display: flex;
+  flex-direction: row;
+}
+
+#home {
+  margin-left: auto;
+  margin-right: 5px;
+}
+
+.selector-tab {
+  padding: 2px;
+  margin-right: 150px;
+  margin-left: 0px;
+}
+
+.selector-tab:hover {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+/* For information that is not yet available */
+.not-avail {
+  color: red;
+}
