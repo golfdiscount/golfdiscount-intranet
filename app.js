@@ -1,16 +1,16 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-let db = require("./db");
+let db = require('./db');
+let wsi = require('./routes/wsi');
 
-app.use(express.static("public"));
+app.use('/wsi', wsi);
+app.use(express.static('public'));
 app.use(express.static('views'));
 app.use(express.json());
-require("./routes/routes")(app);
 
 db.connect();
-
 
 app.listen(PORT, () => {
   console.log(`App is running on port ${PORT}`);
