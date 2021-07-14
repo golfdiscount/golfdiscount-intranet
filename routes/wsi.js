@@ -1,7 +1,7 @@
 let db = require('../db');
 let express = require('express');
 
-let router = express.router();
+let router = express.Router();
 
 router.get('/orders/:order_num', (req, res) => {
   try{

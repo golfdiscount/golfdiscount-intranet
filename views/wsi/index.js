@@ -1,4 +1,4 @@
-const DOMAIN = 'http://wsi-stack.azurewebsites.net:443';
+const DOMAIN = 'http://wsi-stack.azurewebsites.net';
 
 /**
  * Sets initial state of the window and adds necessary listeners
@@ -16,7 +16,7 @@ window.addEventListener('load', () => {
  */
 async function searchOrder(e) {
   e.preventDefault();
-  let url = new URL(DOMAIN + '/orders/' + qs('#order-num').value);
+  let url = new URL(DOMAIN + '/wsi/orders/' + qs('#order-num').value);
 
   await fetch(url, {mode: 'no-cors'})
     .then(res => res.json())
