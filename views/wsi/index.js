@@ -4,7 +4,7 @@ const DOMAIN = 'https://wsi-stack.azurewebsites.net';
  * Sets initial state of the window and adds necessary listeners
  */
 window.addEventListener('load', () => {
-  id('search').addEventListener('submit', searchOrder);
+  id('order-submit').addEventListener('click', searchOrder);
   id('orders').addEventListener('click', showOrderViewer);
   id('shipping').addEventListener('click', showShippingConf);
   id('submit-file').addEventListener('click', submitConf);
