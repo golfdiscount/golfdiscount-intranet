@@ -1,0 +1,2 @@
+DELETE FROM wsi_order;
+DELETE FROM product;
