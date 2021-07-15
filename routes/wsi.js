@@ -35,12 +35,8 @@ router.get('/orders/:order_num', (req, res) => {
     LEFT OUTER JOIN shipping_conf ON shipping_conf.pick_ticket_num = wsi_order.pick_ticket_num
     WHERE wsi_order.order_num = "${req.params.order_num}";`;
     db.executeQuery(qry, (results, error) => {
-      if (error) {
-        res.status(400).send(error.sqlMessage)
-      } else {
-          res.status(200).json(results[0]);
-      }
-    })
+      res.status(200).json(results[0]);
+    });
   } catch (e) {
     handleError(e, res);
   }
