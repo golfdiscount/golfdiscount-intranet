@@ -44,7 +44,7 @@ router.get('/orders/:order_num', (req, res) => {
 
 function handleError(e, res) {
   res.status(500).type("text")
-    .send(`Internal Server Error\n${e}`);
+    .send(`Internal Server Error\n${e}\n${e.stack}`);
 }
 
 module.exports = router;
