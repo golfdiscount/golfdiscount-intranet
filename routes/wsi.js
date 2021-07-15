@@ -35,16 +35,16 @@ router.get('/orders/:order_num', (req, res) => {
     LEFT OUTER JOIN shipping_conf ON shipping_conf.pick_ticket_num = wsi_order.pick_ticket_num
     WHERE wsi_order.order_num = "${req.params.order_num}";`;
     db.executeQuery(qry, (results, error) => {
-      res.status(200).json(results[0]);
+      if (typeof(results) === undefined) {
+        res.status(200).send(results);
+      } else {
+        res.status(200).json(results[0]);
+      }
     });
   } catch (e) {
     handleError(e, res);
+    res.status(500).send(e)
   }
 });
-
-function handleError(e, res) {
-  res.status(500).type("text")
-    .send(`Internal Server Error\n${e}\n${e.stack}`);
-}
 
 module.exports = router;
