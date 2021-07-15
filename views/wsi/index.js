@@ -13,13 +13,20 @@ window.addEventListener('load', () => {
 /**
  * Queries API to search for an order
  * @param {DOM Object} e Object originating callback
+ * @throws Throws error when order cannot be found
  */
 async function searchOrder(e) {
   e.preventDefault();
   let url = new URL(DOMAIN + '/wsi/orders/' + qs('#order-num').value);
 
   await fetch(url)
-    .then(res => checkStatus(res))
+    .then(res => {
+      if (res.status === 400) {
+        throw Error(`Order ${qs('#order-num').value} could not be found`)
+      }
+
+      return res;
+    })
     .then(res => res.json())
     .then(res => displayOrder(res))
     .catch(e => {
@@ -136,7 +143,7 @@ function checkStatus(response) {
   if (response.ok) {
     return response;
   } else {
-    throw Error('Error in request: ' + response.statusText);
+    throw Error(response.statusText);
   }
 }
 
