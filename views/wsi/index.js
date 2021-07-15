@@ -19,7 +19,7 @@ async function searchOrder(e) {
   let url = new URL(DOMAIN + '/wsi/orders/' + qs('#order-num').value);
 
   await fetch(url)
-    .then(checkStatus(res))
+    .then(res => checkStatus(res))
     .then(res => res.json())
     .then(res => displayOrder(res))
     .catch(e => {
