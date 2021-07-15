@@ -22,7 +22,6 @@ async function searchOrder(e) {
     .then(res => res.json())
     .then(res => displayOrder(res))
     .catch(e => {
-      console.log(`There was an error completing your request:\n${e}`);
       alert(`There was an error completing your request:\n${e}`);
     });
 }

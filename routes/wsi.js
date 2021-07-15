@@ -38,11 +38,15 @@ router.get('/orders/:order_num', (req, res) => {
       if (error) {
         res.status(400).send(error.sqlMessage)
       } else {
-        res.status(200).json(results[0]);
+        if (results.length == 0) {
+          res.status(400).send(`Order ${req.params.order_num} could not be found. Please double check and try again.`);
+        } else {
+          res.status(200).json(results[0]);
+        }
       }
     })
   } catch (e) {
-    handleError(e, res)
+    handleError(e, res);
   }
 });
 
