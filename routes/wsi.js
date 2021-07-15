@@ -38,7 +38,7 @@ router.get('/orders/:order_num', (req, res) => {
       if (error) {
         res.status(400).send(error.sqlMessage)
       } else {
-        res.status(200).json(results[0]);
+          res.status(200).json(results[0]);
       }
     })
   } catch (e) {

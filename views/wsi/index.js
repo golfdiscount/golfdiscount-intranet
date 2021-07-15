@@ -1,10 +1,10 @@
-const DOMAIN = 'http://wsi-stack.azurewebsites.net:443';
+const DOMAIN = 'https://gdinterface.azurewebsites.net';
 
 /**
  * Sets initial state of the window and adds necessary listeners
  */
 window.addEventListener('load', () => {
-  id('search').addEventListener('submit', searchOrder);
+  id('order-submit').addEventListener('click', searchOrder);
   id('orders').addEventListener('click', showOrderViewer);
   id('shipping').addEventListener('click', showShippingConf);
   id('submit-file').addEventListener('click', submitConf);
@@ -12,24 +12,31 @@ window.addEventListener('load', () => {
 
 /**
  * Queries API to search for an order
- * @param {DOM Object} e Object originating callback 
+ * @param {DOM Object} e Object originating callback
+ * @throws Throws error when order cannot be found
  */
 async function searchOrder(e) {
   e.preventDefault();
-  let url = new URL(DOMAIN + '/orders/' + qs('#order-num').value);
+  let url = new URL(DOMAIN + '/wsi/orders/' + qs('#order-num').value);
 
-  await fetch(url, {mode: 'no-cors'})
+  await fetch(url)
+    .then(res => {
+      if (res.status === 400) {
+        throw Error(`Order ${qs('#order-num').value} could not be found`)
+      }
+
+      return res;
+    })
     .then(res => res.json())
     .then(res => displayOrder(res))
     .catch(e => {
-      console.log(`There was an error completing your request:\n${e}`);
       alert(`There was an error completing your request:\n${e}`);
     });
 }
 
 /**
  * Renders order information to be displayed on screen
- * @param {object} order JSON object containing order information 
+ * @param {object} order JSON object containing order information
  */
 function displayOrder(order) {
   // Customer info
@@ -136,7 +143,7 @@ function checkStatus(response) {
   if (response.ok) {
     return response;
   } else {
-    throw Error('Error in request: ' + response.statusText);
+    throw Error(response.statusText);
   }
 }
 
