@@ -1,4 +1,4 @@
-const DOMAIN = 'https://wsi-stack.azurewebsites.net';
+const DOMAIN = 'https://gdinterface.azurewebsites.net';
 
 /**
  * Sets initial state of the window and adds necessary listeners
@@ -12,7 +12,7 @@ window.addEventListener('load', () => {
 
 /**
  * Queries API to search for an order
- * @param {DOM Object} e Object originating callback 
+ * @param {DOM Object} e Object originating callback
  */
 async function searchOrder(e) {
   e.preventDefault();
@@ -29,7 +29,7 @@ async function searchOrder(e) {
 
 /**
  * Renders order information to be displayed on screen
- * @param {object} order JSON object containing order information 
+ * @param {object} order JSON object containing order information
  */
 function displayOrder(order) {
   // Customer info
