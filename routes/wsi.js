@@ -36,7 +36,7 @@ router.get('/orders/:order_num', (req, res) => {
     WHERE wsi_order.order_num = "${req.params.order_num}";`;
     db.executeQuery(qry, (results, error) => {
       if (error) {
-        res.status(400).json(error.sqlMessage)
+        res.status(400).send(error.sqlMessage)
       } else {
         res.status(200).json(results[0]);
       }
