@@ -42,7 +42,6 @@ router.get('/orders/:order_num', (req, res) => {
       }
     });
   } catch (e) {
-    handleError(e, res);
     res.status(500).send(e)
   }
 });
