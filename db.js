@@ -7,7 +7,7 @@ dbConnection = {
 }
 
 let mysql = require("mysql2");
-let connection = mysql.createConnection(dbConnection);
+let connection = mysql.createPool(dbConnection);
 
 exports.connect = () => {
   connection.connect((err) => {

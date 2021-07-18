@@ -4,8 +4,6 @@ let express = require('express');
 let router = express.Router();
 
 router.get('/orders/:order_num', (req, res) => {
-  db.connect();
-
   res.set('Access-Control-Allow-Origin', '*');
 
   try{
@@ -36,14 +34,13 @@ router.get('/orders/:order_num', (req, res) => {
     JOIN product ON product.sku = line_item.sku
     LEFT OUTER JOIN shipping_conf ON shipping_conf.pick_ticket_num = wsi_order.pick_ticket_num
     WHERE wsi_order.order_num = "${req.params.order_num}";`;
+
     db.executeQuery(qry, (results, error) => {
       res.status(200).json(results[0]);
     });
   } catch (e) {
     handleError(e, res);
   }
-
-  db.end();
 });
 
 function handleError(e, res) {
