@@ -4,8 +4,10 @@ let express = require('express');
 let router = express.Router();
 
 router.get('/orders/:order_num', (req, res) => {
+  db.connect();
+
   res.set('Access-Control-Allow-Origin', '*');
-  
+
   try{
     let qry = `SELECT wsi_order.order_num AS "Order Number",
       c.sold_to_name,
@@ -40,6 +42,8 @@ router.get('/orders/:order_num', (req, res) => {
   } catch (e) {
     handleError(e, res);
   }
+
+  db.end();
 });
 
 function handleError(e, res) {

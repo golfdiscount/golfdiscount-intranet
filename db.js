@@ -9,7 +9,7 @@ dbConnection = {
 let mysql = require("mysql2");
 let connection = mysql.createConnection(dbConnection);
 
-exports.connect = function () {
+exports.connect = () => {
   connection.connect((err) => {
     if (err) {
       console.error('error connecting:\n' + err.stack);
@@ -19,8 +19,12 @@ exports.connect = function () {
   });
 }
 
-exports.executeQuery = function(query, handler) {
+exports.executeQuery = (query, handler) => {
   connection.query(query, function(error, results, fields) {
       handler(results, error);
   });
+}
+
+exports.end= () => {
+  connection.end()
 }
