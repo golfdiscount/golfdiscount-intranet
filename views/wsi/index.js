@@ -17,21 +17,27 @@ window.addEventListener('load', () => {
  */
 async function searchOrder(e) {
   e.preventDefault();
-  let url = new URL(DOMAIN + '/wsi/orders/' + qs('#order-num').value);
 
-  await fetch(url)
-    .then(res => {
-      if (res.status === 400) {
-        throw Error(`Order ${qs('#order-num').value} could not be found`)
-      }
+  let order_num = qs('#order-num').value
 
-      return res;
-    })
-    .then(res => res.json())
-    .then(res => displayOrder(res))
-    .catch(e => {
-      alert(`There was an error completing your request:\n${e}`);
-    });
+  if (order_num === '') {
+    alert('Order number cannot be empty!');
+  } else {
+    let url = new URL(DOMAIN + '/wsi/orders/' + order_num);
+
+    await fetch(url)
+      .then(res => {
+        if (res.status === 400) {
+          throw Error(`Order ${qs('#order-num').value} could not be found`)
+        }
+        return res;
+      })
+      .then(res => res.json())
+      .then(res => displayOrder(res))
+      .catch(e => {
+        // alert(`There was an error completing your request:\n${e}`);
+      });
+  }
 }
 
 /**
