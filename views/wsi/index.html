@@ -14,8 +14,11 @@
           <h1>WSI Order Interface</h1>
         </div>
         <div id="menu-selector">
-          <div class="selector-tab" id="orders">
+          <div class="selector-tab" id="order-lookup">
             <h2>Order Viewer</h2>
+          </div>
+          <div class="selector-tab" id="order-creation">
+            <h2>Order Creation</h2>
           </div>
           <div class="selector-tab" id="shipping">
             <h2>Shipping Confirmations</h2>
@@ -26,7 +29,7 @@
         </div>
       </nav>
       <hr>
-    </header>  
+    </header>
     <main>
       <div id="order-viewer">
         <div id="searcher">
@@ -127,7 +130,7 @@
           </div>
         </div>
       </div>
-      <div id="shipping-conf" class="hidden">
+      <div id="shipping-upload" class="hidden">
         <p>Upload a file containing shipping confirmations to be sent to ShipStation. Please upload CSV (comma separated values) files only.</p>
         <form>
           <label for="shippingFile">Upload shipping confirmations: </label>
@@ -136,6 +139,9 @@
             <button id="submit-file" type="button">Submit</button>
           </div>
         </form>
+      </div>
+      <div id="order-creator">
+
       </div>
     </main>
   </body>

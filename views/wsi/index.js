@@ -5,8 +5,9 @@ const DOMAIN = 'https://gdinterface.azurewebsites.net';
  */
 window.addEventListener('load', () => {
   id('order-submit').addEventListener('click', searchOrder);
-  id('orders').addEventListener('click', showOrderViewer);
-  id('shipping').addEventListener('click', showShippingConf);
+  id('order-lookup').addEventListener('click', () => {showView('order-viewer')});
+  id('order-creation').addEventListener('click', () => {showView('order-creator')});
+  id('shipping').addEventListener('click', () => {showView('shipping-upload')});
   id('submit-file').addEventListener('click', submitConf);
 });
 
@@ -94,21 +95,17 @@ function submitConf(e) {
 }
 
 /**
- * Shows the order viewing window
- * @param {DOM Object} e Object originating callback
+ * Hides all views except for the one passed in
+ * @param {string} id ID of the view wanting to be viewed
  */
-function showOrderViewer(e) {
-  id('order-viewer').classList.remove('hidden');
-  id('shipping-conf').classList.add('hidden');
-}
+function showView(view_id) {
+  let views = document.querySelectorAll(`main > div:not(#${view_id})`);
 
-/**
- * Shows the shipping confirmation menu
- * @param {DOM Object} e Object originating callback
- */
-function showShippingConf(e) {
-  id('order-viewer').classList.add('hidden');
-  id('shipping-conf').classList.remove('hidden');
+  views.forEach(view => {
+    view.classList.add('hidden');
+  });
+
+  id(`${view_id}`).classList.remove('hidden');
 }
 
 /**
