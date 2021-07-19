@@ -114,7 +114,7 @@ async function createOrder(e) {
 
   let url = new URL(DOMAIN + '/wsi/createOrder');
 
-  await fetch(url, {body: formData});
+  await fetch(url, {body: formData, method: 'POST'});
 }
 
 /**
