@@ -64,7 +64,7 @@ router.post('/createOrder', (req, res) => {
     writeStream.write(detail + '\r\n');
 
     let filePath = path.resolve(__dirname, `..\\C${req.body.orderNum}.csv`)
-    res.status(200).sendFile(filePath);
+    res.status(200).download(filePath);
 
     fs.unlink(filePath, err => console.log(err));
   } catch (e) {

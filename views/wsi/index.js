@@ -103,7 +103,7 @@ function submitConf(e) {
  *
  * @param {object} e - Event object originating callback
  */
-function createOrder(e) {
+async function createOrder(e) {
   e.preventDefault();
 
   let formData = new FormData(id('order-form'))
@@ -111,6 +111,10 @@ function createOrder(e) {
   for (let pair of formData) {
     console.log(pair);
   }
+
+  let url = new URL('http://localhost:8000/wsi/createOrder');
+
+  await fetch(url, {body: formData});
 }
 
 /**
