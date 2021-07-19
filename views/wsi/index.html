@@ -146,29 +146,29 @@
           <div id="store-selector" class="input-field">
             <div>
               <div>
-                <input type="radio" id="1" name="store-num" value="1" required checked>
+                <input type="radio" id="1" name="storeNum" value="1" required checked>
                 <label for="1">1</label>
               </div>
               <div>
-                <input type="radio" id="2" name="store-num" value="2" required>
+                <input type="radio" id="2" name="storeNum" value="2" required>
                 <label for="2">2</label>
               </div>
               <div>
-                <input type="radio" id="3" name="store-num" value="3" required>
+                <input type="radio" id="3" name="storeNum" value="3" required>
                 <label for="3">3</label>
               </div>
             </div>
             <div>
               <div>
-                <input type="radio" id="5" name="store-num" value="5" required>
+                <input type="radio" id="5" name="storeNum" value="5" required>
                 <label for="5">5</label>
               </div>
               <div>
-                <input type="radio" id="6" name="store-num" value="6" required>
+                <input type="radio" id="6" name="storeNum" value="6" required>
                 <label for="6">6</label>
               </div>
               <div>
-                <input type="radio" id="7" name="store-num" value="7" required>
+                <input type="radio" id="7" name="storeNum" value="7" required>
                 <label for="7">7</label>
               </div>
             </div>
@@ -177,13 +177,18 @@
           <div id="order-info">
             <div class="input-field">
               <label for="order-num">Order Number: </label>
-              <input type="text" name="order-num" required>
+              <input type="text" name="orderNum" required>
             </div>
             <div class="input-field">
               <label for="ship-date">Desired Ship Date: </label>
-              <input type="date" name="ship-date" id="ship-date" required>
+              <input type="date" name="shipDate" id="ship-date" required>
             </div>
             <small>Please make sure date selected is next business day</small>
+            <div class="input-field">
+              <label for="ship-method">Shipping Method: </label>
+              <input type="text" name="shipMethod" id="ship-method" pattern="[A-Z]{4}" required>
+            </div>
+            <small>Please make sure shipping method is one of the following: FDXH</small>
           </div>
           <h2>Customer Information</h2>
           <div id="cus-info">
