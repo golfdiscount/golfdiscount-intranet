@@ -4,10 +4,15 @@ const DOMAIN = 'https://gdinterface.azurewebsites.net';
  * Sets initial state of the window and adds necessary listeners
  */
 window.addEventListener('load', () => {
+  // View changers
+  id('order-lookup').addEventListener('click', () => {showView('order-viewer')});
+  id('order-creation').addEventListener('click', () => {showView('order-creator')});
+  id('shipping').addEventListener('click', () => {showView('shipping-upload')});
+
+  // Submission behavior
   id('order-submit').addEventListener('click', searchOrder);
-  id('orders').addEventListener('click', showOrderViewer);
-  id('shipping').addEventListener('click', showShippingConf);
-  id('submit-file').addEventListener('click', submitConf);
+  id('shipping-form').addEventListener('submit', submitConf);
+  id('order-form').addEventListener('submit', createOrder);
 });
 
 /**
@@ -90,25 +95,36 @@ function displayOrder(order) {
  * @param {DOM object} e Object originating callback
  */
 function submitConf(e) {
+  e.preventDefault();
   alert('File has been submitted');
 }
 
 /**
- * Shows the order viewing window
- * @param {DOM Object} e Object originating callback
+ *
+ * @param {object} e - Event object originating callback
  */
-function showOrderViewer(e) {
-  id('order-viewer').classList.remove('hidden');
-  id('shipping-conf').classList.add('hidden');
+function createOrder(e) {
+  e.preventDefault();
+
+  let formData = new FormData(id('order-form'))
+
+  for (let pair of formData) {
+    console.log(pair);
+  }
 }
 
 /**
- * Shows the shipping confirmation menu
- * @param {DOM Object} e Object originating callback
+ * Hides all views except for the one with the ID passed in
+ * @param {string} id ID of the view wanting to be viewed
  */
-function showShippingConf(e) {
-  id('order-viewer').classList.add('hidden');
-  id('shipping-conf').classList.remove('hidden');
+function showView(view_id) {
+  let views = document.querySelectorAll(`main > div:not(#${view_id})`);
+
+  views.forEach(view => {
+    view.classList.add('hidden');
+  });
+
+  id(`${view_id}`).classList.remove('hidden');
 }
 
 /**

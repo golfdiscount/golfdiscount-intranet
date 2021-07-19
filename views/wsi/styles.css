@@ -1,5 +1,31 @@
+a {
+  text-decoration: none;
+}
+
+a:visited {
+  color: black;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
+}
+
+form > div {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  margin-left: 5px;
+}
+
+label {
+  margin-right: 5px;
+}
+
+nav div {
+  display: flex;
+  flex-direction: row;
 }
 
 nav h1 {
@@ -11,19 +37,7 @@ nav img {
   height: 45px;
 }
 
-nav div {
-  display: flex;
-  flex-direction: row;
-}
-
-a {
-  text-decoration: none;
-}
-
-a:visited {
-  color: black;
-}
-#menu-selector{
+#customer form > div {
   display: flex;
   flex-direction: row;
 }
@@ -31,6 +45,38 @@ a:visited {
 #home {
   margin-left: auto;
   margin-right: 5px;
+}
+
+#menu-selector{
+  display: flex;
+  flex-direction: row;
+}
+
+#send-order {
+  margin-top: 25px;
+}
+
+#store-selector {
+  display: flex;
+  flex-direction: row;
+}
+
+#store-selector > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.hidden {
+  display: none;
+}
+
+.input-field {
+  margin-top: 5px;
+}
+
+/* For information that is not yet available */
+small, .not-avail {
+  color: red;
 }
 
 .selector-tab {
@@ -41,13 +87,4 @@ a:visited {
 
 .selector-tab:hover {
   cursor: pointer;
-}
-
-.hidden {
-  display: none;
-}
-
-/* For information that is not yet available */
-.not-avail {
-  color: red;
 }
