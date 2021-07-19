@@ -112,7 +112,7 @@ async function createOrder(e) {
     console.log(pair);
   }
 
-  let url = new URL('http://localhost:8000/wsi/createOrder');
+  let url = new URL(DOMAIN + '/wsi/createOrder');
 
   await fetch(url, {body: formData});
 }
