@@ -101,19 +101,15 @@ function submitConf(e) {
 
 /**
  *
- * @param {*} view_id
+ * @param {object} e - Event object originating callback
  */
 function createOrder(e) {
   e.preventDefault();
 
-  let form = id('order-form');
+  let formData = new FormData(id('order-form'))
 
-  if (form.checkValidity()) {
-    let form_data = new FormData(form);
-
-    for (let pair of form_data) {
-      console.log(pair);
-    }
+  for (let pair of formData) {
+    console.log(pair);
   }
 }
 

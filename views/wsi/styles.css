@@ -43,6 +43,10 @@ nav img {
   flex-direction: row;
 }
 
+#send-order {
+  margin-top: 25px;
+}
+
 #store-selector {
   display: flex;
   flex-direction: row;
@@ -58,13 +62,11 @@ nav img {
 }
 
 .input-field {
-  display: flex;
-  flex-direction: row;
   margin-top: 5px;
 }
 
 /* For information that is not yet available */
-.not-avail {
+small, .not-avail {
   color: red;
 }
 
