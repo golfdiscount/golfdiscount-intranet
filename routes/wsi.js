@@ -65,6 +65,8 @@ router.post('/createOrder', (req, res) => {
 
     let filePath = path.resolve(__dirname, `..\\C${req.body.orderNum}.csv`)
     res.status(200).sendFile(filePath);
+
+    fs.unlink(filePath, err => console.log(err));
   } catch (e) {
     console.log(e);
     res.status(500).send('There was an error creating the order file.');
