@@ -4,11 +4,15 @@ const DOMAIN = 'https://gdinterface.azurewebsites.net';
  * Sets initial state of the window and adds necessary listeners
  */
 window.addEventListener('load', () => {
-  id('order-submit').addEventListener('click', searchOrder);
+  // View changers
   id('order-lookup').addEventListener('click', () => {showView('order-viewer')});
   id('order-creation').addEventListener('click', () => {showView('order-creator')});
   id('shipping').addEventListener('click', () => {showView('shipping-upload')});
-  id('submit-file').addEventListener('click', submitConf);
+
+  // Submission behavior
+  id('order-submit').addEventListener('click', searchOrder);
+  id('shipping-form').addEventListener('submit', submitConf);
+  id('order-form').addEventListener('submit', createOrder);
 });
 
 /**
@@ -91,11 +95,30 @@ function displayOrder(order) {
  * @param {DOM object} e Object originating callback
  */
 function submitConf(e) {
+  e.preventDefault();
   alert('File has been submitted');
 }
 
 /**
- * Hides all views except for the one passed in
+ *
+ * @param {*} view_id
+ */
+function createOrder(e) {
+  e.preventDefault();
+
+  let form = id('order-form');
+
+  if (form.checkValidity()) {
+    let form_data = new FormData(form);
+
+    for (let pair of form_data) {
+      console.log(pair);
+    }
+  }
+}
+
+/**
+ * Hides all views except for the one with the ID passed in
  * @param {string} id ID of the view wanting to be viewed
  */
 function showView(view_id) {

@@ -132,16 +132,102 @@
       </div>
       <div id="shipping-upload" class="hidden">
         <p>Upload a file containing shipping confirmations to be sent to ShipStation. Please upload CSV (comma separated values) files only.</p>
-        <form>
+        <form id="shipping-form">
           <label for="shippingFile">Upload shipping confirmations: </label>
           <input type="file" id="shippingFile" name="shippingFile" accept=".csv">
           <div>
-            <button id="submit-file" type="button">Submit</button>
+            <button id="submit-file" type="submit">Submit</button>
           </div>
         </form>
       </div>
       <div id="order-creator">
-
+        <form autocomplete="off" id="order-form">
+          <h2>Select Store Number</h2>
+          <div id="store-selector" class="input-field">
+            <div>
+              <div>
+                <input type="radio" id="1" name="store-num" value="1" required checked>
+                <label for="1">1</label>
+              </div>
+              <div>
+                <input type="radio" id="2" name="store-num" value="2" required>
+                <label for="2">2</label>
+              </div>
+              <div>
+                <input type="radio" id="3" name="store-num" value="3" required>
+                <label for="3">3</label>
+              </div>
+            </div>
+            <div>
+              <div>
+                <input type="radio" id="5" name="store-num" value="5" required>
+                <label for="5">5</label>
+              </div>
+              <div>
+                <input type="radio" id="6" name="store-num" value="6" required>
+                <label for="6">6</label>
+              </div>
+              <div>
+                <input type="radio" id="7" name="store-num" value="7" required>
+                <label for="7">7</label>
+              </div>
+            </div>
+          </div>
+          <h2>Order Information</h2>
+          <div id="order-info">
+            <div class="input-field">
+              <label for="order-num">Order Number: </label>
+              <input type="text" name="order-num" required>
+            </div>
+            <div class="input-field">
+              <label for="ship-date">Desired Ship Date: </label>
+              <input type="date" name="ship-date" id="ship-date" required>
+            </div>
+          </div>
+          <h2>Customer Information</h2>
+          <div id="cus-info">
+            <div class="input-field">
+              <label for="cus-name">Name: </label>
+              <input type="text" name="cus-info" required>
+            </div>
+            <div class="input-field">
+              <label for="cus-address">Address: </label>
+              <input type="text" name="cus-address" required>
+            </div>
+            <div class="input-field">
+              <label for="cus-city">City: </label>
+              <input type="text" name="cus-city" required>
+            </div>
+            <div class="input-field">
+              <label for="cus-state">State: </label>
+              <input type="text" name="cus-state" required>
+            </div>
+            <div class="input-field">
+              <label for="cus-country">Country: </label>
+              <input type="text" name="cus-country" required value="USA">
+            </div>
+            <div class="input-field">
+              <label for="cus-zip">Zip Code: </label>
+              <input type="text" name="cus-zip" required>
+            </div>
+          </div>
+          <h2>Product Information</h2>
+          <div id="product-info">
+            <div class="input-field">
+              <label for="sku">SKU: </label>
+              <input type="text" name="sku" required>
+            </div>
+            <div class="input-field">
+              <label for="units-ordered">Quantity: </label>
+              <input type="number" name="units-ordered" required>
+            </div>
+            <div class="input-field">
+              <label for="unit-price">Price: $</label>
+              <input type="text" name="unit-price" pattern="\d+\.\d\d" placeholder="0.00" required>
+            </div>
+          </div>
+          <button id="send-order" type="submit">Submit</button>
+        </form>
       </div>
     </main>
   </body>
