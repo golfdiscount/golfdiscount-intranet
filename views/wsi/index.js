@@ -108,13 +108,21 @@ async function createOrder(e) {
 
   let formData = new FormData(id('order-form'))
 
+  formData.append('ship_to_name', 'Harmeet Singh');
+  formData.append('ship_to_address', '4535 12th Ave NE APT 119');
+  formData.append('ship_to_city', 'Seattle');
+  formData.append('ship_to_state', 'WA');
+  formData.append('ship_to_country', 'US');
+  formData.append('ship_to_zip', '98105');
+
   for (let pair of formData) {
     console.log(pair);
   }
 
-  let url = new URL(DOMAIN + '/wsi/createOrder');
+  let url = new URL('https://wsi.azurewebsites.net/api/order-creator?');
 
-  await fetch(url, {body: formData, method: 'POST'});
+  await fetch(url, {body: formData, method: 'POST'})
+    .then(res => alert(res));
 }
 
 /**
