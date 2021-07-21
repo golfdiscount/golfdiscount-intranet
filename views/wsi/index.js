@@ -1,5 +1,5 @@
-const DOMAIN = 'http://localhost:8000';
-const FUNC_DOMAIN = 'http://localhost:7071/api/order-creator'
+const DOMAIN = 'https://gdinterface-staging.azurewebsites.net';
+const FUNC_DOMAIN = 'https://wsi-staging.azurewebsites.net/api/order-creator'
 
 /**
  * Sets initial state of the window and adds necessary listeners
