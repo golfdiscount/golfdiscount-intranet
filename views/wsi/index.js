@@ -1,4 +1,5 @@
-const DOMAIN = 'https://gdinterface.azurewebsites.net';
+const DOMAIN = 'http://localhost:8000';
+const FUNC_DOMAIN = 'http://localhost:7071/api/order-creator'
 
 /**
  * Sets initial state of the window and adds necessary listeners
@@ -114,15 +115,19 @@ async function createOrder(e) {
   formData.append('ship_to_state', 'WA');
   formData.append('ship_to_country', 'US');
   formData.append('ship_to_zip', '98105');
+  formData.append('order_date', '07/21/2021')
 
   for (let pair of formData) {
     console.log(pair);
   }
 
-  let url = new URL('https://wsi.azurewebsites.net/api/order-creator?');
+  let url = new URL(FUNC_DOMAIN);
 
-  await fetch(url, {body: formData, method: 'POST'})
-    .then(res => alert(res));
+  await fetch(url, {
+    body: formData,
+    method: 'POST'})
+    .then(res => res.text())
+    .then(res => console.log(res));
 }
 
 /**
