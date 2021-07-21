@@ -1,4 +1,5 @@
-const DOMAIN = 'https://gdinterface-staging.azurewebsites.net';
+const API_DOMAIN = 'https://gdinterface-staging.azurewebsites.net';
+const FUNC_DOMAIN = 'https://wsi-staging.azurewebsites.net';
 
 /**
  * Sets initial state of the window and adds necessary listeners
@@ -28,7 +29,7 @@ async function searchOrder(e) {
   if (order_num === '') {
     alert('Order number cannot be empty!');
   } else {
-    let url = new URL(DOMAIN + '/wsi/orders/' + order_num);
+    let url = new URL(API_DOMAIN + '/wsi/orders/' + order_num);
 
     await fetch(url)
       .then(res => {
@@ -119,7 +120,7 @@ async function createOrder(e) {
     console.log(pair);
   }
 
-  let url = new URL('https://wsi.azurewebsites.net/api/order-creator?');
+  let url = new URL(FUNC_DOMAIN);
 
   await fetch(url, {body: formData, method: 'POST'})
     .then(res => alert(res));
