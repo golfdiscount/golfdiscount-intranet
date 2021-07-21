@@ -1,4 +1,4 @@
-const DOMAIN = 'https://gdinterface.azurewebsites.net';
+const DOMAIN = 'https://gdinterface-staging.azurewebsites.net';
 
 /**
  * Sets initial state of the window and adds necessary listeners
