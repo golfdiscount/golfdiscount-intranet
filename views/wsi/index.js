@@ -1,4 +1,5 @@
-const DOMAIN = 'https://gdinterface.azurewebsites.net';
+const API_DOMAIN = 'https://gdinterface-staging.azurewebsites.net';
+const FUNC_DOMAIN = 'https://wsi-staging.azurewebsites.net/api/order-creator';
 
 /**
  * Sets initial state of the window and adds necessary listeners
@@ -28,7 +29,7 @@ async function searchOrder(e) {
   if (order_num === '') {
     alert('Order number cannot be empty!');
   } else {
-    let url = new URL(DOMAIN + '/wsi/orders/' + order_num);
+    let url = new URL(API_DOMAIN + '/wsi/orders/' + order_num);
 
     await fetch(url)
       .then(res => {
@@ -108,21 +109,31 @@ async function createOrder(e) {
 
   let formData = new FormData(id('order-form'))
 
-  formData.append('ship_to_name', 'Harmeet Singh');
-  formData.append('ship_to_address', '4535 12th Ave NE APT 119');
-  formData.append('ship_to_city', 'Seattle');
-  formData.append('ship_to_state', 'WA');
-  formData.append('ship_to_country', 'US');
-  formData.append('ship_to_zip', '98105');
+  today = new Date()
+  yyyy = today.getFullYear()
+  mm = today.getMonth() + 1;
+  dd = today.getDate();
 
-  for (let pair of formData) {
-    console.log(pair);
+  if (dd < 10) {
+    dd = '0' + dd;
   }
 
-  let url = new URL('https://wsi.azurewebsites.net/api/order-creator?');
+  if (mm < 10) {
+    mm = '0' + mm;
+  }
+  
+  order_date = `${mm}/${dd}/${yyyy}`;
 
-  await fetch(url, {body: formData, method: 'POST'})
-    .then(res => alert(res));
+  formData.append('order_date', order_date)
+
+  let url = new URL(FUNC_DOMAIN);
+
+  await fetch(url, {
+    body: formData,
+    method: 'POST'})
+    .then(res => res.text())
+    .then(res => download(`${formData.get('order_num')}.csv`, res))
+    .catch(e => alert(e));
 }
 
 /**
@@ -137,6 +148,16 @@ function showView(view_id) {
   });
 
   id(`${view_id}`).classList.remove('hidden');
+}
+
+function download(filename, contents) {
+  let element = document.createElement('a');
+  element.setAttribute('href', "data:text/plain;charset=utf-8," + encodeURIComponent(contents));
+  element.setAttribute('download', filename);
+
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
 }
 
 /**

@@ -186,9 +186,13 @@
             <small>Please make sure date selected is next business day</small>
             <div class="input-field">
               <label for="ship-method">Shipping Method: </label>
-              <input type="text" name="ship_method" id="ship-method" pattern="[A-Z]{4}" required>
+              <select name="ship_method" id="ship-method" form="order-form">
+                <option value="FDXH" selected>FedEx Home Delivery</option>
+                <option value="FXES">FedEx 3-Day</option>
+                <option value="FX2D">FedEx 2-Day</option>
+                <option value="FXSO">FedEx 1-Day</option>
+              </select>
             </div>
-            <small>Please make sure shipping method is one of the following: FDXH</small>
           </div>
           <h2>Customer Information</h2>
           <div id="cus-info">
@@ -215,6 +219,33 @@
             <div class="input-field">
               <label for="cus-zip">Zip Code: </label>
               <input type="text" name="sold_to_zip" required>
+            </div>
+          </div>
+          <h2 >Recipient Information</h2>
+          <div>
+            <div class="input-field">
+              <label for="rec-name">Name: </label>
+              <input type="text" name="ship_to_name" id="rec-name" required>
+            </div>
+            <div class="input-field">
+              <label for="rec-address">Address: </label>
+              <input type="text" name="ship_to_address" id="rec-address" required>
+            </div>
+            <div class="input-field">
+              <label for="rec-city">City: </label>
+              <input type="text" name="ship_to_city" id="rec-city" required>
+            </div>
+            <div class="input-field">
+              <label for="rec-state">State: </label>
+              <input type="text" name="ship_to_state" id="rec-state" required>
+            </div>
+            <div class="input-field">
+              <label for="rec-country">Country: </label>
+              <input type="text" name="ship_to_country" id="rec-country" required value="US">
+            </div>
+            <div class="input-field">
+              <label for="rec-zip">Zip Code: </label>
+              <input type="text" name="ship_to_zip" id="rec-zip" required>
             </div>
           </div>
           <h2>Product Information</h2>
