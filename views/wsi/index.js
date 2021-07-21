@@ -109,17 +109,22 @@ async function createOrder(e) {
 
   let formData = new FormData(id('order-form'))
 
-  formData.append('ship_to_name', 'Harmeet Singh');
-  formData.append('ship_to_address', '4535 12th Ave NE APT 119');
-  formData.append('ship_to_city', 'Seattle');
-  formData.append('ship_to_state', 'WA');
-  formData.append('ship_to_country', 'US');
-  formData.append('ship_to_zip', '98105');
-  formData.append('order_date', '07/21/2021')
+  today = new Date()
+  yyyy = today.getFullYear()
+  mm = today.getMonth() + 1;
+  dd = today.getDate();
 
-  for (let pair of formData) {
-    console.log(pair);
+  if (dd < 10) {
+    dd = '0' + dd;
   }
+
+  if (mm < 10) {
+    mm = '0' + mm;
+  }
+  
+  order_date = `${mm}/${dd}/${yyyy}`;
+
+  formData.append('order_date', order_date)
 
   let url = new URL(FUNC_DOMAIN);
 
