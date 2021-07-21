@@ -186,9 +186,13 @@
             <small>Please make sure date selected is next business day</small>
             <div class="input-field">
               <label for="ship-method">Shipping Method: </label>
-              <input type="text" name="ship_method" id="ship-method" pattern="[A-Z]{4}" required>
+              <select name="ship_method" id="ship-method" form="order-form">
+                <option value="FDXH" selected>FedEx Home Delivery</option>
+                <option value="FXES">FedEx 3-Day</option>
+                <option value="FX2D">FedEx 2-Day</option>
+                <option value="FXSO">FedEx 1-Day</option>
+              </select>
             </div>
-            <small>Please make sure shipping method is one of the following: FDXH</small>
           </div>
           <h2>Customer Information</h2>
           <div id="cus-info">
