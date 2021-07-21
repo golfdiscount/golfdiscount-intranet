@@ -131,7 +131,7 @@ async function createOrder(e) {
       console.log(res);
       return(res);
     })
-    .then(res => download(res))
+    .then(res => download(`${formData['order_num']}`,res))
     .catch(e => alert(e));
 }
 
