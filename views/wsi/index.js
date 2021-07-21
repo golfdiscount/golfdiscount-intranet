@@ -127,7 +127,12 @@ async function createOrder(e) {
     body: formData,
     method: 'POST'})
     .then(res => res.text())
-    .then(res => console.log(res));
+    .then(res => {
+      console.log(res);
+      return(res);
+    })
+    .then(res => download(res))
+    .catch(e => alert(e));
 }
 
 /**
@@ -142,6 +147,16 @@ function showView(view_id) {
   });
 
   id(`${view_id}`).classList.remove('hidden');
+}
+
+function download(filename, contents) {
+  let element = document.createElement('a');
+  element.setAttribute('href', "data:text/plain;charset=utf-8," + encodeURIComponent(contents));
+  element.setAttribute('download', filename);
+
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
 }
 
 /**
