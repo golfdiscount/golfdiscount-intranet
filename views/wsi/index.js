@@ -127,11 +127,7 @@ async function createOrder(e) {
     body: formData,
     method: 'POST'})
     .then(res => res.text())
-    .then(res => {
-      console.log(res);
-      return(res);
-    })
-    .then(res => download(`${formData['order_num']}`,res))
+    .then(res => download(`${formData.get('order_num')}.csv`, res))
     .catch(e => alert(e));
 }
 
