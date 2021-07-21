@@ -115,6 +115,7 @@ async function createOrder(e) {
   formData.append('ship_to_state', 'WA');
   formData.append('ship_to_country', 'US');
   formData.append('ship_to_zip', '98105');
+  formData.append('order_date', '07/21/2021')
 
   for (let pair of formData) {
     console.log(pair);
@@ -122,8 +123,11 @@ async function createOrder(e) {
 
   let url = new URL(FUNC_DOMAIN);
 
-  await fetch(url, {body: formData, method: 'POST'})
-    .then(res => alert(res));
+  await fetch(url, {
+    body: formData,
+    method: 'POST'})
+    .then(res => res.text())
+    .then(res => console.log(res));
 }
 
 /**
