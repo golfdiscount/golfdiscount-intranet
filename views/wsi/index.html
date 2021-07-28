@@ -31,15 +31,14 @@
       <hr>
     </header>
     <main>
-      <div id="order-viewer">
+      <section id="order-viewer">
         <div id="searcher">
           <h2>Enter Order Information</h2>
           <form method="GET" id="search">
             <div class="form-element">
-              <label>Order number:
-                <input type="text" id="order-num">
-                <button type="button" id="order-submit">Submit</button>
-              </label>
+              <label for="order-num">Order number:</label>
+              <input type="number" id="order-num" required>
+              <button type="button" id="order-search">Submit</button>
             </div>
           </form>
         </div>
@@ -129,8 +128,8 @@
             <output for="tracking"></output>
           </div>
         </div>
-      </div>
-      <div id="shipping-upload" class="hidden">
+      </section>
+      <section id="shipping-upload" class="hidden">
         <p>Upload a file containing shipping confirmations to be sent to ShipStation. Please upload CSV (comma separated values) files only.</p>
         <form id="shipping-form">
           <label for="shippingFile">Upload shipping confirmations: </label>
@@ -139,8 +138,8 @@
             <button id="submit-file" type="submit">Submit</button>
           </div>
         </form>
-      </div>
-      <div id="order-creator" class="hidden">
+      </section>
+      <section id="order-creator" class="hidden">
         <form autocomplete="off" id="order-form">
           <h2>Select Store Number</h2>
           <div id="store-selector" class="input-field">
@@ -265,7 +264,7 @@
           </div>
           <button id="send-order" type="submit">Submit</button>
         </form>
-      </div>
+      </section>
     </main>
   </body>
 </html>
