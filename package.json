@@ -4,7 +4,7 @@
   "main": "app.js",
   "description": "A web API for storing and searching WSI orders",
   "scripts": {
-    "build": "npm install express multer mysql2 && npm install --save-dev nodemon",
+    "build": "npm install",
     "start": "node app.js",
     "monitor": "nodemon app.js"
   },
