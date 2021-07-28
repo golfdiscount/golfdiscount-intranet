@@ -36,9 +36,14 @@ CREATE TABLE store_address(
 );
 
 INSERT INTO store_address(store_num, address, city, state, country, zip)
-VALUES(
-	1, "13405 SE 30th St Suite 1A", "Bellevue", "WA", "US", 98005
-);
+VALUES
+	(1, "13405 SE 30th St Suite 1A", "Bellevue", "WA", "US", 98005),
+	(2, "19125 33rd Ave W A", "Lynnwood", "WA", "US", 98036),
+	(3, "14404 NE 20th St #150", "Bellevue", "WA", "US", 98007),
+	(5, "17305 Southcenter Pkwy", "Seattle", "WA", "US", 98188),
+	(6, "5015 Tacoma Mall Blvd", "Tacoma", "WA", "US", 98409),
+	(7, "4225 Meridian St", "Bellingham", "WA", "US", 98226);
+
 
 CREATE TABLE wsi_order(
 	pick_ticket_num VARCHAR(30),
