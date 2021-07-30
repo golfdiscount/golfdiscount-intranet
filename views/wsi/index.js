@@ -117,7 +117,7 @@ async function createOrder(e) {
   if (mm < 10) {
     mm = '0' + mm;
   }
-  
+
   order_date = `${mm}/${dd}/${yyyy}`;
 
   formData.append('order_date', order_date)
@@ -137,7 +137,7 @@ async function createOrder(e) {
  * @param {string} id ID of the view wanting to be viewed
  */
 function showView(view_id) {
-  let views = document.querySelectorAll(`main > div:not(#${view_id})`);
+  let views = document.querySelectorAll(`main > section:not(#${view_id})`);
 
   views.forEach(view => {
     view.classList.add('hidden');
