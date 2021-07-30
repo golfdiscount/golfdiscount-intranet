@@ -14,6 +14,8 @@ window.addEventListener('load', () => {
   id('order-search').addEventListener('click', searchOrder);
   id('shipping-form').addEventListener('submit', submitConf);
   id('order-form').addEventListener('submit', createOrder);
+
+  id('store-selector').addEventListener('click', updateForm);
 });
 
 /**
@@ -40,6 +42,20 @@ async function searchOrder(e) {
     .catch(e => {
       // alert(`There was an error completing your request:\n${e}`);
     });
+}
+
+/**
+ * Changes the order creation form according to store number selected
+ * @param {DOM Object} e Object originating callback
+ */
+function updateForm(e) {
+  let storeNum = document.querySelector('input[name="storeNum"]:checked').value;
+
+  if (storeNum == 1) {
+    id('recipient-info').classList.add('hidden');
+  } else {
+    id('recipient-info').classList.remove('hidden');
+  }
 }
 
 /**
