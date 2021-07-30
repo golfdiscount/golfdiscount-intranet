@@ -1,3 +1,7 @@
+* {
+  box-sizing: content-box;
+}
+
 a {
   text-decoration: none;
 }
@@ -35,11 +39,6 @@ nav h1 {
 
 nav img {
   height: 45px;
-}
-
-#customer form > div {
-  display: flex;
-  flex-direction: row;
 }
 
 #home {

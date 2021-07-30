@@ -4,7 +4,7 @@ CREATE PROCEDURE flush_db()
 BEGIN
 	DELETE FROM wsi_order;
 	DELETE FROM product;
-END
+END//
 
 CREATE PROCEDURE getOrders()
 BEGIN
@@ -34,6 +34,6 @@ JOIN recipient AS r ON r.recipient_id = wsi_order.ship_to
 JOIN line_item ON line_item.pick_ticket_num = wsi_order.pick_ticket_num
 JOIN product ON product.sku = line_item.sku
 LEFT OUTER JOIN shipping_conf ON shipping_conf.pick_ticket_num = wsi_order.pick_ticket_num;
-END
+END//
 
 DELIMITER ;

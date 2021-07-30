@@ -31,16 +31,15 @@
       <hr>
     </header>
     <main>
-      <div id="order-viewer">
+      <section id="order-viewer">
         <div id="searcher">
           <h2>Enter Order Information</h2>
           <form method="GET" id="search">
-            <div class="form-element">
-              <label>Order number:
-                <input type="text" id="order-num">
-                <button type="button" id="order-submit">Submit</button>
-              </label>
-            </div>
+              <fieldset>
+                <label for="order-num">Order number:</label>
+                <input type="number" id="order-num" required>
+                <button type="button" id="order-search">Submit</button>
+              </fieldset>
           </form>
         </div>
         <div id="customer">
@@ -129,8 +128,9 @@
             <output for="tracking"></output>
           </div>
         </div>
-      </div>
-      <div id="shipping-upload" class="hidden">
+      </section>
+
+      <section id="shipping-upload" class="hidden">
         <p>Upload a file containing shipping confirmations to be sent to ShipStation. Please upload CSV (comma separated values) files only.</p>
         <form id="shipping-form">
           <label for="shippingFile">Upload shipping confirmations: </label>
@@ -139,11 +139,12 @@
             <button id="submit-file" type="submit">Submit</button>
           </div>
         </form>
-      </div>
-      <div id="order-creator" class="hidden">
+      </section>
+
+      <section id="order-creator" class="hidden">
         <form autocomplete="off" id="order-form">
-          <h2>Select Store Number</h2>
-          <div id="store-selector" class="input-field">
+          <fieldset id="store-selector">
+            <legend><h2>Store Number</h2></legend>
             <div>
               <div>
                 <input type="radio" id="1" name="storeNum" value="1" required checked>
@@ -172,12 +173,13 @@
                 <label for="7">7</label>
               </div>
             </div>
-          </div>
-          <h2>Order Information</h2>
-          <div id="order-info">
+          </fieldset>
+
+          <fieldset>
+            <legend><h2>Order Information</h2></legend>
             <div class="input-field">
               <label for="order-num">Order Number: </label>
-              <input type="text" name="order_num" id="order-num" required>
+              <input type="number" name="order_num" id="order-num" required>
             </div>
             <div class="input-field">
               <label for="ship-date">Desired Ship Date: </label>
@@ -193,9 +195,10 @@
                 <option value="FXSO">FedEx 1-Day</option>
               </select>
             </div>
-          </div>
-          <h2>Customer Information</h2>
-          <div id="cus-info">
+          </fieldset>
+
+          <fieldset>
+            <legend><h2>Customer Information</h2></legend>
             <div class="input-field">
               <label for="cus-name">Name: </label>
               <input type="text" name="sold_to_name" required>
@@ -220,9 +223,10 @@
               <label for="cus-zip">Zip Code: </label>
               <input type="text" name="sold_to_zip" required>
             </div>
-          </div>
-          <h2 >Recipient Information</h2>
-          <div>
+          </fieldset>
+
+          <fieldset id="recipient-info" class="hidden">
+            <legend><h2>Recipient Information</h2></legend>
             <div class="input-field">
               <label for="rec-name">Name: </label>
               <input type="text" name="ship_to_name" id="rec-name" required>
@@ -247,9 +251,10 @@
               <label for="rec-zip">Zip Code: </label>
               <input type="text" name="ship_to_zip" id="rec-zip" required>
             </div>
-          </div>
-          <h2>Product Information</h2>
-          <div id="product-info">
+          </fieldset>
+
+          <fieldset>
+            <legend><h2>Product Information</h2></legend>
             <div class="input-field">
               <label for="sku">SKU: </label>
               <input type="text" name="sku" required>
@@ -262,10 +267,10 @@
               <label for="unit_price">Price: $</label>
               <input type="text" name="price" pattern="\d+\.\d\d" placeholder="0.00" title="Price should be in the form #.##" required>
             </div>
-          </div>
+          </fieldset>
           <button id="send-order" type="submit">Submit</button>
         </form>
-      </div>
+      </section>
     </main>
   </body>
 </html>

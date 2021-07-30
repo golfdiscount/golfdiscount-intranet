@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS wsi_orders;
-CREATE DATABASE wsi_orders;
-USE wsi_orders;
+DROP DATABASE IF EXISTS wsi;
+CREATE DATABASE wsi;
+USE wsi;
 
 CREATE TABLE customer(
 	customer_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -26,9 +26,29 @@ CREATE TABLE recipient(
 	date_added DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE store_address(
+	store_num INT PRIMARY KEY,
+	address VARCHAR(128) NOT NULL,
+	city VARCHAR(30),
+	state VARCHAR(36),
+	country VARCHAR(36),
+	zip VARCHAR(15)
+);
+
+INSERT INTO store_address(store_num, address, city, state, country, zip)
+VALUES
+	(1, "13405 SE 30th St Suite 1A", "Bellevue", "WA", "US", 98005),
+	(2, "19125 33rd Ave W A", "Lynnwood", "WA", "US", 98036),
+	(3, "14404 NE 20th St #150", "Bellevue", "WA", "US", 98007),
+	(5, "17305 Southcenter Pkwy", "Seattle", "WA", "US", 98188),
+	(6, "5015 Tacoma Mall Blvd", "Tacoma", "WA", "US", 98409),
+	(7, "4225 Meridian St", "Bellingham", "WA", "US", 98226);
+
+
 CREATE TABLE wsi_order(
 	pick_ticket_num VARCHAR(30),
 	order_num VARCHAR(30),
+	store_num INT DEFAULT 1 NOT NULL,
 	sold_to INT,
 	ship_to INT,
 	ship_method VARCHAR(5) NOT NULL,
@@ -39,6 +59,8 @@ CREATE TABLE wsi_order(
 	CONSTRAINT orderToRecipient FOREIGN KEY (ship_to)
 		REFERENCES recipient(recipient_id)
 		ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT orderToStore FOREIGN KEY (store_num)
+		REFERENCES store_address(store_num),
 	PRIMARY KEY (pick_ticket_num, order_num)
 );
 
@@ -74,3 +96,43 @@ CREATE TABLE shipping_conf(
 		REFERENCES wsi_order(pick_ticket_num)
 		ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+DELIMITER //
+
+CREATE PROCEDURE flush_db()
+BEGIN
+	DELETE FROM wsi_order;
+	DELETE FROM product;
+END//
+
+CREATE PROCEDURE getOrders()
+BEGIN
+SELECT wsi_order.order_num AS "Order Number",
+	c.sold_to_name,
+	c.sold_to_address,
+	c.sold_to_city,
+	c.sold_to_state,
+	c.sold_to_country,
+	c.sold_to_zip,
+	r.ship_to_name,
+	r.ship_to_address,
+	r.ship_to_city,
+	r.ship_to_state,
+	r.ship_to_country,
+	r.ship_to_zip,
+	line_item.line_num,
+	product.sku,
+	product.sku_name,
+	line_item.quantity,
+	product.unit_price,
+	shipping_conf.tracking_num,
+	shipping_conf.sent_to_shipstation
+FROM wsi_order
+JOIN customer AS c ON c.customer_id = wsi_order.sold_to
+JOIN recipient AS r ON r.recipient_id = wsi_order.ship_to
+JOIN line_item ON line_item.pick_ticket_num = wsi_order.pick_ticket_num
+JOIN product ON product.sku = line_item.sku
+LEFT OUTER JOIN shipping_conf ON shipping_conf.pick_ticket_num = wsi_order.pick_ticket_num;
+END//
+
+DELIMITER ;

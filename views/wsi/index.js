@@ -11,9 +11,11 @@ window.addEventListener('load', () => {
   id('shipping').addEventListener('click', () => {showView('shipping-upload')});
 
   // Submission behavior
-  id('order-submit').addEventListener('click', searchOrder);
+  id('order-search').addEventListener('click', searchOrder);
   id('shipping-form').addEventListener('submit', submitConf);
   id('order-form').addEventListener('submit', createOrder);
+
+  id('store-selector').addEventListener('click', updateForm);
 });
 
 /**
@@ -26,23 +28,33 @@ async function searchOrder(e) {
 
   let order_num = qs('#order-num').value
 
-  if (order_num === '') {
-    alert('Order number cannot be empty!');
-  } else {
-    let url = new URL(API_DOMAIN + '/wsi/orders/' + order_num);
+  let url = new URL(API_DOMAIN + '/wsi/orders/' + order_num);
 
-    await fetch(url)
-      .then(res => {
-        if (res.status === 400) {
-          throw Error(`Order ${qs('#order-num').value} could not be found`)
-        }
-        return res;
-      })
-      .then(res => res.json())
-      .then(res => displayOrder(res))
-      .catch(e => {
-        // alert(`There was an error completing your request:\n${e}`);
-      });
+  await fetch(url)
+    .then(res => {
+      if (res.status === 400) {
+        throw Error(`Order ${qs('#order-num').value} could not be found`)
+      }
+      return res;
+    })
+    .then(res => res.json())
+    .then(res => displayOrder(res))
+    .catch(e => {
+      // alert(`There was an error completing your request:\n${e}`);
+    });
+}
+
+/**
+ * Changes the order creation form according to store number selected
+ * @param {DOM Object} e Object originating callback
+ */
+function updateForm(e) {
+  let storeNum = document.querySelector('input[name="storeNum"]:checked').value;
+
+  if (storeNum == 1) {
+    id('recipient-info').classList.add('hidden');
+  } else {
+    id('recipient-info').classList.remove('hidden');
   }
 }
 
@@ -121,7 +133,7 @@ async function createOrder(e) {
   if (mm < 10) {
     mm = '0' + mm;
   }
-  
+
   order_date = `${mm}/${dd}/${yyyy}`;
 
   formData.append('order_date', order_date)
@@ -141,7 +153,7 @@ async function createOrder(e) {
  * @param {string} id ID of the view wanting to be viewed
  */
 function showView(view_id) {
-  let views = document.querySelectorAll(`main > div:not(#${view_id})`);
+  let views = document.querySelectorAll(`main > section:not(#${view_id})`);
 
   views.forEach(view => {
     view.classList.add('hidden');
