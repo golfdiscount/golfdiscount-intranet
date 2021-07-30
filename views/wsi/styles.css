@@ -41,11 +41,6 @@ nav img {
   height: 45px;
 }
 
-#customer form > div {
-  display: flex;
-  flex-direction: row;
-}
-
 #home {
   margin-left: auto;
   margin-right: 5px;
