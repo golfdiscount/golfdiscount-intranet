@@ -175,17 +175,12 @@
             </div>
           </fieldset>
 
-          <fieldset>
+          <fieldset id="order-info">
             <legend><h2>Order Information</h2></legend>
             <div class="input-field">
               <label for="order-num">Order Number: </label>
               <input type="number" name="order_num" id="order-num" required>
             </div>
-            <div class="input-field">
-              <label for="ship-date">Desired Ship Date: </label>
-              <input type="date" name="ship_date" id="ship-date" required>
-            </div>
-            <small>Please make sure date selected is next business day</small>
             <div class="input-field">
               <label for="ship-method">Shipping Method: </label>
               <select name="ship_method" id="ship-method" form="order-form">
@@ -197,7 +192,7 @@
             </div>
           </fieldset>
 
-          <fieldset>
+          <fieldset id="customer-info">
             <legend><h2>Customer Information</h2></legend>
             <div class="input-field">
               <label for="cus-name">Name: </label>
@@ -223,9 +218,13 @@
               <label for="cus-zip">Zip Code: </label>
               <input type="text" name="sold_to_zip" required>
             </div>
+            <div class="input-field">
+              <input type="checkbox" id="address" name="addressIsSame">
+              <label for="address">Billing and shipping address are same</label>
+            </div>
           </fieldset>
 
-          <fieldset id="recipient-info" class="hidden">
+          <fieldset id="recipient-info">
             <legend><h2>Recipient Information</h2></legend>
             <div class="input-field">
               <label for="rec-name">Name: </label>

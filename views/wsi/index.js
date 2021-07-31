@@ -15,7 +15,9 @@ window.addEventListener('load', () => {
   id('shipping-form').addEventListener('submit', submitConf);
   id('order-form').addEventListener('submit', createOrder);
 
-  id('store-selector').addEventListener('click', updateForm);
+  id('address').addEventListener('click', () => {
+    id('recipient-info').toggleAttribute('disabled');
+  });
 });
 
 /**
