@@ -121,6 +121,8 @@ function submitConf(e) {
 async function createOrder(e) {
   e.preventDefault();
 
+  document.body.style.cursor = 'wait'
+
   let formData = new FormData(id('order-form'))
 
   today = new Date()
@@ -148,6 +150,8 @@ async function createOrder(e) {
     .then(res => res.text())
     .then(res => download(`${formData.get('order_num')}.csv`, res))
     .catch(e => alert(e));
+  
+  document.body.style.cursor = 'default'
 }
 
 /**
