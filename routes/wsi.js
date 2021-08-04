@@ -54,4 +54,26 @@ router.get('/orders/:order_num', (req, res) => {
   }
 });
 
+router.get('/getStoreAddress/:storeNum', (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+
+  try {
+    let qry = `SELECT store_address.\`name\`,
+        store_address.address,
+        store_address.city,
+        store_address.state,
+        store_address.country,
+        store_address.zip
+      FROM store_address
+      WHERE store_address.store_num = ${req.params.storeNum};`;
+
+    db.executeQuery(qry, (results, error) => {
+      console.log(results);
+      res.status(200).json(results[0]);
+    });
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});
+
 module.exports = router;
