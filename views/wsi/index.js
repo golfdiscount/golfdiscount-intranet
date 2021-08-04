@@ -40,6 +40,13 @@ window.addEventListener('load', () => {
     } else {
       id('address').disabled = false;
       id('recipient-info').disabled = false;
+
+      id('rec-name').value = '';
+      id('rec-address').value = '';
+      id('rec-state').value = '';
+      id('rec-city').value = '';
+      id('rec-country').value = 'US';
+      id('rec-zip').value = '';
     }
   });
 });
