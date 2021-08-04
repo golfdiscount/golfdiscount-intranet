@@ -91,7 +91,7 @@ function updateForm(e) {
  */
 function displayOrder(order) {
   // Customer info
-  qs('#c-name output').textContent = order.sold_to_name;
+  qs('#c-name').textContent = order.sold_to_name;
   qs('#c-address output').textContent = order.sold_to_address;
   qs('#c-city output').textContent = order.sold_to_city;
   qs('#c-state output').textContent = order.sold_to_state;

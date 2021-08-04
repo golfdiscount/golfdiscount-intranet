@@ -14,7 +14,7 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-form > div {
+#order-creator form > div {
   display: flex;
   flex-direction: column;
 }
