@@ -28,6 +28,7 @@ CREATE TABLE recipient(
 
 CREATE TABLE store_address(
 	store_num INT PRIMARY KEY,
+	name VARCHAR(45) NOT NULL
 	address VARCHAR(128) NOT NULL,
 	city VARCHAR(30),
 	state VARCHAR(36),
@@ -35,14 +36,14 @@ CREATE TABLE store_address(
 	zip VARCHAR(15)
 );
 
-INSERT INTO store_address(store_num, address, city, state, country, zip)
+INSERT INTO store_address(store_num, name, address, city, state, country, zip)
 VALUES
-	(1, "13405 SE 30th St Suite 1A", "Bellevue", "WA", "US", 98005),
-	(2, "19125 33rd Ave W A", "Lynnwood", "WA", "US", 98036),
-	(3, "14404 NE 20th St #150", "Bellevue", "WA", "US", 98007),
-	(5, "17305 Southcenter Pkwy", "Seattle", "WA", "US", 98188),
-	(6, "5015 Tacoma Mall Blvd", "Tacoma", "WA", "US", 98409),
-	(7, "4225 Meridian St", "Bellingham", "WA", "US", 98226);
+	(1, "Pro Golf Internet", "13405 SE 30th St Suite 1A", "Bellevue", "WA", "US", 98005),
+	(2, "Pro Golf Lynnwood", "19125 33rd Ave W A", "Lynnwood", "WA", "US", 98036),
+	(3, "Pro Golf Bellevue", "14404 NE 20th St #150", "Bellevue", "WA", "US", 98007),
+	(5, "Pro Golf Southcenter", "17305 Southcenter Pkwy", "Seattle", "WA", "US", 98188),
+	(6, "Pro Golf Tacoma", "5015 Tacoma Mall Blvd", "Tacoma", "WA", "US", 98409),
+	(7, "Pro Golf Bellingham", "4225 Meridian St", "Bellingham", "WA", "US", 98226);
 
 
 CREATE TABLE wsi_order(

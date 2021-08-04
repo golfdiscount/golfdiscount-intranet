@@ -18,6 +18,31 @@ window.addEventListener('load', () => {
   id('address').addEventListener('click', () => {
     id('recipient-info').toggleAttribute('disabled');
   });
+
+  id('store-selector').addEventListener('click', async () => {
+    let storeNum = qs('input[name=storeNum]:checked').value
+
+    if (storeNum != 1) {
+      id('address').disabled = true;
+      id('recipient-info').disabled = true;
+
+      let endpoint = new URL(API_DOMAIN + `/wsi/getStoreAddress/${storeNum}`);
+
+      await fetch(endpoint)
+        .then(res => res.json())
+        .then(res => {
+          id('rec-name').value = res['name'];
+          id('rec-address').value = res['address'];
+          id('rec-state').value = res['state'];
+          id('rec-city').value = res['city'];
+          id('rec-country').value = res['country'];
+          id('rec-zip').value = res['zip'];
+        });
+    } else {
+      id('address').disabled = false;
+      id('recipient-info').disabled = false;
+    }
+  });
 });
 
 /**
@@ -66,7 +91,7 @@ function updateForm(e) {
  */
 function displayOrder(order) {
   // Customer info
-  qs('#c-name output').textContent = order.sold_to_name;
+  qs('#c-name').textContent = order.sold_to_name;
   qs('#c-address output').textContent = order.sold_to_address;
   qs('#c-city output').textContent = order.sold_to_city;
   qs('#c-state output').textContent = order.sold_to_state;
