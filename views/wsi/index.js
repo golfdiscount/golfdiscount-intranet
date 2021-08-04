@@ -1,5 +1,5 @@
 const API_DOMAIN = 'https://gdinterface-staging.azurewebsites.net';
-const FUNC_DOMAIN = 'http://localhost:7071/api/order-creator';
+const FUNC_DOMAIN = 'https://wsi-staging.azurewebsites.net/api/order-creator';
 
 /**
  * Sets initial state of the window and adds necessary listeners
@@ -26,7 +26,7 @@ window.addEventListener('load', () => {
       id('address').disabled = true;
       id('recipient-info').disabled = true;
 
-      let endpoint = new URL('http://localhost:8000' + `/wsi/getStoreAddress/${storeNum}`);
+      let endpoint = new URL(API_DOMAIN + `/wsi/getStoreAddress/${storeNum}`);
 
       await fetch(endpoint)
         .then(res => res.json())
