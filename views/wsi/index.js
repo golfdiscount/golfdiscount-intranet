@@ -24,7 +24,6 @@ window.addEventListener('load', () => {
 
     if (storeNum != 1) {
       id('address').disabled = true;
-      id('recipient-info').disabled = true;
 
       let endpoint = new URL(API_DOMAIN + `/wsi/getStoreAddress/${storeNum}`);
 
