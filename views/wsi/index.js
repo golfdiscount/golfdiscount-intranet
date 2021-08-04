@@ -1,5 +1,5 @@
 const API_DOMAIN = 'https://gdinterface-staging.azurewebsites.net';
-const FUNC_DOMAIN = 'https://wsi-staging.azurewebsites.net/api/order-creator';
+const FUNC_DOMAIN = 'http://localhost:7071/api/order-creator';
 
 /**
  * Sets initial state of the window and adds necessary listeners
@@ -17,6 +17,31 @@ window.addEventListener('load', () => {
 
   id('address').addEventListener('click', () => {
     id('recipient-info').toggleAttribute('disabled');
+  });
+
+  id('store-selector').addEventListener('click', async () => {
+    let storeNum = qs('input[name=storeNum]:checked').value
+
+    if (storeNum != 1) {
+      id('address').disabled = true;
+      id('recipient-info').disabled = true;
+
+      let endpoint = new URL('http://localhost:8000' + `/wsi/getStoreAddress/${storeNum}`);
+
+      await fetch(endpoint)
+        .then(res => res.json())
+        .then(res => {
+          id('rec-name').value = res['name'];
+          id('rec-address').value = res['address'];
+          id('rec-state').value = res['state'];
+          id('rec-city').value = res['city'];
+          id('rec-country').value = res['country'];
+          id('rec-zip').value = res['zip'];
+        });
+    } else {
+      id('address').disabled = false;
+      id('recipient-info').disabled = false;
+    }
   });
 });
 
