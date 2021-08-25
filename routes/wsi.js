@@ -1,9 +1,7 @@
 let express = require('express');
 let multer = require('multer');
 let moment = require('moment');
-let fs = require('fs');
 let db = require('../db');
-const path = require('path');
 
 let router = express.Router();
 let upload = multer();
@@ -43,11 +41,7 @@ router.get('/orders/:order_num', (req, res) => {
     WHERE wsi_order.order_num = "${req.params.order_num}";`;
 
     db.executeQuery(qry, (results, error) => {
-      if (typeof(results) === undefined) {
-        res.status(200).send(results);
-      } else {
-        res.status(200).json(results[0]);
-      }
+      res.status(200).json(results);
     });
   } catch (e) {
     res.status(500).send(e)
@@ -68,7 +62,6 @@ router.get('/getStoreAddress/:storeNum', (req, res) => {
       WHERE store_address.store_num = ${req.params.storeNum};`;
 
     db.executeQuery(qry, (results, error) => {
-      console.log(results);
       res.status(200).json(results[0]);
     });
   } catch (e) {
