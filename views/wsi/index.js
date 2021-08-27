@@ -1,4 +1,4 @@
-const API_DOMAIN = 'https://gdinterface-staging.azurewebsites.net';
+const API_DOMAIN = 'http://localhost:8000';
 const FUNC_DOMAIN = 'https://wsi-staging.azurewebsites.net/api/order-creator';
 
 /**
@@ -11,7 +11,7 @@ window.addEventListener('load', () => {
   id('shipping').addEventListener('click', () => {showView('shipping-upload')});
 
   // Submission behavior
-  id('order-search').addEventListener('click', searchOrder);
+  id('search').addEventListener('submit', searchOrder);
   id('shipping-form').addEventListener('submit', submitConf);
   id('order-form').addEventListener('submit', createOrder);
 
@@ -79,7 +79,7 @@ async function searchOrder(e) {
 
 /**
  * Changes the order creation form according to store number selected
- * @param {DOM Object} e Object originating callback
+ * @param {DOM Object} e Event object originating callback
  */
 function updateForm(e) {
   let storeNum = document.querySelector('input[name="storeNum"]:checked').value;
@@ -93,47 +93,81 @@ function updateForm(e) {
 
 /**
  * Renders order information to be displayed on screen
- * @param {object} order JSON object containing order information
+ * @param {object} order Object containing order information
  */
 function displayOrder(order) {
-  // Customer info
-  qs('#c-name').textContent = order.sold_to_name;
-  qs('#c-address output').textContent = order.sold_to_address;
-  qs('#c-city output').textContent = order.sold_to_city;
-  qs('#c-state output').textContent = order.sold_to_state;
-  qs('#c-country output').textContent = order.sold_to_country;
-  qs('#c-zip output').textContent = order.sold_to_zip;
 
-  // Recipient info
-  qs('#r-name output').textContent = order.ship_to_name;
-  qs('#r-address output').textContent = order.ship_to_address;
-  qs('#r-city output').textContent = order.ship_to_city;
-  qs('#r-state output').textContent = order.ship_to_state;
-  qs('#r-country output').textContent = order.ship_to_country;
-  qs('#r-zip output').textContent = order.ship_to_zip;
-
-  // Product info
-  qs('#sku-name output').textContent = order.sku_name;
-  qs('#sku output').textContent = order.sku;
-  qs('#price output').textContent = `$${order.unit_price}`;
-  qs('#quantity output').textContent = order.quantity;
-
-  // Shipping info
-  let ship_date_field = qs('#ship-date output');
-  if (order.ship_date == null) {
-    ship_date_field.classList.add('not-avail');
-    ship_date_field.textContent = 'Not yet shipped';
-  } else {
-    ship_date_field.textContent = order.ship_date;
+  let customerInfo = {
+    name: order.sold_to_name,
+    address: order.sold_to_address,
+    city: order.sold_to_city,
+    state: order.sold_to_state,
+    country: order.sold_to_country,
+    zip: order.sold_to_zip
   }
 
-  let tracking_field = qs('#tracking output');
-  if (order.tracking_num == null) {
-    tracking_field.classList.add('not-avail');
-    tracking_field.textContent = 'Tracking number has not yet been generated';
-  } else {
-    tracking_field = order.tracking_num;
+  let recipientInfo = {
+    name: order.ship_to_name,
+    address: order.ship_to_address,
+    city: order.ship_to_city,
+    state: order.ship_to_state,
+    country: order.ship_to_country,
+    zip: order.ship_to_zip
   }
+
+  id('customer').appendChild(generateAddressEntry(customerInfo));
+  id('recipient').appendChild(generateAddressEntry(recipientInfo));
+
+  order.products.forEach(product => {
+    id('product-container').appendChild(generateProductEntry(product));
+  });
+}
+
+function clearSearchResults() {
+  
+}
+
+function generateProductEntry(product) {
+  let productEntry = gen('div');
+
+  let productHeading = gen('h3');
+  productHeading.textContent = `${product.sku} - ${product.sku_name}`;
+  let price = gen('p');
+  price.textContent = `Price: $${product.unit_price}`;
+  let quantity = gen('p');
+  quantity.textContent = `Quantity: ${product.quantity}`;
+
+  productEntry.appendChild(productHeading);
+  productEntry.appendChild(price);
+  productEntry.appendChild(quantity);
+
+  return productEntry;
+}
+
+function generateAddressEntry(addressInfo) {
+  let addressEntry = gen('div');
+
+  let name = gen('p');
+  name.textContent = `Name: ${addressInfo.name}`;
+  let address = gen('p');
+  address.textContent = `Address: ${addressInfo.address}`;
+  let city = gen('p');
+  city.textContent = `City: ${addressInfo.city}`;
+  let state = gen('p');
+  state.textContent = `State: ${addressInfo.state}`;
+  let country = gen('p');
+  country.textContent = `Country: ${addressInfo.country}`;
+  let zip = gen('p');
+  zip.textContent = `ZIP Code: ${addressInfo.zip}`;
+
+  addressEntry.appendChild(name);
+  addressEntry.appendChild(address);
+  addressEntry.appendChild(city);
+  addressEntry.appendChild(state);
+  addressEntry.appendChild(country);
+  addressEntry.appendChild(zip);
+
+  return addressEntry;
 }
 
 /**
@@ -249,13 +283,4 @@ function checkStatus(response) {
   } else {
     throw Error(response.statusText);
   }
-}
-
-/**
- * Appends a node to the given parent node
- * @param {string} parent - The parent node
- * @param {string} child - The child node to be appended to parent node
- */
-function append(parent, child) {
-  parent.appendChild(child);
 }
