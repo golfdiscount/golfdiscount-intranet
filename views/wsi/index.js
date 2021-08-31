@@ -1,5 +1,5 @@
 const API_DOMAIN = 'https://gdinterface-staging.azurewebsites.net';
-const FUNC_DOMAIN = 'https://wsi-staging.azurewebsites.net/api/order-creator';
+const FUNC_DOMAIN = 'https://wsi-staging.azurewebsites.net/api/createOrder';
 
 /**
  * Sets initial state of the window and adds necessary listeners
@@ -208,7 +208,7 @@ function submitConf(e) {
 }
 
 /**
- *
+ * Creates an order from the order creation form
  * @param {object} e - Event object originating callback
  */
 async function createOrder(e) {
@@ -261,6 +261,11 @@ function showView(view_id) {
   id(`${view_id}`).classList.remove('hidden');
 }
 
+/**
+ * 
+ * @param {string} filename Name of file to download
+ * @param {string} contents Contents to place in file to download
+ */
 function download(filename, contents) {
   let element = document.createElement('a');
   element.setAttribute('href', "data:text/plain;charset=utf-8," + encodeURIComponent(contents));
