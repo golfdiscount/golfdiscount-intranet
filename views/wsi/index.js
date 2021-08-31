@@ -70,7 +70,14 @@ async function searchOrder(e) {
       return res;
     })
     .then(res => res.json())
-    .then(res => displayOrder(res))
+    .then(res => {
+      console.log(res);
+      if (!res.order_num) {
+        alert('There were no orders with that order number');
+      } else {
+        displayOrder(res)
+      }
+    })
     .catch(e => {
       // alert(`There was an error completing your request:\n${e}`);
     });
@@ -122,6 +129,9 @@ function displayOrder(order) {
   });
 }
 
+/**
+ * Clears the previous search results to show the new ones
+ */
 function clearSearchResults() {
   let customerCard = document.querySelector('#customer > div');
   let recipientCard = document.querySelector('#recipient > div');
@@ -135,6 +145,11 @@ function clearSearchResults() {
   }
 }
 
+/**
+ * Creates a card containing product information
+ * @param {Object} product Information about the product to show
+ * @returns div Element
+ */
 function generateProductEntry(product) {
   let productEntry = gen('div');
 
@@ -152,6 +167,11 @@ function generateProductEntry(product) {
   return productEntry;
 }
 
+/**
+ * Creates a card containing address information
+ * @param {Object} addressInfo Information about an address
+ * @returns div Element
+ */
 function generateAddressEntry(addressInfo) {
   let addressEntry = gen('div');
 
@@ -276,19 +296,4 @@ function gen(tagName) {
  */
 function qs(selector) {
   return document.querySelector(selector);
-}
-
-/**
- * Helper function to return the response's result text if successful, otherwise
- * returns the rejected Promise result with an error status and corresponding text
- * @param {object} response - response to check for success/error
- * @return {object} - valid response if response was successful, otherwise rejected
- *                    Promise result
- */
-function checkStatus(response) {
-  if (response.ok) {
-    return response;
-  } else {
-    throw Error(response.statusText);
-  }
 }
