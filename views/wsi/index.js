@@ -1,4 +1,4 @@
-const API_DOMAIN = 'http://localhost:8000';
+const API_DOMAIN = 'https://gdinterface-staging.azurewebsites.net';
 const FUNC_DOMAIN = 'https://wsi-staging.azurewebsites.net/api/order-creator';
 
 /**
