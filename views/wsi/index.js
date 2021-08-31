@@ -8,11 +8,9 @@ window.addEventListener('load', () => {
   // View changers
   id('order-lookup').addEventListener('click', () => {showView('order-viewer')});
   id('order-creation').addEventListener('click', () => {showView('order-creator')});
-  id('shipping').addEventListener('click', () => {showView('shipping-upload')});
 
   // Submission behavior
   id('search').addEventListener('submit', searchOrder);
-  id('shipping-form').addEventListener('submit', submitConf);
   id('order-form').addEventListener('submit', createOrder);
 
   id('address').addEventListener('click', () => {
@@ -58,6 +56,7 @@ window.addEventListener('load', () => {
  */
 async function searchOrder(e) {
   e.preventDefault();
+  clearSearchResults();
 
   let order_num = qs('#order-num').value
 
@@ -124,7 +123,16 @@ function displayOrder(order) {
 }
 
 function clearSearchResults() {
-  
+  let customerCard = document.querySelector('#customer > div');
+  let recipientCard = document.querySelector('#recipient > div');
+  let productCards = document.querySelectorAll('#product-container > div');
+  if (customerCard) {
+    customerCard.remove();
+    recipientCard.remove();
+    productCards.forEach(product => {
+      product.remove();
+    })
+  }
 }
 
 function generateProductEntry(product) {
@@ -215,7 +223,7 @@ async function createOrder(e) {
     .then(res => res.text())
     .then(res => download(`${formData.get('order_num')}.csv`, res))
     .catch(e => alert(e));
-  
+
   document.body.style.cursor = 'default'
 }
 
