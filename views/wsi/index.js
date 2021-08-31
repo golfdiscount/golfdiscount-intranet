@@ -1,5 +1,5 @@
 const API_DOMAIN = 'https://gdinterface.azurewebsites.net';
-const FUNC_DOMAIN = 'https://wsi.azurewebsites.net/api/order-creator';
+const FUNC_DOMAIN = 'https://wsi.azurewebsites.net/api/createOrder';
 
 /**
  * Sets initial state of the window and adds necessary listeners
