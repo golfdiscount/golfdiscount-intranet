@@ -1,6 +1,5 @@
 let express = require('express');
 let multer = require('multer');
-let moment = require('moment');
 let db = require('../db');
 
 let router = express.Router();
