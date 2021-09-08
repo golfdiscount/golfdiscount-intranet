@@ -278,7 +278,7 @@ function download(filename, contents) {
   Customer Country: ${contents.get('sold_to_country')}
   Customer ZIP Code: ${contents.get('sold_to_zip')}\n`
 
-  if (contents.get(ship_to_name) === null) {
+  if (!contents.has('ship_to_name')) {
     receipt += `Recipient Name: ${contents.get('sold_to_name')}
     Recipient Address: ${contents.get('sold_to_address')}
     Recipient City: ${contents.get('sold_to_city')}
