@@ -241,7 +241,7 @@ async function createOrder(e) {
     body: formData,
     method: 'POST'})
     .then(res => res.text())
-    .then(res => download(`${formData.get('order_num')}.csv`, res))
+    .then(res => download(`${formData.get('order_num')}.csv`, formData))
     .catch(e => alert(e));
 
   document.body.style.cursor = 'default'
@@ -264,11 +264,30 @@ function showView(view_id) {
 /**
  * 
  * @param {string} filename Name of file to download
- * @param {string} contents Contents to place in file to download
+ * @param {FromData} contents Contents to place in file to download
  */
 function download(filename, contents) {
   let element = document.createElement('a');
-  element.setAttribute('href', "data:text/plain;charset=utf-8," + encodeURIComponent(contents));
+  let receipt = `Order Number: ${contents.get('order_num')}
+    Order Date: ${contents.get('order_date')}
+    Shipping Method: ${contents.get('ship_method')}\n
+    Customer Name: ${contents.get('sold_to_name')}
+    Customer Address: ${contents.get('sold_to_address')}
+    Customer City: ${contents.get('sold_to_city')}
+    Customer State: ${contents.get('sold_to_state')}
+    Customer Country: ${contents.get('sold_to_country')}
+    Customer ZIP Code: ${contents.get('sold_to_zip')}\n
+    Recipient Name: ${contents.get('ship_to_name')}
+    Recipient Address: ${contents.get('ship_to_address')}
+    Recipient City: ${contents.get('ship_to_city')}
+    Recipient State: ${contents.get('ship_to_state')}
+    Recipient Country: ${contents.get('ship_to_country')}
+    Recipient ZIP Code: ${contents.get('ship_to_zip')}\n
+    Product SKU: ${contents.get('sku')}
+    Quantity Ordered: ${contents.get('quantity')}
+    Unit Price: ${contents.get('price')}
+    `
+  element.setAttribute('href', "data:text/plain;charset=utf-8," + encodeURIComponent(receipt));
   element.setAttribute('download', filename);
 
   document.body.appendChild(element);
