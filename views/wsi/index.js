@@ -268,39 +268,18 @@ function showView(view_id) {
  */
 function download(filename, contents) {
   let element = document.createElement('a');
-  let receipt =
-  `Order Number: ${contents.get('order_num')}
-  Order Date: ${contents.get('order_date')}
-  Shipping Method: ${contents.get('ship_method')}\n
-  Customer Name: ${contents.get('sold_to_name')}
-  Customer Address: ${contents.get('sold_to_address')}
-  Customer City: ${contents.get('sold_to_city')}
-  Customer State: ${contents.get('sold_to_state')}
-  Customer Country: ${contents.get('sold_to_country')}
-  Customer ZIP Code: ${contents.get('sold_to_zip')}\n\n`
+  let receipt =`Order Number: ${contents.get('order_num')}\nOrder Date: ${contents.get('order_date')}\nShipping Method: ${contents.get('ship_method')}\n\nCustomer Name: ${contents.get('sold_to_name')}\nCustomer Address: ${contents.get('sold_to_address')}\nCustomer City: ${contents.get('sold_to_city')}\nCustomer State: ${contents.get('sold_to_state')}\nCustomer Country: ${contents.get('sold_to_country')}\nCustomer ZIP Code: ${contents.get('sold_to_zip')}\n\n`
 
   if (!contents.has('ship_to_name')) {
     receipt +=
-    `Recipient Name: ${contents.get('sold_to_name')}\
-    Recipient Address: ${contents.get('sold_to_address')}\
-    Recipient City: ${contents.get('sold_to_city')}\
-    Recipient State: ${contents.get('sold_to_state')}\
-    Recipient Country: ${contents.get('sold_to_country')}\
-    Recipient ZIP Code: ${contents.get('sold_to_zip')}\n\n`
+    `Recipient Name: ${contents.get('sold_to_name')}\nRecipient Address: ${contents.get('sold_to_address')}\nRecipient City: ${contents.get('sold_to_city')}\nRecipient State: ${contents.get('sold_to_state')}\nRecipient Country: ${contents.get('sold_to_country')}\nRecipient ZIP Code: ${contents.get('sold_to_zip')}\n\n`
   } else {
     receipt +=
-    `Recipient Name: ${contents.get('ship_to_name')}\
-    Recipient Address: ${contents.get('ship_to_address')}\
-    Recipient City: ${contents.get('ship_to_city')}\
-    Recipient State: ${contents.get('ship_to_state')}\
-    Recipient Country: ${contents.get('ship_to_country')}\
-    Recipient ZIP Code: ${contents.get('ship_to_zip')}\n\n`
+    `Recipient Name: ${contents.get('ship_to_name')}\nRecipient Address: ${contents.get('ship_to_address')}\nRecipient City: ${contents.get('ship_to_city')}\nRecipient State: ${contents.get('ship_to_state')}\nRecipient Country: ${contents.get('ship_to_country')}\nRecipient ZIP Code: ${contents.get('ship_to_zip')}\n\n`
   }
 
   receipt +=
-  `Product SKU: ${contents.get('sku')}\
-  Quantity Ordered: ${contents.get('quantity')}\
-  Unit Price: $${contents.get('price')}`
+  `Product SKU: ${contents.get('sku')}\nQuantity Ordered: ${contents.get('quantity')}\nUnit Price: $${contents.get('price')}`
 
   element.setAttribute('href', "data:text/plain;charset=utf-8," + encodeURIComponent(receipt));
   element.setAttribute('download', filename);
