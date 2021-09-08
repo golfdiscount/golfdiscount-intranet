@@ -11,7 +11,10 @@ CREATE TABLE customer(
 	sold_to_state VARCHAR(36) NOT NULL,
 	sold_to_country VARCHAR(36) NOT NULL,
 	sold_to_zip VARCHAR(15) NOT NULL,
-  date_added DATETIME DEFAULT CURRENT_TIMESTAMP
+  	date_added DATETIME DEFAULT CURRENT_TIMESTAMP
+	FOREIGN KEY (customer_id)
+		REFERENCES wsi_order(sold_to)
+		ON DELETE UPDATE
 );
 
 CREATE TABLE recipient(
@@ -23,7 +26,10 @@ CREATE TABLE recipient(
 	ship_to_state VARCHAR(36) NOT NULL,
 	ship_to_country VARCHAR(36) NOT NULL,
 	ship_to_zip VARCHAR(15) NOT NULL,
-	date_added DATETIME DEFAULT CURRENT_TIMESTAMP
+	date_added DATETIME DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (recipient_id)
+		REFERENCES wsi_order(ship_to)
+		ON DELETE UPDATE
 );
 
 CREATE TABLE store_address(
@@ -54,6 +60,7 @@ CREATE TABLE wsi_order(
 	ship_to INT,
 	ship_method VARCHAR(5) NOT NULL,
 	order_date DATETIME,
+	date_added DATETIME CURRENT_TIMESTAMP,
 	CONSTRAINT orderToCustomer FOREIGN KEY (sold_to)
 		REFERENCES customer(customer_id)
 		ON UPDATE CASCADE ON DELETE CASCADE,
