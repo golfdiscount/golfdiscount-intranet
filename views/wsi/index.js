@@ -47,6 +47,8 @@ window.addEventListener('load', () => {
       id('rec-zip').value = '';
     }
   });
+
+  id('order-num').addEventListener('blur', checkOrderNum);
 });
 
 /**
@@ -294,8 +296,16 @@ function download(filename, contents) {
  * @param {string} idName - element ID
  * @returns {object} DOM object associated with id.
  */
-  function id(idName) {
+function id(idName) {
   return document.getElementById(idName);
+}
+
+async function checkOrderNum(e) {
+  let orderNum = e.target.value
+
+  let exists = await fetch(`/wsi/checkOrder/${orderNum}`)
+
+  if (exists) alert(`Order ${orderNum} already exists`);
 }
 
 /**

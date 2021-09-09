@@ -100,4 +100,25 @@ router.get('/getStoreAddress/:storeNum', (req, res) => {
   }
 });
 
+router.get('/checkOrder/:orderNum', (req, res) => {
+  let qry = 
+  `SELECT *
+  FROM wsi_order
+  WHERE order_num = ${req.params.orderNum};`
+
+  db.executeQuery(qry, (qryRes, err) => {
+    if (err) res.status(500).send(e)
+
+    if (qryRes.length === 0) {
+      res.status(200).json({
+        'found': false
+      });
+    } else {
+      res.status(200).json({
+        'found': true
+      });
+    }
+  });
+});
+
 module.exports = router;
