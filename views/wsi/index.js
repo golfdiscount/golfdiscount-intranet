@@ -305,7 +305,7 @@ async function checkOrderNum(e) {
 
   let exists = await fetch(`/wsi/checkOrder/${orderNum}`)
 
-  if (exists) alert(`Order ${orderNum} already exists`);
+  if (exists['found']) alert(`Order ${orderNum} already exists`);
 }
 
 /**
