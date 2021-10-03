@@ -128,9 +128,7 @@ SELECT wsi_order.order_num AS "Order Number",
 	product.sku,
 	product.sku_name,
 	line_item.quantity,
-	product.unit_price,
-	shipping_conf.tracking_num,
-	shipping_conf.sent_to_shipstation
+	product.unit_price
 FROM wsi_order
 JOIN customer AS c ON c.customer_id = wsi_order.sold_to
 JOIN recipient AS r ON r.recipient_id = wsi_order.ship_to
