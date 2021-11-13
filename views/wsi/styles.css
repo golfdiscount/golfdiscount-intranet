@@ -91,3 +91,8 @@ small, .not-avail {
 .selector-tab:hover {
   cursor: pointer;
 }
+
+.card-container-row {
+  display: flex;
+  flex-direction: row;
+}
