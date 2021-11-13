@@ -215,6 +215,9 @@ function submitConf(e) {
  */
 async function createOrder(e) {
   e.preventDefault();
+  if(!confirm('Are you sure you want to submit the order?')) {
+    return;
+  }
 
   document.body.style.cursor = 'wait'
 
@@ -264,7 +267,7 @@ function showView(view_id) {
 }
 
 /**
- * 
+ *
  * @param {string} filename Name of file to download
  * @param {FromData} contents Contents to place in file to download
  */
