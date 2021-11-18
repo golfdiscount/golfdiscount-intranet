@@ -97,6 +97,11 @@ small, .not-avail {
   flex-direction: row;
 }
 
+.card-container-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .card-row {
   display: flex;
   flex-direction: row;
