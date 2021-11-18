@@ -315,7 +315,7 @@ async function checkOrderNum(e) {
 }
 
 async function addAnalytics() {
-  let analytics = await (await fetch('http://localhost:8000/wsi/analytics/orders/today')).json();
+  let analytics = await (await fetch(`${API_DOMAIN}/wsi/analytics/orders/today`)).json();
   console.log(analytics);
   let orderCountCard = gen('div');
   orderCountCard.classList.add('card-row')
