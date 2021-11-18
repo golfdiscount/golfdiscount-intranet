@@ -7,7 +7,7 @@ router.use(upload.array());
 
 router.get('/orders', (req, res) => {
     let today = new Date();
-    today = `${today.getMonth()+1}-${today.getDate()}-${today.getFullYear()}`;
+    today = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
 
     let qry = `SELECT order_num
     FROM wsi_order
