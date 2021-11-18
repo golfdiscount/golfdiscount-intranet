@@ -121,4 +121,30 @@ router.get('/checkOrder/:orderNum', (req, res) => {
   });
 });
 
+router.get('/analytics/orders/today', (req, res) => {
+  try {
+    let qry = `SELECT DATE_FORMAT(order_date, "%m-%d-%Y") AS "date",
+      COUNT(*) AS "num_orders"
+    FROM wsi_order
+    WHERE order_date >= CURDATE() - INTERVAL 7 DAY
+    GROUP BY order_date;`;
+
+    db.executeQuery(qry, (qryResults, err) => {
+      if (err) {
+        res.status(500).json(err);
+      } else {
+        let results = {
+          date: qryResults[0].date,
+          orderCount: qryResults[0].num_orders
+        }
+  
+        res.status(200).json(results);
+      }
+
+    })
+  } catch (e) {
+    res.status(500).json(e);
+  }
+});
+
 module.exports = router;
