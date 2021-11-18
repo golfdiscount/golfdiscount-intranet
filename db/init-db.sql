@@ -114,7 +114,8 @@ END//
 
 CREATE PROCEDURE getOrders()
 BEGIN
-SELECT wsi_order.order_num AS "Order Number",
+SELECT wsi_order.order_num,
+	wsi_order.order_date
 	c.sold_to_name,
 	c.sold_to_address,
 	c.sold_to_city,
