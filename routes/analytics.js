@@ -11,7 +11,7 @@ router.get('/orders', (req, res) => {
 
     let qry = `SELECT order_num
     FROM wsi_order
-    WHERE order_date = STR_TO_DATE("${req.query.fromDate || today}", "%m-%d-%Y");`;
+    WHERE order_date = STR_TO_DATE("${req.query.fromDate || today}", "%Y-%m-%d");`;
 
     db.executeQuery(qry, (qryResults, err) => {
         if (err) {
