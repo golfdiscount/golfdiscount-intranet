@@ -19,6 +19,7 @@ router.get('/orders', (req, res) => {
         } else {
             let results = {
                 total: qryResults.length,
+                date: req.query.fromDate || today,
                 orders: []
             }
 
