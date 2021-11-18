@@ -20,6 +20,9 @@
           <div class="selector-tab" id="order-creation">
             <h2>Order Creation</h2>
           </div>
+          <div class="selector-tab" id="wsi-analytics">
+            <h2>Analytics</h2>
+          </div>
           <div class="selector-tab" id="home">
             <a href="/"><h2>Back to home</h2></a>
           </div>
@@ -187,6 +190,17 @@
           </fieldset>
           <button id="send-order" type="submit">Submit</button>
         </form>
+      </section>
+
+      <section id="analytics-container" class="hidden">
+        <h2>Search for orders:</h2>
+        <form>
+          <label for="date">From date:</label>
+          <input type="date" id="date" name="fromDate">
+          <div class="card-container-column"></div>
+          <button type="submit">List orders</button>
+        </form>
+        <div></div>
       </section>
     </main>
   </body>

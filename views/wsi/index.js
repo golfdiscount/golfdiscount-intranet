@@ -8,6 +8,7 @@ window.addEventListener('load', () => {
   // View changers
   id('order-lookup').addEventListener('click', () => {showView('order-viewer')});
   id('order-creation').addEventListener('click', () => {showView('order-creator')});
+  id('wsi-analytics').addEventListener('click', () => {showView('analytics-container')});
 
   // Load initial data
   addAnalytics();
@@ -15,11 +16,9 @@ window.addEventListener('load', () => {
   // Form submission behavior
   id('search').addEventListener('submit', searchOrder);
   id('order-form').addEventListener('submit', createOrder);
-
   id('address').addEventListener('click', () => {
     id('recipient-info').toggleAttribute('disabled');
   });
-
   id('store-selector').addEventListener('click', async () => {
     let storeNum = qs('input[name=storeNum]:checked').value
 
@@ -50,8 +49,8 @@ window.addEventListener('load', () => {
       id('rec-zip').value = '';
     }
   });
-
   id('order-num').addEventListener('blur', checkOrderNum);
+  qs('#analytics-container > form').addEventListener('submit', searchOrdersInDb);
 });
 
 /**
@@ -316,7 +315,6 @@ async function checkOrderNum(e) {
 
 async function addAnalytics() {
   let analytics = await (await fetch(`${API_DOMAIN}/analytics/orders`)).json();
-  console.log(analytics);
   let orderCountCard = gen('div');
   orderCountCard.classList.add('card-row')
 
@@ -325,6 +323,22 @@ async function addAnalytics() {
 
   orderCountCard.appendChild(orderCount);
   document.getElementById('analytics').appendChild(orderCountCard);
+}
+
+async function searchOrdersInDb(e) {
+  e.preventDefault();
+  let dateFilter = e.target.elements['fromDate'].value;
+  console.log(dateFilter);
+
+  let orders = await (await fetch(`${API_DOMAIN}/analytics/orders?fromDate=${dateFilter}`)).json();
+
+  let resultsCont = qs('#analytics-container > div');
+
+  orders.orders.forEach(orderNum => {
+    let orderNumText = gen('p');
+    orderNumText.textContent = orderNum;
+    resultsCont.appendChild(orderNumText);
+  })
 }
 
 /**
