@@ -328,17 +328,21 @@ async function addAnalytics() {
 async function searchOrdersInDb(e) {
   e.preventDefault();
   let dateFilter = e.target.elements['fromDate'].value;
-  console.log(dateFilter);
 
   let orders = await (await fetch(`${API_DOMAIN}/analytics/orders?fromDate=${dateFilter}`)).json();
 
   let resultsCont = qs('#analytics-container > div');
 
+  let results = document.querySelectorAll('#analytics-container > div > p');
+  results.forEach(result => {
+    result.remove();
+  });
+
   orders.orders.forEach(orderNum => {
     let orderNumText = gen('p');
     orderNumText.textContent = orderNum;
     resultsCont.appendChild(orderNumText);
-  })
+  });
 }
 
 /**
