@@ -9,7 +9,10 @@ window.addEventListener('load', () => {
   id('order-lookup').addEventListener('click', () => {showView('order-viewer')});
   id('order-creation').addEventListener('click', () => {showView('order-creator')});
 
-  // Submission behavior
+  // Load initial data
+  addAnalytics();
+
+  // Form submission behavior
   id('search').addEventListener('submit', searchOrder);
   id('order-form').addEventListener('submit', createOrder);
 
@@ -309,6 +312,19 @@ async function checkOrderNum(e) {
   let exists = await fetch(`/wsi/checkOrder/${orderNum}`)
 
   if (exists['found']) alert(`Order ${orderNum} already exists`);
+}
+
+async function addAnalytics() {
+  let analytics = await (await fetch('http://localhost:8000/wsi/analytics/orders/today')).json();
+  console.log(analytics);
+  let orderCountCard = gen('div');
+  orderCountCard.classList.add('card-row')
+
+  let orderCount = gen('p');
+  orderCount.innerHTML = `<b>Number of orders for ${analytics.date}:</b> ${analytics.orderCount}`;
+
+  orderCountCard.appendChild(orderCount);
+  document.getElementById('analytics').appendChild(orderCountCard);
 }
 
 /**
