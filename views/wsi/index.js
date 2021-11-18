@@ -315,13 +315,13 @@ async function checkOrderNum(e) {
 }
 
 async function addAnalytics() {
-  let analytics = await (await fetch(`${API_DOMAIN}/wsi/analytics/orders/today`)).json();
+  let analytics = await (await fetch(`${API_DOMAIN}/analytics/orders`)).json();
   console.log(analytics);
   let orderCountCard = gen('div');
   orderCountCard.classList.add('card-row')
 
   let orderCount = gen('p');
-  orderCount.innerHTML = `<b>Number of orders for ${analytics.date}:</b> ${analytics.orderCount}`;
+  orderCount.innerHTML = `<b>Number of orders for ${analytics.date}:</b> ${analytics.total}`;
 
   orderCountCard.appendChild(orderCount);
   document.getElementById('analytics').appendChild(orderCountCard);
