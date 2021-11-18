@@ -119,3 +119,4 @@ dist
 
 *.csv
 .vscode/launch.json
+.vscode
