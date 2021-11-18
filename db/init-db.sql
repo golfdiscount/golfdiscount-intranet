@@ -1,3 +1,4 @@
+# Change as necessary for test database
 DROP DATABASE IF EXISTS wsi;
 CREATE DATABASE wsi;
 USE wsi;
@@ -11,7 +12,7 @@ CREATE TABLE customer(
 	sold_to_state VARCHAR(36) NOT NULL,
 	sold_to_country VARCHAR(36) NOT NULL,
 	sold_to_zip VARCHAR(15) NOT NULL,
-  	date_added DATETIME DEFAULT CURRENT_TIMESTAMP
+  	last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE recipient(
@@ -23,7 +24,7 @@ CREATE TABLE recipient(
 	ship_to_state VARCHAR(36) NOT NULL,
 	ship_to_country VARCHAR(36) NOT NULL,
 	ship_to_zip VARCHAR(15) NOT NULL,
-	date_added DATETIME DEFAULT CURRENT_TIMESTAMP
+	last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE store_address(
@@ -53,8 +54,8 @@ CREATE TABLE wsi_order(
 	sold_to INT,
 	ship_to INT,
 	ship_method VARCHAR(5) NOT NULL,
-	order_date DATETIME,
-	date_added DATETIME DEFAULT CURRENT_TIMESTAMP,
+	order_date DATE,
+	last_updated DATETIME DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT orderToCustomer FOREIGN KEY (sold_to)
 		REFERENCES customer(customer_id)
 		ON UPDATE CASCADE ON DELETE CASCADE,
@@ -69,7 +70,8 @@ CREATE TABLE wsi_order(
 CREATE TABLE product(
 	sku VARCHAR(32) PRIMARY KEY,
 	sku_name TEXT NOT NULL,
-	unit_price FLOAT NOT NULL
+	unit_price FLOAT NOT NULL,
+	last_used DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE line_item(
@@ -78,6 +80,7 @@ CREATE TABLE line_item(
 	sku VARCHAR(32),
 	quantity INT DEFAULT 1,
 	units_to_ship INT DEFAULT 1,
+	last_updated DATETIME DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (pick_ticket_num, line_num),
 	CONSTRAINT lineToSku FOREIGN KEY (sku)
 		REFERENCES product(sku)
