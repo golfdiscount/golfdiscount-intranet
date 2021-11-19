@@ -10,9 +10,6 @@ window.addEventListener('load', () => {
   id('order-creation').addEventListener('click', () => {showView('order-creator')});
   id('wsi-analytics').addEventListener('click', () => {showView('analytics-container')});
 
-  // Load initial data
-  addAnalytics();
-
   // Form submission behavior
   id('search').addEventListener('submit', searchOrder);
   id('order-form').addEventListener('submit', createOrder);
@@ -313,18 +310,6 @@ async function checkOrderNum(e) {
   if (exists['found']) alert(`Order ${orderNum} already exists`);
 }
 
-async function addAnalytics() {
-  let analytics = await (await fetch(`${API_DOMAIN}/analytics/orders`)).json();
-  let orderCountCard = gen('div');
-  orderCountCard.classList.add('card-row')
-
-  let orderCount = gen('p');
-  orderCount.innerHTML = `<b>Number of orders for ${analytics.date}:</b> ${analytics.total}`;
-
-  orderCountCard.appendChild(orderCount);
-  document.getElementById('analytics').appendChild(orderCountCard);
-}
-
 async function searchOrdersInDb(e) {
   e.preventDefault();
   let dateFilter = e.target.elements['fromDate'].value;
@@ -338,6 +323,10 @@ async function searchOrdersInDb(e) {
     result.remove();
   });
 
+  let count = gen('p');
+  count.textContent = `Number of orders: ${orders.total}`;
+  resultsCont.appendChild(count);
+  
   orders.orders.forEach(orderNum => {
     let orderNumText = gen('p');
     orderNumText.textContent = orderNum;

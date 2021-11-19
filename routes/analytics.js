@@ -32,21 +32,4 @@ router.get('/orders', (req, res) => {
     });
 });
 
-router.get('/orders/recentCount', (req, res) => {
-    let today = new Date();
-    today = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
-
-    let qry = `SELECT COUNT(*) AS 'count'
-    FROM wsi_order
-    WHERE last_updated >= CURDATE();`;
-
-    db.executeQuery(qry, (qryResults, err) => {
-        if (err) {
-            res.status(500).json(err);
-        } else {
-            res.status(200).json({'count': qryResults[0].count})
-        }
-    });
-});
-
 module.exports = router;
