@@ -1,0 +1,26 @@
+html, body {
+  overflow: auto;
+}
+
+body {
+  height: 100%;
+}
+
+header {
+  background-color: #063;
+}
+
+header, main {
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  flex-basis: auto;
+}
+
+nav > div {
+  flex-grow: 1;
+}
