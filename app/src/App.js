@@ -1,18 +1,16 @@
 import './App.css';
+import Navbar from './components/navigation/Navbar';
+import SideNavbar from './components/navigation/Side-Navbar';
+import Footer from './components/navigation/Footer';
 
 function App() {
   return (
-    <div>
-      <header>
-        <h1>Golf Discount Intranet</h1>
-        <nav>
-          <div>WSI</div>
-          <div>Titleist</div>
-        </nav>
-      </header>
-      <main>
-        <p>Main content goes here</p>
-      </main>
+    <div className='app-container'>
+      <Navbar />
+      <div className='main-content'>
+        <SideNavbar />
+      </div>
+      <Footer />
     </div>
   );
 }

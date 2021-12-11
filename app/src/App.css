@@ -1,26 +1,11 @@
-html, body {
-  overflow: auto;
-}
-
-body {
+.app-container {
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-header {
-  background-color: #063;
-}
-
-header, main {
-  padding-left: 5%;
-  padding-right: 5%;
-}
-
-nav {
+.main-content {
   display: flex;
   flex-direction: row;
-  flex-basis: auto;
-}
-
-nav > div {
-  flex-grow: 1;
+  height: 100%;
 }
