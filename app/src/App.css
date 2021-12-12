@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .app-container {
   height: 100%;
   display: flex;
@@ -8,4 +12,11 @@
   display: flex;
   flex-direction: row;
   height: 100%;
+}
+
+.tab-content {
+  background-color: gray;
+  opacity: 40%;
+  width: 100%;
+  padding: 1vh 1vw 0 1vw;
 }
