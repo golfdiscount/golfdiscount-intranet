@@ -1,5 +1,27 @@
 .side-nav {
-  height: 100%;
   background-color: #006699;
-  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  width: 15vw;
+}
+
+.tab {
+  text-decoration: none;
+  width: 100%;
+  height: auto;
+  font-size: 2.5vh;
+  padding: 1vh .5vw;
+}
+
+.tab:hover {
+  background-color:gray;
+}
+
+.tab > p {
+  margin: 0;
+  font-size: 1.25em;
+}
+
+.tab:visited {
+  color: white;
 }
