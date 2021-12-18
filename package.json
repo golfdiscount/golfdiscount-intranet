@@ -1,12 +1,12 @@
 {
   "name": "wsi-stack",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "description": "A web API for storing and searching WSI orders",
   "scripts": {
     "build": "npm install",
-    "start": "node app.js",
-    "monitor": "nodemon app.js"
+    "start": "node server.js",
+    "monitor": "nodemon server.js"
   },
   "repository": {
     "type": "git",
