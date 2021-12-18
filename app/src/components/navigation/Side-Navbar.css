@@ -6,15 +6,16 @@
 }
 
 .tab {
+  display: flex;
   text-decoration: none;
   width: 100%;
-  height: auto;
   font-size: 2.5vh;
   padding: 1vh .5vw;
+  flex-basis: content;
 }
 
 .tab:hover {
-  background-color:gray;
+  background-color: #036;
 }
 
 .tab > p {
