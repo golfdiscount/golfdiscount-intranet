@@ -7,8 +7,6 @@ let analytics = require('./routes/analytics');
 
 app.use('/api/wsi', wsi);
 app.use('/api/analytics', analytics);
-app.use(express.static('public'));
-app.use(express.static('views'));
 app.use(express.json());
 
 app.listen(PORT, () => {
