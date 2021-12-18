@@ -1,14 +1,32 @@
+/**
+ * @author Harmeet Singh
+ * @description Creates a side bar navigation with optional header
+ */
+
 import './Side-Navbar.css';
 import { NavLink } from 'react-router-dom';
 
-function SideNavbar() {
+function SideNavbar(props) {
+  let tabs = props.tabs.map(tab => {
+    return (
+      <NavLink className='tab' to={tab.route} key={tab.route}>{tab.text}</NavLink>
+    );
+  });
+
+  if (props.header) {
+    return (
+    <div className='side-nav'>
+      <h1>{props.header}</h1>
+      {tabs}
+    </div>
+    );
+  }
+
   return (
     <div className='side-nav'>
-      <NavLink className='tab' to='/'>Order Viewer</NavLink>
-      <NavLink className='tab' to='/order-creator'>Order Creator</NavLink>
-      <NavLink className='tab' to='/order-analytics'>Order Analytics</NavLink>
+      {tabs}
     </div>
-  )
+  );
 }
 
 export default SideNavbar;
