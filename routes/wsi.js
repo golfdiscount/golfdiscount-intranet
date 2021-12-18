@@ -46,7 +46,7 @@ router.get('/orders/:order_num', (req, res) => {
 
       if (error) {
         res.status(500).send('There was an error processing your request');
-      } else if (qryResults) {
+      } else if (qryResults.length != 0) {
         for (let i = 0; i < qryResults.length; i++) {
           let currentRecord = qryResults[i];
           if (i === 0) {
@@ -74,7 +74,6 @@ router.get('/orders/:order_num', (req, res) => {
             unit_price: currentRecord.unit_price
           })
         }
-
         res.status(200).json(results);
       } else {
         res.status(404).send('Order not found');
