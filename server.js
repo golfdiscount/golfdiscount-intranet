@@ -12,5 +12,5 @@ app.use(express.static('views'));
 app.use(express.json());
 
 app.listen(PORT, () => {
-  console.log(`App is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
