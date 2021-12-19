@@ -9,3 +9,7 @@
   height: 100%;
   align-items: center;
 }
+
+.navbar-tab > a {
+  color: white;
+}

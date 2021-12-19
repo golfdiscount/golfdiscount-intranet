@@ -18,9 +18,8 @@
   background-color: #036;
 }
 
-.tab > p {
-  margin: 0;
-  font-size: 1.25em;
+.tab > a {
+  color: white;
 }
 
 .tab:visited {
