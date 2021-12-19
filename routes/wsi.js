@@ -12,6 +12,7 @@ router.get('/orders/:order_num', (req, res) => {
 
   try{
     let qry = `SELECT wsi_order.order_num,
+      wsi_order.order_date AS order_date,
       c.sold_to_name,
       c.sold_to_address,
       c.sold_to_city,
@@ -45,12 +46,14 @@ router.get('/orders/:order_num', (req, res) => {
       }
 
       if (error) {
+        console.log(error);
         res.status(500).send('There was an error processing your request');
       } else if (qryResults.length != 0) {
         for (let i = 0; i < qryResults.length; i++) {
           let currentRecord = qryResults[i];
           if (i === 0) {
             results.order_num = currentRecord.order_num;
+            results.order_date = currentRecord.order_date;
             results.sold_to_name = currentRecord.sold_to_name;
             results.sold_to_address = currentRecord.sold_to_address;
             results.sold_to_city = currentRecord.sold_to_city;
@@ -80,6 +83,7 @@ router.get('/orders/:order_num', (req, res) => {
       }
     });
   } catch (e) {
+    console.log(e);
     res.status(500).send(e)
   }
 });
