@@ -5,7 +5,7 @@
   "description": "A web API for storing and searching WSI orders",
   "scripts": {
     "build": "npm install",
-    "start": "node server.js",
+    "start": "concurrently \"node server.js\" \"cd client && npm start\"",
     "monitor": "nodemon server.js"
   },
   "repository": {
@@ -15,14 +15,14 @@
   "author": "Harmeet Singh",
   "license": "ISC",
   "dependencies": {
+    "concurrently": "^6.5.0",
+    "express": "^4.17.1",
     "fs": "0.0.1-security",
     "moment": "^2.29.1",
-    "react-router-dom": "^6.1.1"
+    "multer": "^1.4.2",
+    "mysql2": "^2.2.5"
   },
   "devDependencies": {
-    "express": "^4.17.1",
-    "multer": "^1.4.2",
-    "mysql2": "^2.2.5",
     "nodemon": "^2.0.12"
   }
 }
