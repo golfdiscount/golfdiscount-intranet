@@ -5,6 +5,10 @@
   width: 15vw;
 }
 
+.side-nav > a {
+  color: white;
+}
+
 .tab {
   display: flex;
   text-decoration: none;
@@ -16,10 +20,6 @@
 
 .tab:hover {
   background-color: #036;
-}
-
-.tab > a {
-  color: white;
 }
 
 .tab:visited {
