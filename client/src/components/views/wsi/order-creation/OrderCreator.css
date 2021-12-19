@@ -1,6 +1,15 @@
 .vertical-form {
   display: flex;
   flex-direction: column;
+  padding-bottom: 1vh;
+}
+
+label {
+  padding-top: .5vh;
+}
+
+label > * {
+  margin-left: .5vw;
 }
 
 input[type=number]::-webkit-inner-spin-button,
