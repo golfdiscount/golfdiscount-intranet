@@ -6,6 +6,7 @@
   "scripts": {
     "build": "npm install",
     "start": "concurrently \"node server.js\" \"cd client && npm start\"",
+    "dev": "concurrently \"nodemon server.js\" \"cd client && npm start\"",
     "monitor": "nodemon server.js"
   },
   "repository": {
