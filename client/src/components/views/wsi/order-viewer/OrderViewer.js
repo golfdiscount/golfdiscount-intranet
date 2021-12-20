@@ -1,4 +1,3 @@
-import './OrderViewer.css';
 import { useState } from 'react';
 import ErrorMessage from '../../../common/ErrorMessage';
 
