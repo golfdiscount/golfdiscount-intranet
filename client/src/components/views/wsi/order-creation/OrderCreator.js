@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 function OrderCreator() {
   const [products, setProducts] = useState([<Product key={0}/>]);
-  console.log(products.length);
 
   function OrderInfo() {
     return (
@@ -71,6 +70,8 @@ function OrderCreator() {
         <label className='text-input'>SKU: <input required /></label>
         <label className='text-input'>Quantity: <input type='number' defaultValue={'1'} required /></label>
         <label className='text-input'>Price: <input type='number' required /></label>
+        <button type='button' onClick={RemoveProduct}>Remove Product</button>
+        <hr />
       </div>
     );
   }
@@ -86,17 +87,28 @@ function OrderCreator() {
     setProducts(productCopy);
   }
 
+  function RemoveProduct(productToRemove) {
+    let newProducts = products.filter(product => product !== productToRemove);
+    setProducts(newProducts);
+  }
+
   return (
     <div className='tab-content'>
-      <h1>Order Creation</h1>
-      <OrderInfo />
-      <h2>Customer Address</h2>
-      <Address />
-      <h2>Recipient Address</h2>
-      <Address />
-      <h2>Products</h2>
-      {products}
-      <button type='button' onClick={AddProduct}>Add another product</button>
+      <div className='order-creator'>
+        <div>
+          <h1>Order Creation</h1>
+          <OrderInfo />
+          <h2>Customer Address</h2>
+          <Address />
+          <h2>Recipient Address</h2>
+          <Address />
+        </div>
+        <div className='product-container'>
+          <h2>Products</h2>
+          {products}
+          <button type='button' onClick={AddProduct}>Add another product</button>
+        </div>
+      </div>
     </div>
   );
 }
