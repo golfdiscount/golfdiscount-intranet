@@ -16,14 +16,14 @@ function Wsi() {
   ];
 
   return (
-    <div className='main-content'>
+    <main>
       <SideNavbar tabs={tabs} />
       <Routes>
         <Route path='' element={<OrderViewer />} />
         <Route path='order-creator' element={<OrderCreator />} />
         <Route path='order-analytics' element={<OrderAnalytics />} />
       </Routes>
-    </div>
+    </main>
   );
 }
 
