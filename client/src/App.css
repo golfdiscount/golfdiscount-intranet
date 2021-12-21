@@ -3,18 +3,20 @@
 }
 
 .app-container {
-  height: 100%;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 
-.main-content {
+main {
   display: flex;
   flex-direction: row;
-  height: 100%;
+  height: 100vh;
 }
 
 .tab-content {
   width: 100%;
-  padding: 1vh 1vw 0 1vw;
+  height: auto;
+  padding: 1vh 1vw 1vh 1vw;
+  overflow-y: scroll;
 }
