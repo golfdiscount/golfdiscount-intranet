@@ -11,12 +11,10 @@
 main {
   display: flex;
   flex-direction: row;
-  height: 100vh;
+  flex-grow: 1;
 }
 
 .tab-content {
   width: 100%;
-  height: auto;
   padding: 1vh 1vw 1vh 1vw;
-  overflow-y: scroll;
 }
