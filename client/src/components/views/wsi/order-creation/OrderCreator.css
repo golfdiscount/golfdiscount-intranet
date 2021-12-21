@@ -4,8 +4,23 @@
   padding-bottom: 1vh;
 }
 
+.product-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5vw;
+}
+
+hr {
+  width: 100%;
+}
+
+.order-creator {
+  display: flex;
+  flex-direction: row;
+}
+
 label {
-  padding-top: .5vh;
+  padding-bottom: .5vh;
 }
 
 label > * {
