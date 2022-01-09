@@ -1,12 +1,12 @@
-let dbConnection = {
+const dbConnection = {
   host: process.env.dbHost,
   user: process.env.dbUser,
   password: process.env.dbPass,
   database: process.env.dbSchema
 }
 
-let mysql = require("mysql2");
-let connection = mysql.createPool(dbConnection);
+const mysql = require("mysql2");
+const connection = mysql.createPool(dbConnection);
 
 exports.connect = () => {
   connection.connect((err) => {
@@ -25,5 +25,5 @@ exports.executeQuery = (query, handler) => {
 }
 
 exports.end= () => {
-  connection.end()
+  connection.end();
 }

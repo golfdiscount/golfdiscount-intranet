@@ -1,0 +1,28 @@
+.side-nav {
+  background-color: #006699;
+  display: flex;
+  flex-direction: column;
+  width: 15vw;
+  height: 100%;
+}
+
+.side-nav > a {
+  color: white;
+}
+
+.tab {
+  display: flex;
+  text-decoration: none;
+  width: 100%;
+  font-size: 2.5vh;
+  padding: 1vh .5vw;
+  flex-basis: content;
+}
+
+.tab:hover {
+  background-color: #036;
+}
+
+.tab:visited {
+  color: white;
+}

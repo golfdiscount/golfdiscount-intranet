@@ -1,12 +1,13 @@
 {
   "name": "wsi-stack",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "description": "A web API for storing and searching WSI orders",
   "scripts": {
     "build": "npm install",
-    "start": "node app.js",
-    "monitor": "nodemon app.js"
+    "start": "concurrently \"node server.js\" \"cd client && npm start\"",
+    "dev": "concurrently \"nodemon server.js\" \"cd client && npm start\"",
+    "monitor": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -15,13 +16,14 @@
   "author": "Harmeet Singh",
   "license": "ISC",
   "dependencies": {
+    "concurrently": "^6.5.0",
+    "express": "^4.17.1",
     "fs": "0.0.1-security",
-    "moment": "^2.29.1"
+    "moment": "^2.29.1",
+    "multer": "^1.4.2",
+    "mysql2": "^2.2.5"
   },
   "devDependencies": {
-    "express": "^4.17.1",
-    "multer": "^1.4.2",
-    "mysql2": "^2.2.5",
     "nodemon": "^2.0.12"
   }
 }

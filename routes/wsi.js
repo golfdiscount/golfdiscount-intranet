@@ -12,6 +12,7 @@ router.get('/orders/:order_num', (req, res) => {
 
   try{
     let qry = `SELECT wsi_order.order_num,
+      wsi_order.order_date AS order_date,
       c.sold_to_name,
       c.sold_to_address,
       c.sold_to_city,
@@ -43,38 +44,46 @@ router.get('/orders/:order_num', (req, res) => {
       let results = {
         products: []
       }
-      
-      for (let i = 0; i < qryResults.length; i++) {
-        let currentRecord = qryResults[i];
-        if (i === 0) {
-          results.order_num = currentRecord.order_num;
-          results.sold_to_name = currentRecord.sold_to_name;
-          results.sold_to_address = currentRecord.sold_to_address;
-          results.sold_to_city = currentRecord.sold_to_city;
-          results.sold_to_state = currentRecord.sold_to_state;
-          results.sold_to_country = currentRecord.sold_to_country;
-          results.sold_to_zip = currentRecord.sold_to_zip;
-          results.ship_to_name = currentRecord.ship_to_name;
-          results.ship_to_address = currentRecord.ship_to_address;
-          results.ship_to_city = currentRecord.ship_to_city;
-          results.ship_to_state = currentRecord.ship_to_state;
-          results.ship_to_country = currentRecord.ship_to_country;
-          results.ship_to_zip = currentRecord.ship_to_zip;
-          results.tracking_num = currentRecord.tracking_num;
-          results.sent_to_shipstation = currentRecord.sent_to_shipstation;
+
+      if (error) {
+        console.log(error);
+        res.status(500).send('There was an error processing your request');
+      } else if (qryResults.length != 0) {
+        for (let i = 0; i < qryResults.length; i++) {
+          let currentRecord = qryResults[i];
+          if (i === 0) {
+            results.order_num = currentRecord.order_num;
+            results.order_date = currentRecord.order_date;
+            results.sold_to_name = currentRecord.sold_to_name;
+            results.sold_to_address = currentRecord.sold_to_address;
+            results.sold_to_city = currentRecord.sold_to_city;
+            results.sold_to_state = currentRecord.sold_to_state;
+            results.sold_to_country = currentRecord.sold_to_country;
+            results.sold_to_zip = currentRecord.sold_to_zip;
+            results.ship_to_name = currentRecord.ship_to_name;
+            results.ship_to_address = currentRecord.ship_to_address;
+            results.ship_to_city = currentRecord.ship_to_city;
+            results.ship_to_state = currentRecord.ship_to_state;
+            results.ship_to_country = currentRecord.ship_to_country;
+            results.ship_to_zip = currentRecord.ship_to_zip;
+            results.tracking_num = currentRecord.tracking_num;
+            results.sent_to_shipstation = currentRecord.sent_to_shipstation;
+          }
+
+          results.products.push({
+            sku: currentRecord.sku,
+            sku_name: currentRecord.sku_name,
+            quantity: currentRecord.quantity,
+            unit_price: currentRecord.unit_price
+          })
         }
-
-        results.products.push({
-          sku: currentRecord.sku,
-          sku_name: currentRecord.sku_name,
-          quantity: currentRecord.quantity,
-          unit_price: currentRecord.unit_price
-        })
+        res.status(200).json(results);
+      } else {
+        res.status(404).send('Order not found');
       }
-
-      res.status(200).json(results);
     });
   } catch (e) {
+    console.log(e);
     res.status(500).send(e)
   }
 });
@@ -101,7 +110,7 @@ router.get('/getStoreAddress/:storeNum', (req, res) => {
 });
 
 router.get('/checkOrder/:orderNum', (req, res) => {
-  let qry = 
+  let qry =
   `SELECT *
   FROM wsi_order
   WHERE order_num = ${req.params.orderNum};`
