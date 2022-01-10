@@ -17,16 +17,19 @@ function OrderViewer() {
   return (
     <div className='tab-content'>
       {error}
-      <h1>Order Number</h1>
-      <form onSubmit={(e) => {
-          e.preventDefault();
-          getOrder(e.target.elements['orderNumber'].value, setCurrentOrder, setError)
-        }}>
-        <input required type='text' name='orderNumber'/>
-        <button type='submit'>Submit</button>
-      </form>
-      {order}
+      <div className='tab-inner-content'>
+        <h1>Order Number</h1>
+        <form onSubmit={(e) => {
+            e.preventDefault();
+            getOrder(e.target.elements['orderNumber'].value, setCurrentOrder, setError)
+          }}>
+          <input required type='text' name='orderNumber'/>
+          <button type='submit'>Submit</button>
+        </form>
+        {order}
+      </div>
     </div>
+
   );
 }
 
@@ -37,11 +40,9 @@ function OrderViewer() {
  */
 function Order(props) {
   const order = props.order;
-  const customerAddress = `${order.sold_to_address} ${order.sold_to_city}, ${order.sold_to_state} ${order.sold_to_zip} ${order.sold_to_country}`;
-  const recipientAddress = `${order.ship_to_address} ${order.ship_to_city}, ${order.ship_to_state} ${order.ship_to_zip} ${order.ship_to_country}`;
   const products = order.products.map(product => {
     return(
-      <Product name={product.sku_name} sku={product.sku} price={product.unit_price} qty={product.quantity} key={product.sku}/>
+      <Product sku={product.sku} price={product.price} qty={product.quantity} key={product.sku}/>
     )
   })
 
@@ -49,9 +50,9 @@ function Order(props) {
     <div>
       <OrderHeader order={order} />
       <h2>Customer</h2>
-      <Address name={order.sold_to_name} address={customerAddress} />
+      <Address address={order.customer} />
       <h2>Recipient</h2>
-      <Address name={order.ship_to_name} address={recipientAddress} />
+      <Address address={order.recipient} />
       <h2>Products</h2>
       {products}
     </div>
@@ -64,11 +65,10 @@ function Order(props) {
    */
   function OrderHeader(props) {
     const order = props.order;
-    let orderDate = new Date(order.order_date).toLocaleDateString();
     return (
       <div>
         <h2>Order Information</h2>
-        <p>Order Date: {orderDate}</p>
+        <p>Order Date: {order.orderDate}</p>
       </div>
     );
   }
@@ -79,10 +79,11 @@ function Order(props) {
    * @returns JSX React element with address information
    */
   function Address(props) {
+    const address = props.address
     return (
       <div>
-        <p>Name: {props.name}</p>
-        <p>Address: {props.address}</p>
+        <p>Name: {address.name}</p>
+        <p>Address: {address.address} {address.city}, {address.state} {address.zip} {address.country}</p>
       </div>
     );
   }
@@ -95,10 +96,10 @@ function Order(props) {
   function Product(props) {
     return (
       <div>
-        <p>Name: {props.name}</p>
         <p>SKU: {props.sku}</p>
         <p>Unit Price: ${props.price}</p>
         <p>Quantity: {props.qty}</p>
+        <hr />
       </div>
     )
   }
@@ -106,13 +107,13 @@ function Order(props) {
 
 /**
  * Gets order information from WSI database and updates the currently displayed order
- * Will update the error banner in case of any res status that are not 2xx
+ * Will update the error banner in case of any res status that are not 200
  * @param {String} orderNumber
  * @param {Function} setState Function to update state of the current order in the OrderViewer component
  * @param {Function} setError Function to update the error state of the order viewing screen
  */
 function getOrder(orderNumber, setState, setError) {
-  fetch(`/api/wsi/orders/${orderNumber}`)
+  fetch(`https://wsi-staging.azurewebsites.net/api/orders/${orderNumber}`)
   .then(res => {
     if (res.status === 404) {
       throw new Error('Order not found');
@@ -128,6 +129,7 @@ function getOrder(orderNumber, setState, setError) {
   })
   .catch(err => {
     setError(<ErrorMessage error={err.message} />);
+    setState();
   });
 }
 
