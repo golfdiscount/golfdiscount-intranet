@@ -81,15 +81,14 @@ function OrderCreator() {
         orderData.products.push(product);
       });
 
-      console.log(JSON.stringify(orderData));
-
-      fetch('https://wsi-staging.azurewebsites.net/api/orders', {
+      fetch('/orders', {
         method: 'POST',
         body: JSON.stringify(orderData),
         headers: {
           'Content-Type': 'application/json'
         }
-      }).then(res => console.log(res.text()));
+      }).then(res => res.text())
+      .then(res => console.log(res));
     }
   }
 
