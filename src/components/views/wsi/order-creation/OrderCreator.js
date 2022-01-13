@@ -81,7 +81,7 @@ function OrderCreator() {
         orderData.products.push(product);
       });
 
-      fetch('/orders', {
+      fetch(process.env.REACT_APP_WSI_DOMAIN + '/orders', {
         method: 'POST',
         body: JSON.stringify(orderData),
         headers: {
