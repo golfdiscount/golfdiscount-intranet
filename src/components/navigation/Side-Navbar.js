@@ -16,7 +16,7 @@ function SideNavbar(props) {
   if (props.header) {
     return (
     <div className='side-nav'>
-      <h1>{props.header}</h1>
+      <h1 className='side-nav-header'>{props.header}</h1>
       {tabs}
     </div>
     );
@@ -24,6 +24,7 @@ function SideNavbar(props) {
 
   return (
     <div className='side-nav'>
+      {props.header && <h2>{props.header}</h2>}
       {tabs}
     </div>
   );

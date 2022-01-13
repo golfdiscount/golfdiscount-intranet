@@ -26,3 +26,8 @@
 .tab:visited {
   color: white;
 }
+
+.side-nav-header {
+  color: white;
+  padding: 0.5vh .5vw 0vh 0.5vw;
+}
