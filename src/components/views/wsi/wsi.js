@@ -11,8 +11,7 @@ import SideNavbar from '../../navigation/Side-Navbar';
 function Wsi() {
   let tabs = [
     {text: 'Order Viewer', route: '/wsi'},
-    {text: 'Order Creator', route: '/wsi/order-creator'},
-    {text: 'Order Analytics', route: '/wsi/order-analytics'}
+    {text: 'Order Creator', route: '/wsi/order-creator'}
   ];
 
   return (
