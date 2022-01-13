@@ -28,6 +28,7 @@ function Landing() {
         <section>
           <h2>Upcoming Changes</h2>
           <ul>
+            <li>Product names when searching for an order</li>
             <li>Authentication</li>
             <li>Excel spreadsheet joiner</li>
             <li>Magento integration</li>
