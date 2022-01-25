@@ -55,11 +55,11 @@ jobs:
       - name: Delete release.zip
         run: rm release.zip
 
-    - name: 'Deploy to Azure Web App'
-      id: deploy-to-webapp
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: gdinterface
-        slot-name: Production
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6A773ED32FD24FD19D7893B42BC17255 }}
-        package: .
+      - name: 'Deploy to Azure Web App'
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: gdinterface
+          slot-name: Production
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6A773ED32FD24FD19D7893B42BC17255 }}
+          package: .
