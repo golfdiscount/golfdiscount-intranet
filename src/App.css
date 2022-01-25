@@ -1,0 +1,23 @@
+* {
+  box-sizing: border-box;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
+.tab-content {
+  width: 100%;
+}
+
+.tab-inner-content {
+  padding: 1vh 1vw;
+}

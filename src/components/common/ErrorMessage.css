@@ -1,0 +1,9 @@
+.error {
+  background-color: #c97a68;
+  display: flex;
+  padding-left: 1vw;
+}
+
+.error > p {
+  color: black;
+}
