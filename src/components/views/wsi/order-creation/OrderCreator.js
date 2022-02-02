@@ -97,7 +97,7 @@ function OrderCreator() {
       <div className='order-creator tab-inner-content'>
         <div>
           <h1>Order Creation</h1>
-          <OrderInfo />
+          <OrderInfo updateRecipient={setRecipientAddress}/>
           <h2>Customer Address</h2>
           <Address address={customerAddress} setAddress={setCustomerAddress}/>
           <label>
@@ -118,33 +118,39 @@ function OrderCreator() {
   );
 }
 
-function OrderInfo() {
+function OrderInfo(props) {
+  const updateRecipient = props.updateRecipient
+  function useStoreAddress(e) {
+    fetch(`${process.env.REACT_APP_WSI_DOMAIN}/stores/${e.target.value}`)
+    .then(res => res.json())
+    .then(res => updateRecipient(res));
+  }
   return (
     <div className='vertical-form'>
       <label>
         Store Number:
         <label>
-          <input type='radio' name='store_num' value='1' required defaultChecked/>
+          <input type='radio' name='store_num' value='1' onChange={useStoreAddress} required defaultChecked/>
           1
         </label>
         <label>
-          <input type='radio' name='store_num' value='2'/>
+          <input type='radio' name='store_num' value='2' onChange={useStoreAddress}/>
           2
         </label>
         <label>
-          <input type='radio' name='store_num' value='3'/>
+          <input type='radio' name='store_num' value='3' onChange={useStoreAddress}/>
           3
         </label>
         <label>
-          <input type='radio' name='store_num' value='5'/>
+          <input type='radio' name='store_num' value='5' onChange={useStoreAddress}/>
           5
         </label>
         <label>
-          <input type='radio' name='store_num' value='6'/>
+          <input type='radio' name='store_num' value='6' onChange={useStoreAddress}/>
           6
         </label>
         <label>
-          <input type='radio' name='store_num' value='7'/>
+          <input type='radio' name='store_num' value='7' onChange={useStoreAddress}/>
           7
         </label>
       </label>
