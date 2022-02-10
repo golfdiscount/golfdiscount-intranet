@@ -59,7 +59,7 @@ function OrderCreator() {
    * Submits the order to the WSI API
    * @param {Event} e Form event that called this function
    */
-  function submitOrder(e) {
+  async function submitOrder(e) {
     e.preventDefault();
 
     if (window.confirm('Are you sure you want to submit this order?')) {
@@ -81,14 +81,19 @@ function OrderCreator() {
         orderData.products.push(product);
       });
 
-      fetch(process.env.REACT_APP_WSI_DOMAIN + '/orders', {
+      let res = await fetch(process.env.REACT_APP_WSI_DOMAIN + '/orders', {
         method: 'POST',
         body: JSON.stringify(orderData),
         headers: {
           'Content-Type': 'application/json'
         }
-      }).then(res => res.text())
-      .then(res => console.log(res));
+      });
+      
+      if (!res.ok) {
+        alert(`There was an error submitting the order: ${await res.text()}`)
+      } else {
+        alert("Order successfully submitted");
+      }
     }
   }
 
