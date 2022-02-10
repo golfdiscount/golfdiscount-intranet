@@ -21,6 +21,7 @@ function Landing() {
         <section>
           <h2>Change Log</h2>
           <ul>
+            <li>Recipient address updates based on selected store number in order creator</li>
             <li>Added quick links to landing page</li>
             <li>Added WSI order creation and order search</li>
           </ul>
