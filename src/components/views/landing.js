@@ -21,6 +21,7 @@ function Landing() {
         <section>
           <h2>Change Log</h2>
           <ul>
+            <li>Authentication via Google Identity Provider</li>
             <li>Recipient address updates based on selected store number in order creator</li>
             <li>Added quick links to landing page</li>
             <li>Added WSI order creation and order search</li>
@@ -30,10 +31,7 @@ function Landing() {
           <h2>Upcoming Changes</h2>
           <ul>
             <li>Product names when searching for an order</li>
-            <li>Authentication</li>
             <li>Excel spreadsheet joiner</li>
-            <li>Magento integration</li>
-            <li>Business analytics platform</li>
           </ul>
         </section>
       </div>
