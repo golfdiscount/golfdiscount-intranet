@@ -57,69 +57,69 @@ function Order(props) {
       {products}
     </div>
   );
+}
 
-  /**
-   * Component to render order metadata
-   * @param {Object} props Contains the date of the order displayed
-   * @returns JSX React element with order metadata
-   */
-  function OrderHeader(props) {
-    const order = props.order;
-    return (
-      <div>
-        <h2>Order Information</h2>
-        <p>Order Date: {order.orderDate}</p>
-      </div>
-    );
-  }
+/**
+ * Component to render order metadata
+ * @param {Object} props Contains the date of the order displayed
+ * @returns JSX React element with order metadata
+ */
+function OrderHeader(props) {
+  const order = props.order;
+  return (
+    <div>
+      <h2>Order Information</h2>
+      <p>Order Date: {order.orderDate}</p>
+    </div>
+  );
+}
 
-  /**
-   * Component with address information
-   * @param {Object} props Contains information to make a complete address
-   * @returns JSX React element with address information
-   */
-  function Address(props) {
-    const address = props.address
-    return (
-      <div>
-        <p>Name: {address.name}</p>
-        <p>Address: {address.address} {address.city}, {address.state} {address.zip} {address.country}</p>
-      </div>
-    );
-  }
+/**
+ * Component with address information
+ * @param {Object} props Contains information to make a complete address
+ * @returns JSX React element with address information
+ */
+function Address(props) {
+  const address = props.address
+  return (
+    <div>
+      <p>Name: {address.name}</p>
+      <p>Address: {address.address} {address.city}, {address.state} {address.zip} {address.country}</p>
+    </div>
+  );
+}
 
-  /**
-   * A component displaying product information
-   * @param {Object} props Contains information about a specific product
-   * @returns JSX React element with product information
-   */
-  function Product(props) {
-    let productName;
+/**
+ * A component displaying product information
+ * @param {Object} props Contains information about a specific product
+ * @returns JSX React element with product information
+ */
+function Product(props) {
+  const [ productName, setProductName ] = useState();
 
-    fetch(`https://magestack.azurewebsites.net/api/products/${props.sku}`)
-    .then(res => {
-      if(!res.ok) {
-        throw new Error('Could not get product information');
-      }
+  fetch(`https://magestack.azurewebsites.net/api/products/${props.sku}`)
+  .then(res => {
+    if(!res.ok) {
+      throw new Error('Could not get product information');
+    }
 
-      return res;
-    }).then(res => res.json())
-    .then(res => {
-      productName = res.name
-    }).catch(() => {
-      productName = null;
-    });
+    return res;
+  }).then(res => res.json())
+  .then(res => {
+    setProductName(res.name);
+  }).catch(() => {
+    setProductName(null);
+  });
 
-    return (
-      <div>
-        {productName && <h3>{productName}</h3>}
-        <p>SKU: {props.sku}</p>
-        <p>Unit Price: ${props.price}</p>
-        <p>Quantity: {props.qty}</p>
-        <hr />
-      </div>
-    )
-  }
+  return (
+    <div>
+      {productName && <h3>{productName}</h3>}
+      <p>SKU: {props.sku}</p>
+      <p>Unit Price: ${props.price}</p>
+      <p>Quantity: {props.qty}</p>
+      <hr />
+    </div>
+  )
 }
 
 /**
