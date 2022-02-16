@@ -112,7 +112,7 @@ function Order(props) {
 
     return (
       <div>
-        {productName && <h3>productName</h3>}
+        {productName && <h3>{productName}</h3>}
         <p>SKU: {props.sku}</p>
         <p>Unit Price: ${props.price}</p>
         <p>Quantity: {props.qty}</p>
