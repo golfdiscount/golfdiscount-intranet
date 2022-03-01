@@ -12,6 +12,8 @@ const __dirname = dirname(__filename);
 const PORT = process.env.PORT || 3000;
 const app = express();
 
+app.disable('x-powered-by');
+
 app.use(logger('combined'));
 app.use('/api', api);
 
