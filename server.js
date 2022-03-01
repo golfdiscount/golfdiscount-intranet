@@ -4,18 +4,15 @@ import { dirname } from 'path';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-
 // API routers
 import api from './routes/api.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const PORT = process.env.PORT || 3000;
 const app = express();
 
-const PORT = process.env.PORT || 3000;
-
 app.use(logger('combined'));
-
 app.use('/api', api);
 
 // Configuration for serving React files
