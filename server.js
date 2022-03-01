@@ -1,7 +1,9 @@
 import express from 'express';
+import logger from 'morgan'
 import { dirname } from 'path';
-import { fileURLToPath } from 'url';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
 
 // API routers
 import api from './routes/api.js';
@@ -11,6 +13,8 @@ const __dirname = dirname(__filename);
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+
+app.use(logger('combined'));
 
 app.use('/api', api);
 
