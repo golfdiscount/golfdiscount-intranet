@@ -71,7 +71,7 @@ function Product(props) {
           <p>SKU: {product.sku}</p>
           <p>Quantity: {product.quantity}</p>
         </div>
-        <img src={product.imageUrl} width={200} height={200}></img>
+        <img src={product.imageUrl} alt={product.productName} width={200} height={200}></img>
       </div>
     </div>
   );
