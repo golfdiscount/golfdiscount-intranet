@@ -10,7 +10,7 @@ function OrderVerifier() {
     <div className='tab-content'>
       {error}
       <div className='tab-inner-content'>
-        <h1>Order Verification Tab</h1>
+        <h1>Order Verification</h1>
         <h2>Order Number</h2>
         <form onSubmit={e => {
           e.preventDefault();
@@ -84,7 +84,7 @@ function Product(props) {
  * @param {Function} setError Function to update the currently displayed error
  */
 async function getOrder(orderNumber, setOrder, setError) {
-  await fetch(`http://localhost:8080/api/shipstation/orders/${orderNumber}`)
+  await fetch(`/api/shipstation/orders/${orderNumber}`)
   .then(res => {
     if (res.status === 404) {
       throw new Error('Order not found');
