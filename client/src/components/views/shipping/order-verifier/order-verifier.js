@@ -102,8 +102,13 @@ async function getOrder(orderNumber, setOrder, setProducts, setError) {
 
     await Promise.all(order.products.map(async product => {
       let productInfo = await fetch(`https://magestack-staging.azurewebsites.net/api/products/${product.sku}`);
-      productInfo = await productInfo.json();
-      product.upc = productInfo.upc;
+      if (!productInfo.ok) {
+        product.upc = 'No UPC in system'
+      } else {
+        productInfo = await productInfo.json();
+        product.upc = productInfo.upc;
+      }
+
       product.numVerified = 0;
       return product;
     }));
