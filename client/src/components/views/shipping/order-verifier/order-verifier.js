@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ErrorMessage from '../../../common/ErrorMessage';
+import './order-verifier.css';
 
 function OrderVerifier() {
   const [error, setError] = useState();
@@ -19,26 +20,31 @@ function OrderVerifier() {
           <button type='submit'>Submit</button>
         </form>
         {order &&
-          <OrderInfo />
+          <OrderInfo date={order.orderDate} email={order.email}/>
         }
         {order &&
-          <ProductVerifier />
+          <ProductVerifier products={order.products}/>
         }
       </div>
     </div>
   );
 }
 
-function OrderInfo() {
+function OrderInfo(props) {
   return (
     <div>
       <h2>Order Info</h2>
+      <p>Order Date: {props.date}</p>
+      <p>Email: {props.email}</p>
     </div>
   );
 }
 
-function ProductVerifier() {
-  const [products, updateProducts] = useState([]);
+function ProductVerifier(props) {
+  const productListings = props.products.map(product => {
+    return <Product product={product} key={product.sku}/>
+  });
+
   return(
     <div>
       <h2>Products</h2>
@@ -49,6 +55,24 @@ function ProductVerifier() {
         </label>
         <button type='submit'>Verify Product</button>
       </form>
+      {productListings}
+    </div>
+  );
+}
+
+function Product(props) {
+  const product = props.product;
+  return (
+    <div>
+      <hr></hr>
+      <div className='product-listing'>
+        <div>
+          <h3>{product.productName}</h3>
+          <p>SKU: {product.sku}</p>
+          <p>Quantity: {product.quantity}</p>
+        </div>
+        <img src={product.imageUrl} width={200} height={200}></img>
+      </div>
     </div>
   );
 }
@@ -60,7 +84,7 @@ function ProductVerifier() {
  * @param {Function} setError Function to update the currently displayed error
  */
 async function getOrder(orderNumber, setOrder, setError) {
-  return await fetch(`http://localhost:8080/api/shipstation/orders/${orderNumber}`)
+  await fetch(`http://localhost:8080/api/shipstation/orders/${orderNumber}`)
   .then(res => {
     if (res.status === 404) {
       throw new Error('Order not found');
