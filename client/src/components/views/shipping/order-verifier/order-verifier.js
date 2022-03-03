@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ErrorMessage from '../../../common/ErrorMessage';
 import './order-verifier.css';
 
 function OrderVerifier() {
   const [error, setError] = useState();
   const [order, setOrder] = useState();
+  const [products, setProducts] = useState([]);
 
   return (
     <div className='tab-content'>
@@ -14,33 +15,35 @@ function OrderVerifier() {
         <h2>Order Number</h2>
         <form onSubmit={e => {
           e.preventDefault();
-          getOrder(e.target.elements['orderNumber'].value, setOrder, setError);
+          getOrder(e.target.elements['orderNumber'].value, setOrder, setProducts, setError);
         }}>
           <input required type='text' name='orderNumber' />
           <button type='submit'>Submit</button>
         </form>
-        {order &&
-          <OrderInfo date={order.orderDate} email={order.email}/>
-        }
-        {order &&
-          <ProductVerifier products={order.products}/>
-        }
+        {order && <OrderInfo date={order.orderDate} email={order.email}/>}
+        {order && <ProductVerifier products={products} setProducts={setProducts}/>}
       </div>
     </div>
   );
 }
 
 function OrderInfo(props) {
+  let orderDate = new Date(props.date);
   return (
     <div>
       <h2>Order Info</h2>
-      <p>Order Date: {props.date}</p>
+      <p>Order Date: {orderDate.toISOString().substring(0, 10)}</p>
       <p>Email: {props.email}</p>
     </div>
   );
 }
 
 function ProductVerifier(props) {
+  useEffect(() => {
+    document.getElementById('upc-search').value = '';
+    document.getElementById('upc-search').focus();
+  });
+
   const productListings = props.products.map(product => {
     return <Product product={product} key={product.sku}/>
   });
@@ -48,10 +51,12 @@ function ProductVerifier(props) {
   return(
     <div>
       <h2>Products</h2>
-      <form>
+      <form onSubmit={e => {
+            e.preventDefault();
+            verifyUpc(e.target.elements['upc-search'].value, props.products, props.setProducts);
+          }}>
         <label>
-          UPC:
-          <input required type='text'/>
+          UPC: <input id='upc-search' required type='text'/>
         </label>
         <button type='submit'>Verify Product</button>
       </form>
@@ -65,11 +70,13 @@ function Product(props) {
   return (
     <div>
       <hr></hr>
-      <div className='product-listing'>
-        <div>
+      <div className={`product-listing${product.numVerified === product.quantity ? ' verified' : ''}`}>
+        <div >
           <h3>{product.productName}</h3>
           <p>SKU: {product.sku}</p>
+          <p>Verified: {product.numVerified}</p>
           <p>Quantity: {product.quantity}</p>
+          <p>UPC: {product.upc ?? 'ERROR'}</p>
         </div>
         <img src={product.imageUrl} alt={product.productName} width={200} height={200}></img>
       </div>
@@ -83,25 +90,39 @@ function Product(props) {
  * @param {Function} setOrder Function to update the currently displayed order
  * @param {Function} setError Function to update the currently displayed error
  */
-async function getOrder(orderNumber, setOrder, setError) {
-  await fetch(`/api/shipstation/orders/${orderNumber}`)
-  .then(res => {
-    if (res.status === 404) {
-      throw new Error('Order not found');
-    } else if (!res.ok) {
-      throw new Error(res.statusText);
-    }
+async function getOrder(orderNumber, setOrder, setProducts, setError) {
+  let order = await fetch(`/api/shipstation/orders/${orderNumber}`);
 
-    return res.json();
-  })
-  .then(res => {
-    setError();
-    setOrder(res);
-  })
-  .catch(e => {
-    setError(<ErrorMessage error={e.message} />);
+  if (!order.ok) {
+    setError(<ErrorMessage error={'Could not pull order from ShipStation, check order number and try again'}/>);
     setOrder();
+    setProducts();
+  } else {
+    order = await order.json();
+
+    await Promise.all(order.products.map(async product => {
+      let productInfo = await fetch(`https://magestack-staging.azurewebsites.net/api/products/${product.sku}`);
+      productInfo = await productInfo.json();
+      product.upc = productInfo.upc;
+      product.numVerified = 0;
+      return product;
+    }));
+
+    setError();
+    setOrder(order);
+    setProducts(order.products);
+  }
+}
+
+function verifyUpc(upc, products, setProducts) {
+  let productsTemp = products.map(product => product);
+  productsTemp.forEach(product => {
+    if (product.upc === upc) {
+      product.numVerified += 1;
+    }
   });
+
+  setProducts(productsTemp);
 }
 
 export default OrderVerifier;
