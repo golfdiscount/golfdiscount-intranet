@@ -9,7 +9,7 @@ import SideNavbar from '../../navigation/Side-Navbar';
 
 function Shipping() {
   let tabs = [
-    {text: 'Order Verification', route: '/'}
+    {text: 'Order Verification', route: '/shipping'}
   ];
 
   return (
