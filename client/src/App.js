@@ -14,7 +14,7 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path='*' element={<Landing />} />
+          <Route path='/' element={<Landing />} />
           <Route path='/wsi/*' element={<Wsi />} />
           <Route path='/shipping/*' element={<Shipping />} />
         </Routes>
