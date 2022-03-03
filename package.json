@@ -5,7 +5,9 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "build": "cd client && npm run-script build"
+    "prebuild": "cd client && npm i",
+    "build": "cd client && npm run-script build",
+    "postbuild": "cd client && rm -rf node_modules"
   },
   "repository": {
     "type": "git",
