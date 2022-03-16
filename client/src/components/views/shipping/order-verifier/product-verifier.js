@@ -39,12 +39,18 @@ function ProductVerifier(props) {
  */
 function verifyUpc(upc, products, setProducts) {
   let productsTemp = products.map(product => product);
+  let foundProduct = false;
   productsTemp.forEach(product => {
     if (product.upc === upc) {
       product.numVerified += 1;
+      foundProduct = true;
     }
   });
   
+  if (!foundProduct) {
+    let errorAudio = new Audio('/error.mp3');
+    errorAudio.play();
+  }
   setProducts(productsTemp);
 }
 
