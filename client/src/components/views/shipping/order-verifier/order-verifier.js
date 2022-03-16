@@ -1,84 +1,33 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+
 import ErrorMessage from '../../../common/ErrorMessage';
+import OrderInfo from './order-info';
+import ProductVerifier from './product-verifier';
+
 import './order-verifier.css';
 
 function OrderVerifier() {
   const [error, setError] = useState();
   const [order, setOrder] = useState();
   const [products, setProducts] = useState([]);
+  const [verified, setVerified] = useState(false);
 
   return (
     <div className='tab-content'>
       {error}
-      <div className='tab-inner-content'>
+      <div className={`tab-inner-content${verified ? ' verified' : ''}`}>
         <h1>Order Verification</h1>
         <h2>Order Number</h2>
-        <form onSubmit={e => {
+        <form onSubmit={async e => {
           e.preventDefault();
-          getOrder(e.target.elements['orderNumber'].value, setOrder, setProducts, setError);
+          await getOrder(e.target.elements['orderNumber'].value, setOrder, setProducts, setError);
+          setVerified(false);
         }}>
           <input required type='text' name='orderNumber' />
           <button type='submit'>Submit</button>
         </form>
         {order && <OrderInfo date={order.orderDate} email={order.email}/>}
-        {order && <ProductVerifier products={products} setProducts={setProducts}/>}
-      </div>
-    </div>
-  );
-}
-
-function OrderInfo(props) {
-  let orderDate = new Date(props.date);
-  return (
-    <div>
-      <h2>Order Info</h2>
-      <p>Order Date: {orderDate.toISOString().substring(0, 10)}</p>
-      <p>Email: {props.email}</p>
-    </div>
-  );
-}
-
-function ProductVerifier(props) {
-  useEffect(() => {
-    document.getElementById('upc-search').value = '';
-    document.getElementById('upc-search').focus();
-  });
-
-  const productListings = props.products.map(product => {
-    return <Product product={product} key={product.sku}/>
-  });
-
-  return(
-    <div>
-      <h2>Products</h2>
-      <form onSubmit={e => {
-            e.preventDefault();
-            verifyUpc(e.target.elements['upc-search'].value, props.products, props.setProducts);
-          }}>
-        <label>
-          UPC: <input id='upc-search' required type='text'/>
-        </label>
-        <button type='submit'>Verify Product</button>
-      </form>
-      {productListings}
-    </div>
-  );
-}
-
-function Product(props) {
-  const product = props.product;
-  return (
-    <div>
-      <hr></hr>
-      <div className={`product-listing${product.numVerified === product.quantity ? ' verified' : ''}`}>
-        <div >
-          <h3>{product.productName}</h3>
-          <p>SKU: {product.sku}</p>
-          <p>Verified: {product.numVerified}</p>
-          <p>Quantity: {product.quantity}</p>
-          <p>UPC: {product.upc ?? 'ERROR'}</p>
-        </div>
-        <img src={product.imageUrl} alt={product.productName} width={200} height={200}></img>
+        {order && <ProductVerifier products={products} setProducts={setProducts} setVerified={setVerified}/>}
       </div>
     </div>
   );
@@ -88,6 +37,7 @@ function Product(props) {
  * Searches for an order and updates the current order displayed
  * @param {String} orderNumber Order number to do a "starts with" search in ShipStation
  * @param {Function} setOrder Function to update the currently displayed order
+ * @param {Function} setProducts Function to update the current products displayed
  * @param {Function} setError Function to update the currently displayed error
  */
 async function getOrder(orderNumber, setOrder, setProducts, setError) {
@@ -113,21 +63,12 @@ async function getOrder(orderNumber, setOrder, setProducts, setError) {
       return product;
     }));
 
+    order.verified = false;
+
     setError();
     setOrder(order);
     setProducts(order.products);
   }
-}
-
-function verifyUpc(upc, products, setProducts) {
-  let productsTemp = products.map(product => product);
-  productsTemp.forEach(product => {
-    if (product.upc === upc) {
-      product.numVerified += 1;
-    }
-  });
-
-  setProducts(productsTemp);
 }
 
 export default OrderVerifier;
