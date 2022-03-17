@@ -1,14 +1,25 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import Product from './product';
 
 function ProductVerifier(props) {
+  const [products, setProducts] = useState(props.products);
+  const [verified, setVerified] = useState(false);
+
   useEffect(() => {
-    document.getElementById('upc-search').value = '';
-    document.getElementById('upc-search').focus();
+    if (!verified) {
+      document.getElementById('upc-search').value = '';
+      document.getElementById('upc-search').focus();
+    } else {
+      document.getElementById('order-search').value = '';
+      document.getElementById('upc-search').value = '';
+      document.getElementById('order-search').focus();
+      document.querySelector('.tab-inner-content').classList.add('verified');
+    }
   });
 
-  const productListings = props.products.map(product => {
+
+  const productListings = products.map(product => {
     return <Product product={product} key={product.sku}/>
   });
 
@@ -17,8 +28,8 @@ function ProductVerifier(props) {
       <h2>Products</h2>
       <form onSubmit={e => {
             e.preventDefault();
-            verifyUpc(e.target.elements['upc-search'].value, props.products, props.setProducts);
-            checkProducts(props.products, props.setVerified);
+            verifyUpc(e.target.elements['upc-search'].value, products, setProducts);
+            checkProducts(products, setVerified);
           }}>
         <label>
           UPC: <input id='upc-search' required type='text'/>
@@ -38,12 +49,15 @@ function ProductVerifier(props) {
  * @param {Function} setProducts Function to update state of current products 
  */
 function verifyUpc(upc, products, setProducts) {
-  let productsTemp = products.map(product => product);
   let foundProduct = false;
+  let productsTemp = products.map(product => product);
+
   productsTemp.forEach(product => {
     if (product.upc === upc) {
-      product.numVerified += 1;
-      foundProduct = true;
+      if (product.numVerified < product.quantity) {
+        product.numVerified += 1;
+        foundProduct = true;
+      }
     }
   });
   
@@ -51,6 +65,7 @@ function verifyUpc(upc, products, setProducts) {
     let errorAudio = new Audio('/error.mp3');
     errorAudio.play();
   }
+  
   setProducts(productsTemp);
 }
 
@@ -59,15 +74,16 @@ function verifyUpc(upc, products, setProducts) {
  * @param {Array} products Products in the current order 
  * @param {Function} setProductsVerified Function to update verified status of current products 
  */
-function checkProducts(products, setProductsVerified) {
-  let productsVerified = true;
+function checkProducts(products, setVerified) {
+  let verified = true;
+
   products.forEach(product => {
     if (product.numVerified !== product.quantity) {
-      productsVerified = false;
+      verified = false;
     }
   });
 
-  setProductsVerified(productsVerified);
+  setVerified(verified);
 }
 
 export default ProductVerifier;

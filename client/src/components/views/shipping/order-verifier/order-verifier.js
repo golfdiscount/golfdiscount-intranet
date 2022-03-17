@@ -9,25 +9,27 @@ import './order-verifier.css';
 function OrderVerifier() {
   const [error, setError] = useState();
   const [order, setOrder] = useState();
-  const [products, setProducts] = useState([]);
-  const [verified, setVerified] = useState(false);
+
+  if (order && order.verified) {
+    document.getElementById('order-search').value = '';
+    document.getElementById('order-search').focus();
+  }
 
   return (
     <div className='tab-content'>
       {error}
-      <div className={`tab-inner-content${verified ? ' verified' : ''}`}>
+      <div className={`tab-inner-content`}>
         <h1>Order Verification</h1>
         <h2>Order Number</h2>
         <form onSubmit={async e => {
           e.preventDefault();
-          await getOrder(e.target.elements['orderNumber'].value, setOrder, setProducts, setError);
-          setVerified(false);
+          await getOrder(e.target.elements['orderNumber'].value, setOrder, setError);
         }}>
-          <input required type='text' name='orderNumber' />
+          <input required type='text' name='orderNumber' id='order-search'/>
           <button type='submit'>Submit</button>
         </form>
-        {order && <OrderInfo date={order.orderDate} email={order.email}/>}
-        {order && <ProductVerifier products={products} setProducts={setProducts} setVerified={setVerified}/>}
+        {order && <OrderInfo date={order.orderDate} email={order.email} number={order.orderNumber}/>}
+        {order && <ProductVerifier products={order.products} setOrder={setOrder}/>}
       </div>
     </div>
   );
@@ -37,16 +39,14 @@ function OrderVerifier() {
  * Searches for an order and updates the current order displayed
  * @param {String} orderNumber Order number to do a "starts with" search in ShipStation
  * @param {Function} setOrder Function to update the currently displayed order
- * @param {Function} setProducts Function to update the current products displayed
  * @param {Function} setError Function to update the currently displayed error
  */
-async function getOrder(orderNumber, setOrder, setProducts, setError) {
+async function getOrder(orderNumber, setOrder, setError) {
   let order = await fetch(`/api/shipstation/orders/${orderNumber}`);
 
   if (!order.ok) {
     setError(<ErrorMessage error={'Could not pull order from ShipStation, check order number and try again'}/>);
     setOrder();
-    setProducts();
   } else {
     order = await order.json();
 
@@ -67,7 +67,6 @@ async function getOrder(orderNumber, setOrder, setProducts, setError) {
 
     setError();
     setOrder(order);
-    setProducts(order.products);
   }
 }
 
