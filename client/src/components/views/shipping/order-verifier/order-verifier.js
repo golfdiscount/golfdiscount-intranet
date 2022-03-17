@@ -11,11 +11,12 @@ function OrderVerifier() {
   const [order, setOrder] = useState();
   const [verified, setVerified] = useState(false);
 
-  if (order && verified) {
-    document.getElementById('order-search').value = '';
-    document.getElementById('order-search').focus();
-  }
-  
+  useEffect(() => {
+    if (order && verified) {
+      document.getElementById('order-search').value = '';
+      document.getElementById('order-search').focus();
+    }
+  });  
 
   return (
     <div className='tab-content'>
