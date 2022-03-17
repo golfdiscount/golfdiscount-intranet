@@ -18,7 +18,7 @@ function ProductVerifier(props) {
       document.getElementById('order-search').focus();
       document.querySelector('.tab-inner-content').classList.add('verified');
     }
-  });
+  }, [props.products, props.verified]);
 
 
   const productListings = products.map(product => {
