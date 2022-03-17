@@ -9,8 +9,6 @@ function ProductVerifier(props) {
     setProducts(props.products);
 
     if (!props.verified) {
-      document.getElementById('upc-search').value = '';
-      document.getElementById('upc-search').focus();
       document.querySelector('.tab-inner-content').classList.remove('verified');
     } else {
       document.getElementById('order-search').value = '';
@@ -67,6 +65,9 @@ function verifyUpc(upc, products, setProducts) {
     let errorAudio = new Audio('/error.mp3');
     errorAudio.play();
   }
+
+  document.getElementById('upc-search').value = '';
+  document.getElementById('upc-search').focus();
   
   setProducts(productsTemp);
 }
