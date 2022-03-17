@@ -1,0 +1,10 @@
+.product-listing {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 5px;
+}
+
+.verified {
+    background-color: #C1FCB8;
+}

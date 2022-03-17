@@ -88,11 +88,11 @@ function OrderCreator() {
           'Content-Type': 'application/json'
         }
       });
-      
+
       if (!res.ok) {
         alert(`There was an error submitting the order: ${await res.text()}`)
       } else {
-        alert("Order successfully submitted");
+        alert('Order successfully submitted');
       }
     }
   }
@@ -169,11 +169,11 @@ function OrderInfo(props) {
       </label>
       <label>
         Shipping Method:
-        <select defaultValue={"FDXH"} name='shipping_method'>
-          <option value="FDXH">FedEx Home Delivery</option>
-          <option value="FXES">FedEx 3-Day</option>
-          <option value="FX2D">FedEx 2-Day</option>
-          <option value="FXSO">FedEx 1-Day</option>
+        <select defaultValue={'FDXH'} name='shipping_method'>
+          <option value='FDXH'>FedEx Home Delivery</option>
+          <option value='FXES'>FedEx 3-Day</option>
+          <option value='FX2D'>FedEx 2-Day</option>
+          <option value='FXSO'>FedEx 1-Day</option>
         </select>
       </label>
     </div>

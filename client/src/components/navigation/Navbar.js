@@ -8,6 +8,7 @@ function Navbar() {
         <img src='/gd_logo.png' alt='Golf Discount logo'></img>
       </NavLink>
       <NavLink className='tab navbar-tab' to='/wsi'>WSI</NavLink>
+      <NavLink className='tab navbar-tab' to='/shipping'>Shipping</NavLink>
     </div>
   );
 }
