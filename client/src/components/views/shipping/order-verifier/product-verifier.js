@@ -10,6 +10,8 @@ function ProductVerifier(props) {
 
     if (!props.verified) {
       document.querySelector('.tab-inner-content').classList.remove('verified');
+      document.getElementById('upc-search').value = '';
+      document.getElementById('upc-search').focus();
     } else {
       document.getElementById('order-search').value = '';
       document.getElementById('upc-search').value = '';
