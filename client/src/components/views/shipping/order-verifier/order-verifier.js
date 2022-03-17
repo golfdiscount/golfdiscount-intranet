@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import ErrorMessage from '../../../common/ErrorMessage';
 import OrderInfo from './order-info';
@@ -9,11 +9,13 @@ import './order-verifier.css';
 function OrderVerifier() {
   const [error, setError] = useState();
   const [order, setOrder] = useState();
+  const [verified, setVerified] = useState(false);
 
-  if (order && order.verified) {
+  if (order && verified) {
     document.getElementById('order-search').value = '';
     document.getElementById('order-search').focus();
   }
+  
 
   return (
     <div className='tab-content'>
@@ -23,13 +25,13 @@ function OrderVerifier() {
         <h2>Order Number</h2>
         <form onSubmit={async e => {
           e.preventDefault();
-          await getOrder(e.target.elements['orderNumber'].value, setOrder, setError);
+          await getOrder(e.target.elements['orderNumber'].value, setOrder, setVerified, setError);
         }}>
           <input required type='text' name='orderNumber' id='order-search'/>
           <button type='submit'>Submit</button>
         </form>
         {order && <OrderInfo date={order.orderDate} email={order.email} number={order.orderNumber}/>}
-        {order && <ProductVerifier products={order.products} setOrder={setOrder}/>}
+        {order && <ProductVerifier products={order.products} verified={verified} setVerified={setVerified}/>}
       </div>
     </div>
   );
@@ -41,7 +43,7 @@ function OrderVerifier() {
  * @param {Function} setOrder Function to update the currently displayed order
  * @param {Function} setError Function to update the currently displayed error
  */
-async function getOrder(orderNumber, setOrder, setError) {
+async function getOrder(orderNumber, setOrder, setVerified, setError) {
   let order = await fetch(`/api/shipstation/orders/${orderNumber}`);
 
   if (!order.ok) {
@@ -63,9 +65,8 @@ async function getOrder(orderNumber, setOrder, setError) {
       return product;
     }));
 
-    order.verified = false;
-
     setError();
+    setVerified(false);
     setOrder(order);
   }
 }

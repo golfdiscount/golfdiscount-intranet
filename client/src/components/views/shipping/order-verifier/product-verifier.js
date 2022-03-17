@@ -3,13 +3,15 @@ import { useEffect, useState } from 'react';
 import Product from './product';
 
 function ProductVerifier(props) {
-  const [products, setProducts] = useState(props.products);
-  const [verified, setVerified] = useState(false);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    if (!verified) {
+    setProducts(props.products);
+
+    if (!props.verified) {
       document.getElementById('upc-search').value = '';
       document.getElementById('upc-search').focus();
+      document.querySelector('.tab-inner-content').classList.remove('verified');
     } else {
       document.getElementById('order-search').value = '';
       document.getElementById('upc-search').value = '';
@@ -29,7 +31,7 @@ function ProductVerifier(props) {
       <form onSubmit={e => {
             e.preventDefault();
             verifyUpc(e.target.elements['upc-search'].value, products, setProducts);
-            checkProducts(products, setVerified);
+            checkProducts(products, props.setVerified);
           }}>
         <label>
           UPC: <input id='upc-search' required type='text'/>
