@@ -55,7 +55,7 @@ function verifyProduct(query, products, setProducts) {
   let productsTemp = products.map(product => product);
 
   productsTemp.forEach(product => {
-    if (product.upc === query || product.sku == query) {
+    if (product.upc === query || product.sku === query) {
       if (product.numVerified < product.quantity) {
         product.numVerified += 1;
         foundProduct = true;
