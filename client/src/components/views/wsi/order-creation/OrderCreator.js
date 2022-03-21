@@ -23,6 +23,7 @@ function OrderCreator() {
     country: 'US',
     zip: ''
   });
+
   // If set to true, disables the recipient address box
   const [ recipientDisabled, setRecipientDisabled ] = useState(false);
 
@@ -81,7 +82,7 @@ function OrderCreator() {
         orderData.products.push(product);
       });
 
-      let res = await fetch(process.env.REACT_APP_WSI_DOMAIN + '/orders', {
+      let res = await fetch('/api/wsi/orders', {
         method: 'POST',
         body: JSON.stringify(orderData),
         headers: {
