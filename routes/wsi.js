@@ -4,9 +4,9 @@ import https from 'https';
 const router = express.Router();
 
 router.get('/orders/:orderNum', (req, res) => {
-const wsiUrl = new URL(`/api/orders/${req.params.orderNum}`, process.env.WSI);
+    const url = new URL(`/api/orders/${req.params.orderNum}`, process.env.WSI);
 
-    https.get(wsiUrl, (serverRes) => {
+    const serverReq = https.get(url, (serverRes) => {
         let rawData = '';
 
         serverRes.on('data', (d) => {
@@ -26,6 +26,38 @@ const wsiUrl = new URL(`/api/orders/${req.params.orderNum}`, process.env.WSI);
             res.status(500).send('Unable to get order from WSI database');
         });
     });
+
+    serverReq.end();
+});
+
+router.post('/orders', (req, res) => {
+    const url = new URL('/api/orders', process.env.WSI);
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    const serverReq = https.request(url, options, (serverRes) => {
+        let rawData = '';
+
+        serverRes.on('data', (d) => {
+            rawData += d;
+        });
+
+        serverRes.on('end', () => {
+            console.log(rawData);
+            if (serverRes.statusCode != 200) {
+                res.status(400).send('Unable to submit order');
+            } else {
+                res.status(200).send('Order submitted!');
+            }
+        });
+    });
+
+    serverReq.write(JSON.stringify(req.body));
+    serverReq.end();
 });
 
 export default router;
