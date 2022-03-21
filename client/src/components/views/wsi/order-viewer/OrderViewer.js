@@ -130,7 +130,7 @@ function Product(props) {
  * @param {Function} setError Function to update the error state of the order viewing screen
  */
 function getOrder(orderNumber, setState, setError) {
-  fetch(process.env.REACT_APP_WSI_DOMAIN + `/orders/${orderNumber}`)
+  fetch(`/api/wsi/orders/${orderNumber}`)
   .then(res => {
     if (res.status === 404) {
       throw new Error('Order not found');
