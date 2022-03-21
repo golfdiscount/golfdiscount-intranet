@@ -15,6 +15,7 @@ const app = express();
 app.disable('x-powered-by');
 
 app.use(logger('combined'));
+app.use(express.json());
 app.use('/api', api);
 
 // Configuration for serving React files
