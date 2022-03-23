@@ -9,7 +9,7 @@ const httpsOptions = {
   }
 }
 
-router.get('/orders/:orderNum', (req, res) => {
+router.get('/orders/:orderNum', async (req, res) => {
   const reqUrl = new URL('/orders', SHIPSTATION_HOST);
   reqUrl.searchParams.append('orderNumber', req.params.orderNum);
 
@@ -17,13 +17,22 @@ router.get('/orders/:orderNum', (req, res) => {
     let rawData = '';
     ssRes.on('data', data => { rawData += data });
 
-    ssRes.on('end', () => {
+    ssRes.on('end', async () => {
       let orders = JSON.parse(rawData);
 
       if (orders.total == 0) {
         res.status(404).send('The order could not be found, please check the order number and try again');
       } else {
         let order = formatOrder(orders.orders[0]);
+
+        await Promise.all(order.products.map(async product => {
+          let upc = await getProductUpc(product.sku);
+          console.log(upc);
+          product.upc = upc;
+          product.numVerified = 0;
+          return product;
+        }));
+
         res.status(200).json(order);
       }
     });
@@ -71,5 +80,27 @@ function formatOrder(orderInfo) {
 
   return order;
 }
+
+async function getProductUpc(sku) {
+  const url = new URL(`/api/products/${sku}`, process.env.MAGESTACK)
+
+  return new Promise((resolve, reject) => {
+    const req = https.get(url, res => {
+      let rawData = '';
+
+      res.on('data', (d) => { rawData += d });
+
+      res.on('end', () => {
+        let productInfo = JSON.parse(rawData);
+        resolve(productInfo.upc);
+      });
+    });
+
+    req.on('error', (e) => {
+      console.log(e);
+      reject('No UPC in system');
+    });
+  });
+} 
 
 export default router;
