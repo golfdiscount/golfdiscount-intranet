@@ -53,19 +53,6 @@ async function getOrder(orderNumber, setOrder, setVerified, setError) {
   } else {
     order = await order.json();
 
-    await Promise.all(order.products.map(async product => {
-      let productInfo = await fetch(`https://magestack-staging.azurewebsites.net/api/products/${product.sku}`);
-      if (!productInfo.ok) {
-        product.upc = 'No UPC in system'
-      } else {
-        productInfo = await productInfo.json();
-        product.upc = productInfo.upc;
-      }
-
-      product.numVerified = 0;
-      return product;
-    }));
-
     setError();
     setVerified(false);
     setOrder(order);
