@@ -10,10 +10,10 @@ const httpsOptions = {
 }
 
 router.get('/orders/:orderNum', async (req, res) => {
-  const reqUrl = new URL('/orders', SHIPSTATION_HOST);
-  reqUrl.searchParams.append('orderNumber', req.params.orderNum);
+  const url = new URL('/orders', SHIPSTATION_HOST);
+  url.searchParams.append('orderNumber', req.params.orderNum);
 
-  const ssReq = https.get(reqUrl, httpsOptions, ssRes => {
+  const ssReq = https.get(url, httpsOptions, ssRes => {
     let rawData = '';
     ssRes.on('data', data => { rawData += data });
 
@@ -26,8 +26,7 @@ router.get('/orders/:orderNum', async (req, res) => {
         let order = formatOrder(orders.orders[0]);
 
         await Promise.all(order.products.map(async product => {
-          let upc = await getProductUpc(product.sku);
-          console.log(upc);
+          let upc = await getProductUpc(product.sku, req.cache);
           product.upc = upc;
           product.numVerified = 0;
           return product;
@@ -81,25 +80,35 @@ function formatOrder(orderInfo) {
   return order;
 }
 
-async function getProductUpc(sku) {
+async function getProductUpc(sku, cache) {
   const url = new URL(`/api/products/${sku}`, process.env.MAGESTACK)
 
-  return new Promise((resolve, reject) => {
-    const req = https.get(url, res => {
-      let rawData = '';
+  return new Promise(async (resolve, reject) => {
+    const cachedUpc = await cache.HGET(sku, 'upc');
+    
+    if (cachedUpc === null) {
+      console.warn(`Could not find ${sku} in the cache`);
 
-      res.on('data', (d) => { rawData += d });
-
-      res.on('end', () => {
-        let productInfo = JSON.parse(rawData);
-        resolve(productInfo.upc);
+      const req = https.get(url, res => {
+        let rawData = '';
+  
+        res.on('data', (d) => { rawData += d });
+  
+        res.on('end', async () => {
+          let productInfo = JSON.parse(rawData);
+          console.log(`Setting UPC ${productInfo.upc} for ${sku}`);
+          await cache.HSET(sku, 'upc', productInfo.upc);
+          resolve(productInfo.upc);
+        });
       });
-    });
-
-    req.on('error', (e) => {
-      console.log(e);
-      reject('No UPC in system');
-    });
+  
+      req.on('error', (e) => {
+        console.log(e);
+        reject('No UPC in system');
+      });
+    } else {
+      resolve(cachedUpc)
+    }
   });
 } 
 
