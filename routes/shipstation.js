@@ -84,7 +84,7 @@ async function getProductUpc(sku, cache) {
   const url = new URL(`/api/products/${sku}`, process.env.MAGESTACK)
 
   return new Promise(async (resolve, reject) => {
-    const cachedUpc = await cache.HGET(sku, 'upc');
+    const cachedUpc = await cache.GET(sku);
     
     if (cachedUpc === null) {
       console.warn(`Could not find ${sku} in the cache`);
@@ -97,7 +97,7 @@ async function getProductUpc(sku, cache) {
         res.on('end', async () => {
           let productInfo = JSON.parse(rawData);
           console.log(`Setting UPC ${productInfo.upc} for ${sku}`);
-          await cache.HSET(sku, 'upc', productInfo.upc);
+          await cache.SET(sku, productInfo.upc);
           resolve(productInfo.upc);
         });
       });
