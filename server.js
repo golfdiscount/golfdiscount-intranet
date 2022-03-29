@@ -22,6 +22,7 @@ app.use((req, res, next) => {
   req.cache = cache;
   next();
 });
+
 app.use('/api', api);
 
 // Configuration for serving React files
