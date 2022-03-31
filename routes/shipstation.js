@@ -22,18 +22,29 @@ router.get('/orders/:orderNum', async (req, res) => {
 
       if (orders.total == 0) {
         res.status(404).send('The order could not be found, please check the order number and try again');
-      } else {
-        let order = formatOrder(orders.orders[0]);
-
-        await Promise.all(order.products.map(async product => {
-          let upc = await getProductUpc(product.sku, req.cache);
-          product.upc = upc;
-          product.numVerified = 0;
-          return product;
-        }));
-
-        res.status(200).json(order);
+        return;
       }
+
+      let order;
+      orders.orders.forEach(ssOrder => {
+        if (ssOrder.orderNumber === req.params.orderNum) {
+          order = formatOrder(ssOrder);
+        }
+      });
+      
+      if (!order) {
+        res.status(404).send('The order could not be found, please check the order number and try again');
+        return;
+      }
+
+      await Promise.all(order.products.map(async product => {
+        let upc = await getProductUpc(product.sku, req.cache);
+        product.upc = upc;
+        product.numVerified = 0;
+        return product;
+      }));
+
+      res.status(200).json(order);
     });
   });
 
