@@ -31,11 +31,13 @@ router.get('/orders/:orderNum', (req, res) => {
 });
 
 router.post('/orders', (req, res) => {
+    let data = JSON.stringify(req.body);
     const url = new URL('/api/orders', process.env.WSI);
     const options = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Content-Length': data.length
         }
     }
 
@@ -56,7 +58,7 @@ router.post('/orders', (req, res) => {
         });
     });
 
-    serverReq.write(JSON.stringify(req.body));
+    serverReq.write(data);
     serverReq.end();
 });
 
