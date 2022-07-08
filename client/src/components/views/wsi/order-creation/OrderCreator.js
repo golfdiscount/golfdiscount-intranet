@@ -234,13 +234,10 @@ function Product(props) {
   return(
     <div className='vertical-form'>
       <label className='text-input'>SKU:
-        <input value={productInfo.sku} onChange={(e) => updateProduct('sku', e.target.value)} required/>
+        <input value={productInfo.sku} onChange={e => updateProduct('sku', e.target.value)} required/>
       </label>
       <label className='text-input'>Quantity:
-        <input type='number' value={productInfo.quantity} onChange={(e) => updateProduct('quantity', e.target.value)} required/>
-      </label>
-      <label className='text-input'>Price:
-        <input type='number' value={productInfo.price} onChange={(e) => updateProduct(['price'], e.target.value)} required />
+        <input type='number' value={productInfo.quantity} onChange={e => updateProduct('quantity', e.target.value)} required/>
       </label>
       <button type='button' onClick={props.removeProduct}>Remove Product</button>
       <hr />
