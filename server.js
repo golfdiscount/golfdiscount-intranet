@@ -4,8 +4,6 @@ import { dirname } from 'path';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import cache from './cache.js';
-
 // API routers
 import api from './routes/api.js';
 
@@ -18,10 +16,6 @@ app.disable('x-powered-by');
 
 app.use(logger('combined'));
 app.use(express.json());
-app.use((req, res, next) => {
-  req.cache = cache;
-  next();
-});
 
 app.use('/api', api);
 
