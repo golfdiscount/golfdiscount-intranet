@@ -95,6 +95,7 @@ function formatOrder(orderInfo) {
   let order = {
     orderNumber: orderInfo.orderNumber,
     orderDate: orderInfo.orderDate,
+    orderStatus: orderInfo.orderStatus,
     email: orderInfo.customerEmail,
     customerAddress: {
       name: orderInfo.shipTo.name,

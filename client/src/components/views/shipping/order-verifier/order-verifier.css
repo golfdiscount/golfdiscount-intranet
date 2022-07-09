@@ -8,3 +8,9 @@
 .verified {
     background-color: #C1FCB8;
 }
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

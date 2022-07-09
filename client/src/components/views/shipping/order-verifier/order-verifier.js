@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import ReactLoading from 'react-loading';
 
 import ErrorMessage from '../../../common/ErrorMessage';
 import OrderInfo from './order-info';
@@ -10,13 +11,20 @@ function OrderVerifier() {
   const [error, setError] = useState();
   const [order, setOrder] = useState();
   const [verified, setVerified] = useState(false);
+  const [loaded, setLoaded] = useState(true);
 
   useEffect(() => {
-    if (order && verified) {
+    if (order && verified && loaded) {
       document.getElementById('order-search').value = '';
       document.getElementById('order-search').focus();
     }
-  });  
+  });
+
+  if (!loaded) {
+    return (<div className='tab-content loading'>
+      <ReactLoading type='spin' height={500} width={500} color='#006633'/>
+    </div>);
+  }
 
   return (
     <div className='tab-content'>
@@ -26,7 +34,7 @@ function OrderVerifier() {
         <h2>Order Number</h2>
         <form onSubmit={async e => {
           e.preventDefault();
-          await getOrder(e.target.elements['orderNumber'].value, setOrder, setVerified, setError);
+          await getOrder(e.target.elements['orderNumber'].value, setOrder, setVerified, setError, setLoaded);
         }}>
           <input required type='text' name='orderNumber' id='order-search'/>
           <button type='submit'>Submit</button>
@@ -44,8 +52,10 @@ function OrderVerifier() {
  * @param {Function} setOrder Function to update the currently displayed order
  * @param {Function} setError Function to update the currently displayed error
  */
-async function getOrder(orderNumber, setOrder, setVerified, setError) {
+async function getOrder(orderNumber, setOrder, setVerified, setError, setLoaded) {
+  setLoaded(false);
   let order = await fetch(`/api/shipstation/orders/${orderNumber}`);
+
 
   if (!order.ok) {
     setError(<ErrorMessage error={'Could not pull order from ShipStation, check order number and try again'}/>);
@@ -53,10 +63,19 @@ async function getOrder(orderNumber, setOrder, setVerified, setError) {
   } else {
     order = await order.json();
 
-    setError();
+    if (order.orderStatus === 'shipped') {
+      let errorAudio = new Audio('/error.mp3');
+      errorAudio.play();
+      setError(<ErrorMessage error='Order has already been shipped in ShipStation'/>);
+    } else {
+      setError();
+    }
+
     setVerified(false);
     setOrder(order);
   }
+
+  setLoaded(true);
 }
 
 export default OrderVerifier;
