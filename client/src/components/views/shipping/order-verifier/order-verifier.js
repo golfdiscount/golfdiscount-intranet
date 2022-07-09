@@ -16,7 +16,7 @@ function OrderVerifier() {
       document.getElementById('order-search').value = '';
       document.getElementById('order-search').focus();
     }
-  });  
+  });
 
   return (
     <div className='tab-content'>
@@ -53,7 +53,14 @@ async function getOrder(orderNumber, setOrder, setVerified, setError) {
   } else {
     order = await order.json();
 
-    setError();
+    if (order.orderStatus === 'shipped') {
+      let errorAudio = new Audio('/error.mp3');
+      errorAudio.play();
+      setError(<ErrorMessage error='Order has already been shipped in ShipStation'/>);
+    } else {
+      setError();
+    }
+
     setVerified(false);
     setOrder(order);
   }
