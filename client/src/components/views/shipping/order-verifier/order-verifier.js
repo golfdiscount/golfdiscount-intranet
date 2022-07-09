@@ -22,7 +22,7 @@ function OrderVerifier() {
 
   if (!loaded) {
     return (<div className='tab-content loading'>
-      <ReactLoading type='spin' height={500} width={500} color='#006633'/>
+      <ReactLoading type='spin' height={250} width={250} color='#006633'/>
     </div>);
   }
 
