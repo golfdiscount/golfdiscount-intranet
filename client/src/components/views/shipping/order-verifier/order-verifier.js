@@ -53,6 +53,7 @@ function OrderVerifier() {
  * @param {Function} setError Function to update the currently displayed error
  */
 async function getOrder(orderNumber, setOrder, setVerified, setError, setLoaded) {
+  orderNumber = orderNumber.trim();
   setLoaded(false);
   let order = await fetch(`/api/shipstation/orders/${orderNumber}`);
 
