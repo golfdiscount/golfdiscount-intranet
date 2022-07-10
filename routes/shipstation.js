@@ -38,6 +38,12 @@ router.get('/orders/:orderNum', async (req, res) => {
       }
 
       await Promise.all(order.products.map(async product => {
+        product.numVerified = 0;
+
+        if (product.sku === null) {
+          return product;
+        }
+
         const options = {
           hostname: 'magestack-staging.azurewebsites.net',
           path: `/api/products/${product.sku}`,
@@ -69,7 +75,6 @@ router.get('/orders/:orderNum', async (req, res) => {
         })});
 
         product.upc = upc;
-        product.numVerified = 0;
         return product;
       }));
 
