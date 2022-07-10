@@ -55,16 +55,16 @@ router.get('/orders/:orderNum', async (req, res) => {
 
           res.on('end', async () => {
             if (res.statusCode >= 400) {
-              reject(rawData);
+              return resolve('');
             }
 
             const productInfo = JSON.parse(rawData);
-            resolve(productInfo.upc);
+            return resolve(productInfo.upc);
           });
 
           req.on('error', (e) => {
             console.log(e);
-            reject(e);
+            return reject(e);
           });
         })});
 
