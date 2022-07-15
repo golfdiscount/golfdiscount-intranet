@@ -31,7 +31,7 @@ router.get('/orders/:orderNum', async (req, res) => {
           order = formatOrder(ssOrder);
         }
       });
-      
+
       if (!order) {
         res.status(404).send('The order could not be found, please check the order number and try again');
         return;
@@ -96,23 +96,27 @@ async function getProductUpc(sku, cache) {
 
   return new Promise(async (resolve, reject) => {
     const cachedUpc = await cache.GET(sku);
-    
+
     if (cachedUpc === null) {
       console.warn(`Could not find ${sku} in the cache`);
 
       const req = https.get(url, res => {
         let rawData = '';
-  
+
         res.on('data', (d) => { rawData += d });
-  
+
         res.on('end', async () => {
-          let productInfo = JSON.parse(rawData);
-          console.log(`Setting UPC ${productInfo.upc} for ${sku}`);
-          await cache.SET(sku, productInfo.upc);
-          resolve(productInfo.upc);
+          if (res.statusCode >= 400) {
+            reject('Error fetching data from system');
+          } else {
+            let productInfo = JSON.parse(rawData);
+            console.log(`Setting UPC ${productInfo.upc} for ${sku}`);
+            await cache.SET(sku, productInfo.upc);
+            resolve(productInfo.upc);
+          }
         });
       });
-  
+
       req.on('error', (e) => {
         console.log(e);
         reject('No UPC in system');
@@ -121,6 +125,6 @@ async function getProductUpc(sku, cache) {
       resolve(cachedUpc)
     }
   });
-} 
+}
 
 export default router;
