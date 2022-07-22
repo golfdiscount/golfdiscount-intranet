@@ -40,6 +40,7 @@ namespace intranet.Controllers.Wsi
         [HttpPost]
         public async Task<IActionResult> Post(WsiOrder order)
         {
+            Console.WriteLine(order.OrderNumber);
             foreach (WsiProduct product in order.Products)
             {
                 HttpResponseMessage magentoResponse = await magentoClient.GetAsync($"/api/products/{product.Sku}");
