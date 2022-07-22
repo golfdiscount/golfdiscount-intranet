@@ -4,8 +4,7 @@ import { useState } from 'react';
 function OrderCreator() {
   const [ products, setProducts ] = useState([{id: 1,
     sku: '',
-    quantity: 1,
-    price: ''
+    quantity: 1
   }]);
   const [ customerAddress, setCustomerAddress ] = useState({
     name: '',
@@ -39,8 +38,7 @@ function OrderCreator() {
     productCopy.push({
       id: products[products.length-1].id + 1,
       sku: '',
-      quantity: 1,
-      price: ''
+      quantity: 1
     });
     setProducts(productCopy);
   }
@@ -69,9 +67,9 @@ function OrderCreator() {
       const date = new Date(formData.get('order_date'));
 
       const orderData = {
-        order_num: formData.get('order_num'),
-        order_date: date.toLocaleString('en-us', { month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}),
-        shipping_method: formData.get('shipping_method'),
+        orderNumber: formData.get('order_num'),
+        orderDate: date.toLocaleString('en-us', { month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}),
+        shippingMethod: formData.get('shipping_method'),
         store_num: formData.get('store_num'),
         customer: customerAddress,
         recipient: recipientDisabled ? customerAddress : recipientAddress,
@@ -234,13 +232,10 @@ function Product(props) {
   return(
     <div className='vertical-form'>
       <label className='text-input'>SKU:
-        <input value={productInfo.sku} onChange={(e) => updateProduct('sku', e.target.value)} required/>
+        <input value={productInfo.sku} onChange={e => updateProduct('sku', e.target.value)} required/>
       </label>
       <label className='text-input'>Quantity:
-        <input type='number' value={productInfo.quantity} onChange={(e) => updateProduct('quantity', e.target.value)} required/>
-      </label>
-      <label className='text-input'>Price:
-        <input type='number' value={productInfo.price} onChange={(e) => updateProduct(['price'], e.target.value)} required />
+        <input type='number' value={productInfo.quantity} onChange={e => updateProduct('quantity', e.target.value)} required/>
       </label>
       <button type='button' onClick={props.removeProduct}>Remove Product</button>
       <hr />

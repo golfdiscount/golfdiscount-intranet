@@ -9,13 +9,13 @@ function Product(props) {
   return (
     <div>
       <hr></hr>
-      <div className={`product-listing${product.numVerified === product.quantity ? ' verified' : ''}`}>
+      <div className={`product-listing${product.verified === product.quantity ? ' verified' : ''}`}>
         <div >
           <h3>{product.productName}</h3>
           <p>SKU: {product.sku}</p>
-          <p>Verified: {product.numVerified}</p>
+          <p>Verified: {product.verified}</p>
           <p>Quantity: {product.quantity}</p>
-          <p>UPC: {product.upc ?? 'ERROR'}</p>
+          <p>UPC: {product.upc}</p>
         </div>
         <img src={product.imageUrl} alt={product.productName} width={200} height={200}></img>
       </div>

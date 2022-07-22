@@ -95,25 +95,9 @@ function Address(props) {
  * @returns JSX React element with product information
  */
 function Product(props) {
-  const [ productName, setProductName ] = useState();
-
-  fetch(`https://magestack.azurewebsites.net/api/products/${props.sku}`)
-  .then(res => {
-    if(!res.ok) {
-      throw new Error('Could not get product information');
-    }
-
-    return res;
-  }).then(res => res.json())
-  .then(res => {
-    setProductName(res.name);
-  }).catch(() => {
-    setProductName(null);
-  });
-
   return (
     <div>
-      {productName && <h3>{productName}</h3>}
+      <h3>{props.name}</h3>
       <p>SKU: {props.sku}</p>
       <p>Unit Price: ${props.price}</p>
       <p>Quantity: {props.qty}</p>
