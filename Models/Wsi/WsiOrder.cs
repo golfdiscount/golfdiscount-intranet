@@ -2,7 +2,7 @@
 {
     public class WsiOrder
     {
-        public string? OrderNum { get; set; }
+        public string? OrderNumber { get; set; }
         public string? OrderDate { get; set; }
         public string? ShippingMethod { get; set; }
         public List<WsiProduct> Products { get; set; }
