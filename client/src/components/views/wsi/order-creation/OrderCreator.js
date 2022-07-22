@@ -69,9 +69,9 @@ function OrderCreator() {
       const date = new Date(formData.get('order_date'));
 
       const orderData = {
-        order_num: formData.get('order_num'),
-        order_date: date.toLocaleString('en-us', { month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}),
-        shipping_method: formData.get('shipping_method'),
+        orderNumber: formData.get('order_num'),
+        orderDate: date.toLocaleString('en-us', { month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}),
+        shippingMethod: formData.get('shipping_method'),
         store_num: formData.get('store_num'),
         customer: customerAddress,
         recipient: recipientDisabled ? customerAddress : recipientAddress,
