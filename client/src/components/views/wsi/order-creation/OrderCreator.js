@@ -4,8 +4,7 @@ import { useState } from 'react';
 function OrderCreator() {
   const [ products, setProducts ] = useState([{id: 1,
     sku: '',
-    quantity: 1,
-    price: ''
+    quantity: 1
   }]);
   const [ customerAddress, setCustomerAddress ] = useState({
     name: '',
@@ -39,8 +38,7 @@ function OrderCreator() {
     productCopy.push({
       id: products[products.length-1].id + 1,
       sku: '',
-      quantity: 1,
-      price: ''
+      quantity: 1
     });
     setProducts(productCopy);
   }
