@@ -2,9 +2,9 @@
  * @author Harmeet Singh
  * @description Creates a side bar navigation with optional header
  */
-
-import './Side-Navbar.css';
 import { NavLink } from 'react-router-dom';
+
+import 'components/SideBar/SideBar.css'
 
 function SideNavbar(props) {
   let tabs = props.tabs.map(tab => {
@@ -15,15 +15,15 @@ function SideNavbar(props) {
 
   if (props.header) {
     return (
-    <div className='side-nav'>
-      <h1 className='side-nav-header'>{props.header}</h1>
+    <div className='side-bar'>
+      <h1 className='side-bar-header'>{props.header}</h1>
       {tabs}
     </div>
     );
   }
 
   return (
-    <div className='side-nav'>
+    <div className='side-bar'>
       {props.header && <h2>{props.header}</h2>}
       {tabs}
     </div>

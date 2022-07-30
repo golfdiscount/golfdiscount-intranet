@@ -1,5 +1,10 @@
+/**
+ * A navigation bar linking to other pages in the SPA
+ * @author Harmeet Singh
+ */
 import { NavLink } from 'react-router-dom';
-import './Navbar.css'
+
+import 'components/Navbar/Navbar';
 
 function Navbar() {
   return (
