@@ -3,10 +3,10 @@
  * @description WSI view with components to view and create orders as well as WSI analytics
  */
 import { Routes, Route } from 'react-router-dom';
-import OrderCreator from './order-creation/OrderCreator';
-import OrderViewer from './order-viewer/OrderViewer';
-import OrderAnalytics from './order-analytics/OrderAnalytics';
-import SideNavbar from '../../navigation/Side-Navbar';
+
+import OrderCreator from 'pages/Wsi/components/OrderCreator/OrderCreator';
+import OrderViewer from 'pages/Wsi/components/OrderViewer/OrderViewer';
+import SideNavbar from 'components/SideBar/SideBar';
 
 function Wsi() {
   let tabs = [
@@ -20,7 +20,6 @@ function Wsi() {
       <Routes>
         <Route path='' element={<OrderViewer />} />
         <Route path='order-creator' element={<OrderCreator />} />
-        <Route path='order-analytics' element={<OrderAnalytics />} />
       </Routes>
     </main>
   );

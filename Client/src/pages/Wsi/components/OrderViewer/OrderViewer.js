@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ErrorMessage from '../../../common/ErrorMessage';
+import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 
 /**
  * OrderViewer component with form for searching and order information

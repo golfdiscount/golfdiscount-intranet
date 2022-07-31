@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 
 import 'components/SideBar/SideBar.css'
 
-function SideNavbar(props) {
+function SideBar(props) {
   let tabs = props.tabs.map(tab => {
     return (
       <NavLink className='tab' to={tab.route} key={tab.route}>{tab.text}</NavLink>
@@ -30,4 +30,4 @@ function SideNavbar(props) {
   );
 }
 
-export default SideNavbar;
+export default SideBar;

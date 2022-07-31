@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // Components and style sheets
-import './App.css';
-import Navbar from './components/navigation/Navbar';
-import Footer from './components/navigation/Footer';
-import Landing from './components/views/landing';
-import Wsi from './components/views/wsi/wsi';
-import Shipping from './components/views/shipping/shipping';
+import 'App.css';
+import Footer from 'components/Footer/Footer';
+import Navbar from 'components/Navbar/Navbar';
+import Landing from 'pages/Landing/Landing';
+import Wsi from 'pages/Wsi/Wsi';
+import Shipping from 'pages/Shipping/Shipping';
 
 function App() {
   return (

@@ -1,11 +1,10 @@
 /**
  * @author Harmeet Singh
- * @description Shipping view with components to verify ShipStation orders
  */
 
 import { Routes, Route } from 'react-router-dom'
-import OrderVerifier from './order-verifier/order-verifier';
-import SideNavbar from '../../navigation/Side-Navbar';
+import OrderVerifier from 'pages/Shipping/components/OrderVerifier/OrderVerifier';
+import SideNavbar from 'components/SideBar/SideBar';
 
 function Shipping() {
   let tabs = [

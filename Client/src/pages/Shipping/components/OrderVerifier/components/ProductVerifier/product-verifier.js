@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import Product from './product';
+import Product from '../Product/Product';
 
 function ProductVerifier(props) {
   const [products, setProducts] = useState([]);
@@ -47,8 +47,8 @@ function ProductVerifier(props) {
  * Searches through a list of products and adds 1 to verified quantity of
  * the product if the UPC matches
  * @param {String} upc UPC to search for
- * @param {Array} products Products in the current order 
- * @param {Function} setProducts Function to update state of current products 
+ * @param {Array} products Products in the current order
+ * @param {Function} setProducts Function to update state of current products
  */
 function verifyProduct(query, products, setProducts) {
   let foundProduct = false;
@@ -62,7 +62,7 @@ function verifyProduct(query, products, setProducts) {
       }
     }
   });
-  
+
   if (!foundProduct) {
     let errorAudio = new Audio('/error.mp3');
     errorAudio.play();
@@ -70,14 +70,14 @@ function verifyProduct(query, products, setProducts) {
 
   document.getElementById('product-search').value = '';
   document.getElementById('product-search').focus();
-  
+
   setProducts(productsTemp);
 }
 
 /**
- * 
- * @param {Array} products Products in the current order 
- * @param {Function} setProductsVerified Function to update verified status of current products 
+ *
+ * @param {Array} products Products in the current order
+ * @param {Function} setProductsVerified Function to update verified status of current products
  */
 function checkProducts(products, setVerified) {
   let verified = true;

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import ReactLoading from 'react-loading';
 
-import ErrorMessage from '../../../common/ErrorMessage';
-import OrderInfo from './order-info';
-import ProductVerifier from './product-verifier';
+import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
+import OrderInfo from 'pages/Shipping/components/OrderVerifier/components/OrderInfo/OrderInfo';
+import ProductVerifier from 'pages/Shipping/components/OrderVerifier/components/ProductVerifier/product-verifier';
 
-import './order-verifier.css';
+import 'pages/Shipping/components/OrderVerifier/OrderVerifier.css';
 
 function OrderVerifier() {
   const [error, setError] = useState();
