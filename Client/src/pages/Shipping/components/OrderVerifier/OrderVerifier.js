@@ -59,7 +59,12 @@ async function getOrder(orderNumber, setOrder, setVerified, setError, setLoaded)
 
 
   if (!order.ok) {
-    setError(<ErrorMessage error={'Could not pull order from ShipStation, check order number and try again'}/>);
+    if (order.status === 404) {
+      setError(<ErrorMessage error={'Could not pull order from ShipStation, check order number and try again'}/>);
+    } else if (order.status === 500) {
+      setError(<ErrorMessage error={'Internal server error, please try again later'}/>);
+    }
+
     setOrder();
   } else {
     order = await order.json();
