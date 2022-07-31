@@ -89,6 +89,9 @@ namespace intranet.Controllers.ShipStation
                         Upc = product.Upc,
                         Verified = 0
                     });
+                } else
+                {
+                    return new StatusCodeResult(500);
                 }
             }
 
