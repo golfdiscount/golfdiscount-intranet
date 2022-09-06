@@ -49,11 +49,13 @@ WebApplication app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-} else
+} 
+else
 {
     app.UseHsts();
 }
 
+app.UseAuthentication();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseRouting();
