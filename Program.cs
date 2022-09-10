@@ -25,13 +25,11 @@ builder.Services.AddHttpClient("Magento", client =>
     client.BaseAddress = new(magentoUri.Value);
     client.DefaultRequestHeaders.Add("x-functions-key", magentoKey.Value);
 });
-
 builder.Services.AddHttpClient("Wsi", client =>
 {
     KeyVaultSecret wsiUri = secretClient.GetSecret("wsi-uri");
     client.BaseAddress = new(wsiUri.Value);
 });
-
 builder.Services.AddHttpClient("Shipstation", client =>
 {
     KeyVaultSecret shipstationUri = secretClient.GetSecret("shipstation-uri");
@@ -55,13 +53,12 @@ else
     app.UseHsts();
 }
 
-app.UseAuthentication();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseRouting();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+    pattern: "{controller}/{id?}");
 
 app.Run();
