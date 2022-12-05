@@ -29,6 +29,9 @@ builder.Services.AddHttpClient("Wsi", client =>
 {
     KeyVaultSecret wsiUri = secretClient.GetSecret("wsi-uri");
     client.BaseAddress = new(wsiUri.Value);
+
+    KeyVaultSecret wsiKey = secretClient.GetSecret("wsi-key");
+    client.DefaultRequestHeaders.Add("x-functions-key", wsiKey.Value);
 });
 builder.Services.AddHttpClient("Shipstation", client =>
 {
