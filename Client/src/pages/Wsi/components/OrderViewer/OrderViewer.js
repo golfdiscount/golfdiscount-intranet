@@ -6,13 +6,8 @@ import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
  * @returns OrderViewer component
  */
 function OrderViewer() {
-  const [currentOrder, setCurrentOrder] = useState();
+  const [orders, setOrders] = useState([]);
   const [error, setError] = useState();
-  let order;
-
-  if (currentOrder) {
-    order = <Order order={currentOrder} />;
-  }
 
   return (
     <div className='tab-content'>
@@ -21,12 +16,12 @@ function OrderViewer() {
         <h1>Order Number</h1>
         <form onSubmit={(e) => {
             e.preventDefault();
-            getOrder(e.target.elements['orderNumber'].value, setCurrentOrder, setError)
+            getOrder(e.target.elements['orderNumber'].value, setOrders, setError)
           }}>
           <input required type='text' name='orderNumber'/>
           <button type='submit'>Submit</button>
         </form>
-        {order}
+        {orders.map(pickTicket => <Order order={pickTicket} key={pickTicket.pickTicketNumber} />)}
       </div>
     </div>
 
@@ -40,9 +35,9 @@ function OrderViewer() {
  */
 function Order(props) {
   const order = props.order;
-  const products = order.products.map(product => {
+  const lineItems = order.lineItems.map(lineItem => {
     return(
-      <Product sku={product.sku} price={product.price} qty={product.quantity} key={product.sku}/>
+      <Product sku={lineItem.sku} units={lineItem.units} key={lineItem.sku}/>
     )
   })
 
@@ -54,7 +49,7 @@ function Order(props) {
       <h2>Recipient</h2>
       <Address address={order.recipient} />
       <h2>Products</h2>
-      {products}
+      {lineItems}
     </div>
   );
 }
@@ -66,10 +61,13 @@ function Order(props) {
  */
 function OrderHeader(props) {
   const order = props.order;
+  const orderDate = new Date(order.orderDate);
   return (
     <div>
       <h2>Order Information</h2>
-      <p>Order Date: {order.orderDate}</p>
+      <p>Order Number: {order.orderNumber}</p>
+      <p>Pick Ticket Number: {order.pickTicketNumber}</p>
+      <p>Order Date: {orderDate.toLocaleDateString()}</p>
     </div>
   );
 }
@@ -84,7 +82,7 @@ function Address(props) {
   return (
     <div>
       <p>Name: {address.name}</p>
-      <p>Address: {address.address} {address.city}, {address.state} {address.zip} {address.country}</p>
+      <p>Address: {address.street} {address.city}, {address.state} {address.zip} {address.country}</p>
     </div>
   );
 }
@@ -99,8 +97,7 @@ function Product(props) {
     <div>
       <h3>{props.name}</h3>
       <p>SKU: {props.sku}</p>
-      <p>Unit Price: ${props.price}</p>
-      <p>Quantity: {props.qty}</p>
+      <p>Quantity: {props.units}</p>
       <hr />
     </div>
   )
