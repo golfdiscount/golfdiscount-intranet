@@ -1,5 +1,4 @@
-﻿using intranet.Models;
-using intranet.Models.Wsi;
+﻿using intranet.Models.Wsi;
 using intranet.Models.Magento;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -28,13 +27,14 @@ namespace intranet.Controllers.Wsi
 
             if (!response.IsSuccessStatusCode)
             {
-                return new NotFoundObjectResult(null);
+                return new NotFoundResult();
             }
 
             HttpContent content = response.Content;
-            WsiOrder order = JsonSerializer.Deserialize<WsiOrder>(await content.ReadAsStringAsync(), jsonOptions);
+            string jsonContents = await content.ReadAsStringAsync();
+            List<PickTicket> orders = JsonSerializer.Deserialize<List<PickTicket>>(await content.ReadAsStringAsync(), jsonOptions);
 
-            return new OkObjectResult(order);
+            return new OkObjectResult(orders);
         }
 
         [HttpPost]

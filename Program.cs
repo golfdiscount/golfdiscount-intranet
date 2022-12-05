@@ -25,13 +25,14 @@ builder.Services.AddHttpClient("Magento", client =>
     client.BaseAddress = new(magentoUri.Value);
     client.DefaultRequestHeaders.Add("x-functions-key", magentoKey.Value);
 });
-
 builder.Services.AddHttpClient("Wsi", client =>
 {
     KeyVaultSecret wsiUri = secretClient.GetSecret("wsi-uri");
     client.BaseAddress = new(wsiUri.Value);
-});
 
+    KeyVaultSecret wsiKey = secretClient.GetSecret("wsi-key");
+    client.DefaultRequestHeaders.Add("x-functions-key", wsiKey.Value);
+});
 builder.Services.AddHttpClient("Shipstation", client =>
 {
     KeyVaultSecret shipstationUri = secretClient.GetSecret("shipstation-uri");
@@ -49,7 +50,8 @@ WebApplication app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
-} else
+} 
+else
 {
     app.UseHsts();
 }
@@ -60,6 +62,6 @@ app.UseRouting();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+    pattern: "{controller}/{id?}");
 
 app.Run();

@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - app-gdintranet-staging-westus-001
+name: Build and deploy ASP.Net Core app to Azure Web App - app-gdi-staging-westus-001
 
 on:
   push:
@@ -51,7 +51,7 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'app-gdintranet-staging-westus-001'
+          app-name: 'app-gdi-staging-westus-001'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C728336852DC4D8089650E7B1588F1AB }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DDD3A38C9946447D94F786DE7C813395 }}
           package: .
