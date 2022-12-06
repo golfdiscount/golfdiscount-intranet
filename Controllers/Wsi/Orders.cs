@@ -31,7 +31,6 @@ namespace intranet.Controllers.Wsi
             }
 
             HttpContent content = response.Content;
-            string jsonContents = await content.ReadAsStringAsync();
             List<PickTicket> orders = JsonSerializer.Deserialize<List<PickTicket>>(await content.ReadAsStringAsync(), jsonOptions);
 
             return new OkObjectResult(orders);
