@@ -127,7 +127,7 @@ function getOrder(orderNumber, setState, setError) {
   })
   .catch(err => {
     setError(<ErrorMessage error={err.message} />);
-    setState();
+    setState([]);
   });
 }
 
