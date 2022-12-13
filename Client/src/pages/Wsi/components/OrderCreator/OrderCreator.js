@@ -2,21 +2,23 @@ import './OrderCreator.css';
 import { useState } from 'react';
 
 function OrderCreator() {
-  const [ products, setProducts ] = useState([{id: 1,
+  const [ products, setProducts ] = useState([{lineNumber: 1,
     sku: '',
-    quantity: 1
+    units: 1
   }]);
+
   const [ customerAddress, setCustomerAddress ] = useState({
     name: '',
-    address: '',
+    street: '',
     city: '',
     state: '',
     country: 'US',
     zip: ''
   });
+  
   const [ recipientAddress, setRecipientAddress ] = useState({
     name: '',
-    address: '',
+    street: '',
     city: '',
     state: '',
     country: 'US',
@@ -27,7 +29,7 @@ function OrderCreator() {
   const [ recipientDisabled, setRecipientDisabled ] = useState(false);
 
   let productList = products.map(product => {
-    return <Product key={product.id} removeProduct={() => removeProduct(product.id)} productInfo={product} products={products} setProducts={setProducts}/>
+    return <Product key={product.lineNumber} removeProduct={() => removeProduct(product.id)} productInfo={product} products={products} setProducts={setProducts}/>
   });
 
   function addProduct() {
@@ -36,16 +38,16 @@ function OrderCreator() {
     });
 
     productCopy.push({
-      id: products[products.length-1].id + 1,
+      lineNumber: products[products.length-1].lineNumber + 1,
       sku: '',
-      quantity: 1
+      units: 1
     });
     setProducts(productCopy);
   }
 
-  function removeProduct(id) {
+  function removeProduct(lineNumber) {
     if (products.length !== 1){
-      let newProducts = products.filter(product => product.id !== id);
+      let newProducts = products.filter(product => product.lineNumber !== lineNumber);
       setProducts(newProducts);
     }
   }
@@ -68,16 +70,16 @@ function OrderCreator() {
 
       const orderData = {
         orderNumber: formData.get('order_num'),
-        orderDate: date.toLocaleString('en-us', { month: '2-digit', day: '2-digit', year: 'numeric', timeZone: 'UTC'}),
+        orderDate: date.toISOString(),
         shippingMethod: formData.get('shipping_method'),
-        store_num: formData.get('store_num'),
+        store: Number(formData.get('store_num')),
         customer: customerAddress,
         recipient: recipientDisabled ? customerAddress : recipientAddress,
-        products: []
+        lineItems: []
       };
 
       products.forEach(product => {
-        orderData.products.push(product);
+        orderData.lineItems.push(product);
       });
 
       let res = await fetch('/api/wsi/orders', {
@@ -194,7 +196,7 @@ function Address(props) {
         <input value={address.name} onChange={(e) => updateAddress('name', e.target.value)} required/>
       </label>
       <label>Address:
-        <input value={address.address} onChange={(e) => updateAddress('address', e.target.value)} required/>
+        <input value={address.address} onChange={(e) => updateAddress('street', e.target.value)} required/>
       </label>
       <label>City:
         <input value={address.city} onChange={(e) => updateAddress('city', e.target.value)} required/>
@@ -235,7 +237,7 @@ function Product(props) {
         <input value={productInfo.sku} onChange={e => updateProduct('sku', e.target.value)} required/>
       </label>
       <label className='text-input'>Quantity:
-        <input type='number' value={productInfo.quantity} onChange={e => updateProduct('quantity', e.target.value)} required/>
+        <input type='number' value={productInfo.units} onChange={e => updateProduct('units', e.target.value)} required/>
       </label>
       <button type='button' onClick={props.removeProduct}>Remove Product</button>
       <hr />
