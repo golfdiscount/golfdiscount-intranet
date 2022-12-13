@@ -217,13 +217,13 @@ function Address(props) {
 function Product(props) {
   let productInfo = props.productInfo;
   let products = props.products;
-  const id = props.id;
+  const lineNumber = props.lineNumber;
   const setProducts = props.setProducts;
 
   function updateProduct(key, value) {
     productInfo[key] = value;
     const productsTemp = products.map(product => {
-      if (product.id === id) {
+      if (product.lineNumber === lineNumber) {
         product = productInfo;
       }
       return product;
