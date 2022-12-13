@@ -39,16 +39,9 @@ namespace intranet.Controllers.Wsi
         [HttpPost]
         public async Task<IActionResult> Post(WsiOrder order)
         {
-            Console.WriteLine(order.OrderNumber);
-            foreach (WsiProduct product in order.Products)
-            {
-                HttpResponseMessage magentoResponse = await magentoClient.GetAsync($"/api/products/{product.Sku}");
-                MagentoProduct productInfo = JsonSerializer.Deserialize<MagentoProduct>(await magentoResponse.Content.ReadAsStringAsync(), jsonOptions);
-                product.Price = productInfo.Price;
-                
-            }
-
             StringContent orderInfo = new(JsonSerializer.Serialize(order, jsonOptions), System.Text.Encoding.UTF8, "application/json");
+            orderInfo.Headers.Remove("Content-Type");
+            orderInfo.Headers.Add("Content-Type", "application/json");
             HttpResponseMessage wsiResponse = await wsiClient.PostAsync("/api/orders", orderInfo);
 
             if (!wsiResponse.IsSuccessStatusCode)
