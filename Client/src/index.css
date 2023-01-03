@@ -18,3 +18,9 @@ h1, h2 {
 #root {
   height: 100%;
 }
+
+.horizontal-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
