@@ -1,4 +1,4 @@
-﻿using intranet.Models.Wsi;
+﻿using intranet.Models.Wsi.PickTicket;
 using intranet.Models.Magento;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -10,34 +10,38 @@ namespace intranet.Controllers.Wsi
     public class Orders : ControllerBase
     {
         private readonly HttpClient wsiClient;
-        private readonly HttpClient magentoClient;
         private readonly JsonSerializerOptions jsonOptions;
 
         public Orders(IHttpClientFactory clientFactory, JsonSerializerOptions jsonOptions)
         {
             wsiClient = clientFactory.CreateClient("Wsi");
-            magentoClient = clientFactory.CreateClient("Magento");
             this.jsonOptions = jsonOptions;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(string orderNumber)
+        public async Task<IActionResult> Get(string? orderNumber)
         {
+            Console.WriteLine(orderNumber);
             HttpResponseMessage response = await wsiClient.GetAsync($"/api/orders/{orderNumber}");
 
             if (!response.IsSuccessStatusCode)
             {
+                if ((int)response.StatusCode >= 500)
+                {
+                    return new StatusCodeResult(500);
+                }
+
                 return new NotFoundResult();
             }
 
             HttpContent content = response.Content;
-            List<PickTicket> orders = JsonSerializer.Deserialize<List<PickTicket>>(await content.ReadAsStringAsync(), jsonOptions);
+            List<PickTicketModel> orders = JsonSerializer.Deserialize<List<PickTicketModel>>(await content.ReadAsStringAsync(), jsonOptions);
 
             return new OkObjectResult(orders);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(WsiOrder order)
+        public async Task<IActionResult> Post(PickTicketModel order)
         {
             StringContent orderInfo = new(JsonSerializer.Serialize(order, jsonOptions), System.Text.Encoding.UTF8, "application/json");
             orderInfo.Headers.Remove("Content-Type");
