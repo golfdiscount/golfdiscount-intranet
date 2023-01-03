@@ -56,12 +56,13 @@ else
     app.UseHsts();
 }
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
-app.UseRouting();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{id?}");
+app.UseStaticFiles();
+app.MapFallbackToFile("index.html");
+app.UseRouting();
+
+
 
 app.Run();
