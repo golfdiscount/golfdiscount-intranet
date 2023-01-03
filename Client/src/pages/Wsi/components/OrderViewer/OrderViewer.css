@@ -20,3 +20,22 @@ nav.order-nav-bar > div:hover {
 nav.order-nav-bar > .selected {
     background-color: #b5b5b5;
 }
+
+table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+th {
+    text-align: left;
+    padding-right: 10px;
+}
+
+tr {
+    border-bottom: 1px solid black;
+}
+
+tr:nth-child(even) {
+    background-color: #d3d3d3;
+}
