@@ -1,0 +1,22 @@
+.address-container {
+    max-width: 50%;
+}
+
+nav.order-nav-bar {
+    display: flex;
+    flex-direction: row;
+}
+
+nav.order-nav-bar > div {
+    font-size: 1.25em;
+    padding: .5em .5em;
+}
+
+nav.order-nav-bar > div:hover {
+    cursor: pointer;
+    background-color:  #cfcfcf ;
+}
+
+nav.order-nav-bar > .selected {
+    background-color: #b5b5b5;
+}
