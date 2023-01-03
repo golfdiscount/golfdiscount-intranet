@@ -79,8 +79,8 @@ function OrderNavBar(props) {
 
 function PickTicketView(props) {
     const pickTicket = props.pickTicket;
-    const orderDate = new Date(pickTicket.orderDate)
-    const orderCreationDate = new Date(pickTicket.createdAt);
+    const orderDate = new Date(pickTicket.orderDate + 'Z')
+    const orderCreationDate = new Date(pickTicket.createdAt + 'Z');
     return (
         <div>
             <div>

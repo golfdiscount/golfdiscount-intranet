@@ -67,7 +67,7 @@ function OrderGrid(props) {
 
     orderGridEntries.push({
       orderNumber: orderNumber,
-      orderDate: new Date(orderDate),
+      orderDate: new Date(orderDate + 'Z'), // Add Z to indicate UTC time
       pickTicketCount: pickTickets.length
     });
   });
