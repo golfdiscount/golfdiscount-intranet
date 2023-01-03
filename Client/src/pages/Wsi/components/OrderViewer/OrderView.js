@@ -33,7 +33,7 @@ function OrderView() {
         }
 
         fetchData();
-    }, [orderNumber]);
+    }, [orderNumber, loaded]);
 
     if (!loaded) {
         return <LoadingSpinner />;
