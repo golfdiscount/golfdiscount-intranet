@@ -1,105 +1,106 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
+import LoadingSpinner from 'components/LoadingSpinner';
 
 /**
  * OrderViewer component with form for searching and order information
  * @returns OrderViewer component
  */
 function OrderViewer() {
-  const [orders, setOrders] = useState([]);
+  const [recentOrders, setRecentOrders] = useState(null);
+  const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState();
+  const navigate = useNavigate();
+
+  // Load recent orders from the WSI API
+  useEffect(() => {
+    async function fetchData() {
+      const apiResonse = await fetch(`/api/wsi/orders`);
+      const recentPickTickets = await apiResonse.json();
+
+      // A map of order numbers to an array of their pick tickets
+      const orderMap = new Map();
+
+      recentPickTickets.forEach(pickTicket => {
+        if (!orderMap.has(pickTicket.orderNumber)) {
+          orderMap.set(pickTicket.orderNumber, [])
+        }
+
+        orderMap.get(pickTicket.orderNumber).push(pickTicket);
+      });
+
+      setRecentOrders(orderMap);
+      setLoaded(true);
+    }
+
+    fetchData();
+  }, []);
+
+  if (!loaded) {
+    return <LoadingSpinner />
+  }
 
   return (
     <div className='tab-content'>
       {error}
       <div className='tab-inner-content'>
         <h1>Order Number</h1>
-        <form onSubmit={(e) => {
-            e.preventDefault();
-            getOrder(e.target.elements['orderNumber'].value, setOrders, setError)
-          }}>
+        <form onSubmit={async e => { await getOrder(e, navigate, setError);}}>
           <input required type='text' name='orderNumber'/>
           <button type='submit'>Submit</button>
         </form>
-        {orders.map(pickTicket => <Order order={pickTicket} key={pickTicket.pickTicketNumber} />)}
+        <h1>Recent Orders</h1>
+        <OrderGrid recentOrders={recentOrders}/>
       </div>
     </div>
 
   );
 }
 
-/**
- * Component to render order information such as customer, recipient, and products
- * @param {Object} props Contains information about an order
- * @returns JSX React element with order information
- */
-function Order(props) {
-  const order = props.order;
-  const lineItems = order.lineItems.map(lineItem => {
-    return(
-      <Product sku={lineItem.sku} units={lineItem.units} key={lineItem.sku}/>
-    )
-  })
+function OrderGrid(props) {
+  const recentOrders = props.recentOrders;
+  const orderGridEntries = [];
+  
+  recentOrders.forEach((pickTickets, orderNumber) => {
+    const orderDate = pickTickets[0].orderDate;
+
+    orderGridEntries.push({
+      orderNumber: orderNumber,
+      orderDate: new Date(orderDate),
+      pickTicketCount: pickTickets.length
+    });
+  });
+
+  orderGridEntries.sort((a, b) => a.orderDate > b.orderDate ? 0 : 1);
 
   return (
-    <div>
-      <OrderHeader order={order} />
-      <h2>Customer</h2>
-      <Address address={order.customer} />
-      <h2>Recipient</h2>
-      <Address address={order.recipient} />
-      <h2>Products</h2>
-      {lineItems}
-    </div>
-  );
+    <table>
+      <thead>
+        <tr>
+          <th>Order Number</th>
+          <th>Order Date</th>
+          <th>Pick Ticket Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {orderGridEntries.map(entry => <OrderGridEntry key={entry.orderNumber} orderNumber={entry.orderNumber} orderDate={entry.orderDate} pickTicketCount={entry.pickTicketCount}/>)}
+      </tbody>
+    </table>
+  )
 }
 
-/**
- * Component to render order metadata
- * @param {Object} props Contains the date of the order displayed
- * @returns JSX React element with order metadata
- */
-function OrderHeader(props) {
-  const order = props.order;
-  const orderDate = new Date(order.orderDate);
-  return (
-    <div>
-      <h2>Order Information</h2>
-      <p>Order Number: {order.orderNumber}</p>
-      <p>Pick Ticket Number: {order.pickTicketNumber}</p>
-      <p>Order Date: {orderDate.toLocaleDateString()}</p>
-    </div>
-  );
-}
+function OrderGridEntry(props) {
+  const orderNumber = props.orderNumber;
+  const orderDate = props.orderDate;
+  const pickTicketCount = props.pickTicketCount;
 
-/**
- * Component with address information
- * @param {Object} props Contains information to make a complete address
- * @returns JSX React element with address information
- */
-function Address(props) {
-  const address = props.address
   return (
-    <div>
-      <p>Name: {address.name}</p>
-      <p>Address: {address.street} {address.city}, {address.state} {address.zip} {address.country}</p>
-    </div>
-  );
-}
-
-/**
- * A component displaying product information
- * @param {Object} props Contains information about a specific product
- * @returns JSX React element with product information
- */
-function Product(props) {
-  return (
-    <div>
-      <h3>{props.name}</h3>
-      <p>SKU: {props.sku}</p>
-      <p>Quantity: {props.units}</p>
-      <hr />
-    </div>
+    <tr>
+      <td><Link to={`orders/${orderNumber}`}>{orderNumber}</Link></td>
+      <td>{orderDate.toLocaleDateString()}</td>
+      <td>{pickTicketCount}</td>
+    </tr>
   )
 }
 
@@ -110,25 +111,20 @@ function Product(props) {
  * @param {Function} setState Function to update state of the current order in the OrderViewer component
  * @param {Function} setError Function to update the error state of the order viewing screen
  */
-function getOrder(orderNumber, setState, setError) {
-  fetch(`/api/wsi/orders/${orderNumber}`)
-  .then(res => {
-    if (res.status === 404) {
-      throw new Error('Order not found');
-    } else if (!res.ok) {
-      throw new Error(res.statusText);
-    }
+async function getOrder(event, navigate, setError) {
+  event.preventDefault();
 
-    return res.json();
-  })
-  .then(res => {
-    setError();
-    setState(res);
-  })
-  .catch(err => {
-    setError(<ErrorMessage error={err.message} />);
-    setState([]);
-  });
+  const formData = new FormData(event.target);
+  const orderNumber = formData.get('orderNumber');
+  const apiResponse = await fetch(`/api/wsi/orders/${orderNumber}`);
+
+  if (apiResponse.status === 200) {
+    navigate(`orders/${orderNumber}`)
+  } else if (apiResponse.status === 404) {
+    setError(<ErrorMessage error={`Order ${orderNumber} not found`} />);
+  } else {
+    setError(<ErrorMessage error={apiResponse.statusText} />);
+  }
 }
 
 export default OrderViewer;
