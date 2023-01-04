@@ -4,9 +4,9 @@
  */
 import { Routes, Route } from 'react-router-dom';
 
-import OrderCreator from 'pages/Wsi/components/OrderCreator/OrderCreator';
-import OrderViewer from 'pages/Wsi/components/OrderViewer/OrderViewer';
-import OrderView from 'pages/Wsi/components/OrderViewer/OrderView';
+import OrderCreator from 'pages/Wsi/OrderCreator/OrderCreator';
+import OrderViewer from 'pages/Wsi/OrderViewer/OrderViewer';
+import Order from 'pages/Wsi/OrderViewer/Order';
 import SideNavbar from 'components/SideBar/SideBar';
 
 function Wsi() {
@@ -21,7 +21,7 @@ function Wsi() {
       <Routes>
         <Route path='' element={<OrderViewer />} />
         <Route path='order-creator' element={<OrderCreator />} />
-        <Route path='orders/:orderNumber' element={<OrderView />}/>
+        <Route path='orders/:orderNumber' element={<Order />}/>
       </Routes>
     </main>
   );
