@@ -4,11 +4,11 @@ namespace intranet.Models.Wsi.PickTicket
 {
     public class PickTicketModel
     {
-        public string PickTicketNumber { get; set; }
+        public string? PickTicketNumber { get; set; }
 
         public string OrderNumber { get; set; }
 
-        public string Action { get; set; }
+        public string? Action { get; set; }
 
         public int Store { get; set; }
 
@@ -24,8 +24,8 @@ namespace intranet.Models.Wsi.PickTicket
 
         public int Channel { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }
