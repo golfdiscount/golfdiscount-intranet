@@ -40,7 +40,7 @@ namespace intranet.Controllers.Wsi
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(PickTicketPostModel order)
+        public async Task<IActionResult> Post(PickTicketModel order)
         {
             StringContent orderInfo = new(JsonSerializer.Serialize(order, jsonOptions), System.Text.Encoding.UTF8, "application/json");
             orderInfo.Headers.Remove("Content-Type");
