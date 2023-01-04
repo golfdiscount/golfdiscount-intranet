@@ -1,5 +1,5 @@
 ﻿using intranet.Models.Wsi.PickTicket;
-using intranet.Models.Magento;
+using intranet.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -21,7 +21,6 @@ namespace intranet.Controllers.Wsi
         [HttpGet]
         public async Task<IActionResult> Get(string? orderNumber)
         {
-            Console.WriteLine(orderNumber);
             HttpResponseMessage response = await wsiClient.GetAsync($"/api/orders/{orderNumber}");
 
             if (!response.IsSuccessStatusCode)
@@ -41,7 +40,7 @@ namespace intranet.Controllers.Wsi
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(PickTicketModel order)
+        public async Task<IActionResult> Post(PickTicketPostModel order)
         {
             StringContent orderInfo = new(JsonSerializer.Serialize(order, jsonOptions), System.Text.Encoding.UTF8, "application/json");
             orderInfo.Headers.Remove("Content-Type");
@@ -59,6 +58,32 @@ namespace intranet.Controllers.Wsi
             }
 
             return new OkObjectResult("Order submitted");
+        }
+
+        public class PickTicketPostModel
+        {
+            public string OrderNumber { get; set; }
+
+            public int Store { get; set; }
+
+            public AddressModel Customer { get; set; }
+
+            public AddressModel Recipient { get; set; }
+
+            public string ShippingMethod { get; set; }
+
+            public DateTime OrderDate { get; set; }
+
+            public List<PickTicketDetailPostModel> LineItems { get; set; }
+        }
+
+        public class PickTicketDetailPostModel
+        {
+            public int LineNumber { get; set; }
+
+            public string Sku { get; set; }
+
+            public int Units { get; set; }
         }
     }
 }
