@@ -1,20 +1,25 @@
 import { useState } from 'react';
 
-import AddressModel from 'models/AddressModel';
-
 function AddressForm(props) {
-    const [ address, setAddress ] = useState(props.address);
+    const [ address, setAddress ] = useState({
+        name: '',
+        street: '',
+        city: '',
+        state: '',
+        country: 'US',
+        zip: ''
+      });
 
     function handleInputChange(event) {
         const target = event.target;
         const value = target.value;
         const propertyName = target.name;
 
-        setAddress({[propertyName]: value});
+        setAddress({...address, [propertyName]: value});
     };
 
     return (
-        <fieldset className='vertical-form' disabled={props.disabled} name={props.fieldSetName}>
+        <fieldset className='vertical-form' disabled={props.disabled}>
             <label>
                 Name:
                 <input value={address.name} name='name' onChange={handleInputChange} required />
