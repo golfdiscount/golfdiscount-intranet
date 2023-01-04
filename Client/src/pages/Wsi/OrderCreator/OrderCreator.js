@@ -50,7 +50,6 @@ function OrderCreator() {
 
     if (window.confirm('Are you sure you want to submit this order?')) {
       let formData = new FormData(e.target);
-      console.log(formData)
 
       const date = new Date(formData.get('order_date'));
 
@@ -99,21 +98,19 @@ function OrderCreator() {
         orderData.lineItems.push(product);
       });
 
-      console.log(orderData);
+      let res = await fetch('/api/wsi/orders', {
+        method: 'POST',
+        body: JSON.stringify(orderData),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
 
-      // let res = await fetch('/api/wsi/orders', {
-      //   method: 'POST',
-      //   body: JSON.stringify(orderData),
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   }
-      // });
-
-      // if (!res.ok) {
-      //   alert(`There was an error submitting the order: ${await res.text()}`)
-      // } else {
-      //   alert('Order successfully submitted');
-      // }
+      if (!res.ok) {
+        alert(`There was an error submitting the order: ${await res.text()}`)
+      } else {
+        alert('Order successfully submitted');
+      }
     }
   }
 
