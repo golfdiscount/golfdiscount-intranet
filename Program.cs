@@ -14,8 +14,8 @@ builder.Services.AddSingleton(new JsonSerializerOptions()
 });
 
 DefaultAzureCredential cred = new();
-Uri keyvaultUri = new(Environment.GetEnvironmentVariable("vault-uri"));
-SecretClient secretClient = new(keyvaultUri, cred);
+string keyvaultUri = builder.Configuration["vault-uri"];
+SecretClient secretClient = new(new(keyvaultUri), cred);
 
 builder.Services.AddHttpClient("Magento", client =>
 {
@@ -56,7 +56,7 @@ else
     app.UseHsts();
 }
 
-
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
