@@ -1,22 +1,19 @@
-import { useState } from 'react';
+import React from 'react'; 
+import PropTypes from 'prop-types';
 
 function AddressForm(props) {
-    const [ address, setAddress ] = useState({
-        name: '',
-        street: '',
-        city: '',
-        state: '',
-        country: 'US',
-        zip: ''
-      });
+    const address = props.address;
+    const setAddress = props.setAddress;
 
     function handleInputChange(event) {
         const target = event.target;
         const value = target.value;
         const propertyName = target.name;
 
-        setAddress({...address, [propertyName]: value});
-    };
+        const newAddress = address;
+        newAddress[propertyName] = value;
+        setAddress(newAddress);
+    }
 
     return (
         <fieldset className='vertical-form' disabled={props.disabled}>
@@ -47,5 +44,18 @@ function AddressForm(props) {
         </fieldset>
     );
 }
+
+AddressForm.propTypes = {
+    address: PropTypes.shape({
+        name: PropTypes.string,
+        street: PropTypes.string,
+        city: PropTypes.string,
+        state: PropTypes.string,
+        country: PropTypes.string,
+        zip: PropTypes.string
+    }),
+    setAddress: PropTypes.func,
+    disabled: PropTypes.bool
+};
 
 export default AddressForm;
