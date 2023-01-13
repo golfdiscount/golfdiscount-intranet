@@ -2,13 +2,15 @@
  * Landing page of the application
  * @author Harmeet Singh
  */
-import SideNavbar from "components/SideBar/SideBar";
+import { React } from 'react';
+import SideNavbar from 'components/SideBar/SideBar';
 
 function Landing() {
   const tabs = [
     {text: 'WSI Order Viewer', route: '/wsi'},
     {text: 'WSI Order Creator', route:'/wsi/order-creator'}
-  ]
+  ];
+
   return (
     <main>
       <SideNavbar tabs={tabs} header='Quick Links'/>
