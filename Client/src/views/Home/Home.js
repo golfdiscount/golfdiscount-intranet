@@ -1,11 +1,7 @@
-/**
- * Landing page of the application
- * @author Harmeet Singh
- */
 import { React } from 'react';
 import SideNavbar from 'components/SideBar/SideBar';
 
-function Landing() {
+function Home() {
   const tabs = [
     {text: 'WSI Order Viewer', route: '/wsi'},
     {text: 'WSI Order Creator', route:'/wsi/order-creator'}
@@ -28,4 +24,4 @@ function Landing() {
   );
 }
 
-export default Landing;
+export default Home;
