@@ -1,3 +1,6 @@
+import { React } from 'react';
+import PropTypes from 'prop-types';
+
 function OrderInfo(props) {
   let orderDate = new Date(props.date);
   return (
@@ -9,5 +12,11 @@ function OrderInfo(props) {
     </div>
   );
 }
+
+OrderInfo.propTypes = {
+  date: PropTypes.date,
+  email: PropTypes.string,
+  number: PropTypes.string
+};
 
 export default OrderInfo;

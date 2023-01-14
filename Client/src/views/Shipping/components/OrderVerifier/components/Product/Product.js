@@ -1,9 +1,6 @@
-/**
- * Component to display a product and its verification status
- * Background is green for verified, otherwise none
- * @param {Object} props Information about product
- * @returns {JSX.Element}  Component template
- */
+import PropTypes from 'prop-types';
+import { React } from 'react';
+
 function Product(props) {
   const product = props.product;
   return (
@@ -22,5 +19,9 @@ function Product(props) {
     </div>
   );
 }
+
+Product.propTypes = {
+  product: PropTypes.object
+};
 
 export default Product;

@@ -1,9 +1,5 @@
-/**
- * @author Harmeet Singh
- */
-
-import { Routes, Route } from 'react-router-dom'
-import OrderVerifier from 'pages/Shipping/components/OrderVerifier/OrderVerifier';
+import { React, Routes, Route } from 'react-router-dom';
+import OrderVerifier from 'views/Shipping/components/OrderVerifier/OrderVerifier';
 import SideNavbar from 'components/SideBar/SideBar';
 
 function Shipping() {
@@ -18,7 +14,7 @@ function Shipping() {
         <Route path='' element={<OrderVerifier />} />
       </Routes>
     </main>
-  )
+  );
 }
 
 export default Shipping;

@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import ReactLoading from 'react-loading';
 
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
-import OrderInfo from 'pages/Shipping/components/OrderVerifier/components/OrderInfo/OrderInfo';
-import ProductVerifier from 'pages/Shipping/components/OrderVerifier/components/ProductVerifier/product-verifier';
+import OrderInfo from 'views/Shipping/components/OrderVerifier/components/OrderInfo/OrderInfo';
+import ProductVerifier from 'views/Shipping/components/OrderVerifier/components/ProductVerifier/product-verifier';
 
-import 'pages/Shipping/components/OrderVerifier/OrderVerifier.css';
+import 'views/Shipping/components/OrderVerifier/OrderVerifier.css';
 
 function OrderVerifier() {
   const [error, setError] = useState();
@@ -29,7 +29,7 @@ function OrderVerifier() {
   return (
     <div className='tab-content'>
       {error}
-      <div className={`tab-inner-content`}>
+      <div className={'tab-inner-content'}>
         <h1>Order Verification</h1>
         <h2>Order Number</h2>
         <form onSubmit={async e => {

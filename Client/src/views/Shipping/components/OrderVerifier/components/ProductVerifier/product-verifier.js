@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { React, useEffect, useState } from 'react';
 
 import Product from '../Product/Product';
 
@@ -22,17 +23,17 @@ function ProductVerifier(props) {
 
 
   const productListings = products.map(product => {
-    return <Product product={product} key={product.sku}/>
+    return <Product product={product} key={product.sku}/>;
   });
 
   return(
     <div>
       <h2>Products</h2>
       <form onSubmit={e => {
-            e.preventDefault();
-            verifyProduct(e.target.elements['product-search'].value, products, setProducts);
-            checkProducts(products, props.setVerified);
-          }}>
+        e.preventDefault();
+        verifyProduct(e.target.elements['product-search'].value, products, setProducts);
+        checkProducts(products, props.setVerified);
+      }}>
         <label>
           UPC: <input id='product-search' required type='text'/>
         </label>
@@ -42,6 +43,12 @@ function ProductVerifier(props) {
     </div>
   );
 }
+
+ProductVerifier.propTypes = {
+  products: PropTypes.array,
+  setVerified: PropTypes.func,
+  verified: PropTypes.bool
+};
 
 /**
  * Searches through a list of products and adds 1 to verified quantity of
