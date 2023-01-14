@@ -4,9 +4,9 @@ import { BrowserRouter, React, Routes, Route } from 'react-router-dom';
 import 'App.css';
 import Footer from 'components/Footer/Footer';
 import Navbar from 'components/Navbar/Navbar';
-import Landing from 'pages/Landing/Landing';
-import Wsi from 'pages/Wsi';
-import Shipping from 'pages/Shipping/Shipping';
+import Home from 'views/Home/Home';
+import Wsi from 'views/Wsi';
+import Shipping from 'views/Shipping/Shipping';
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path='/' element={<Landing />} />
+          <Route path='/' element={<Home />} />
           <Route path='/wsi/*' element={<Wsi />} />
           <Route path='/shipping/*' element={<Shipping />} />
         </Routes>
