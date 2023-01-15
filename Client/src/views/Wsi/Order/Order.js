@@ -2,51 +2,43 @@ import { React, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import LoadingSpinner from 'components/LoadingSpinner';
-import OrderNavBar from './OrderNavBar';
 import PickTicket from './PickTicket';
 
 function Order() {
   const params = useParams();
 
-  const [pickTickets, setPickTickets] = useState(null);
+  const [pickTicket, setPickTicket] = useState(null);
   const [loaded, setLoaded] = useState(false);
-  const [currentPickTicketNumber, setCurrentPickTicketNumber] = useState(null);
 
-  const orderNumber = params.orderNumber;
+  const pickTicketNumber = params.pickTicketNumber;
 
   useEffect(() => {
     async function fetchData() {
-      const pickTickets = await getPickTickets(orderNumber);
+      const pickTicket = await getPickTicket(pickTicketNumber);
 
-      await Promise.all(pickTickets.map(async pickTicket => {
-        await Promise.all(pickTicket.lineItems.map(async lineItem => {
-          const productInfo = await getProductInfo(lineItem.sku);
-          lineItem.name = productInfo.name;
-        }));
+      await Promise.all(pickTicket.lineItems.map(async lineItem => {
+        const productInfo = await getProductInfo(lineItem.sku);
+        lineItem.name = productInfo.name;
       }));
 
       if (!loaded) {
-        setPickTickets(pickTickets);
-        setCurrentPickTicketNumber(pickTickets[0].pickTicketNumber);
+        setPickTicket(pickTicket);
         setLoaded(true);
       }
     }
 
     fetchData();
-  }, [orderNumber, loaded]);
+  }, [pickTicketNumber, loaded]);
 
   if (!loaded) {
     return <LoadingSpinner />;
   }
 
-  const currentPickTicket = pickTickets.find(pickTicket => pickTicket.pickTicketNumber === currentPickTicketNumber);
-
   return (
     <div className='tab-content'>
       <div className='tab-inner-content'>
-        <h1>{orderNumber}</h1>
-        <OrderNavBar labels={pickTickets.map(pickTicket => pickTicket.pickTicketNumber)} setState={setCurrentPickTicketNumber}/>
-        <PickTicket pickTicket={currentPickTicket} key={currentPickTicket.pickTicketNumber}/>
+        <h1>{pickTicketNumber}</h1>
+        <PickTicket pickTicket={pickTicket} key={pickTicket.pickTicketNumber}/>
       </div>
     </div>
   );
@@ -57,8 +49,8 @@ function Order() {
  * @param {string} orderNumber Order to get information for
  * @returns {Promise<Array<Object>>} List of pick tickets for this order
  */
-async function getPickTickets(orderNumber) {
-  const apiResponse = await fetch(`/api/wsi/orders/${orderNumber}`);
+async function getPickTicket(pickTicketNumber) {
+  const apiResponse = await fetch(`/api/wsi/picktickets/${pickTicketNumber}`);
 
   if (apiResponse.status === 404) {
     return null;
