@@ -1,15 +1,9 @@
-import { React, useState } from 'react'; 
+import { React } from 'react';
 import PropTypes from 'prop-types';
 
 function AddressForm(props) {
-  const [ address, setAddress ] = useState({
-    name: '',
-    street: '',
-    city: '',
-    state: '',
-    country: 'US',
-    zip: ''
-  });
+  const address = props.address;
+  const setAddress = props.setAddress;
 
   function handleInputChange(event) {
     const target = event.target;
@@ -50,6 +44,8 @@ function AddressForm(props) {
 }
 
 AddressForm.propTypes = {
+  address: PropTypes.object,
+  setAddress: PropTypes.func,
   disabled: PropTypes.bool
 };
 
