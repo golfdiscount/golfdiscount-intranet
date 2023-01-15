@@ -1,7 +1,5 @@
-/**
- * An error message that spans the width of its parent container
- * @author Harmeet Singh
- */
+import PropTypes from 'prop-types';
+import { React } from 'react';
 
 import 'components/ErrorMessage/ErrorMessage.css';
 
@@ -12,5 +10,9 @@ function ErrorMessage(props) {
     </div>
   );
 }
+
+ErrorMessage.propTypes = {
+  error: PropTypes.string
+};
 
 export default ErrorMessage;
