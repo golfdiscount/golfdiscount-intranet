@@ -17,7 +17,7 @@ function Wsi() {
       <Routes>
         <Route path='' element={<OrderSearch />} />
         <Route path='order-creator' element={<OrderCreator />} />
-        <Route path='orders/:orderNumber' element={<Order />}/>
+        <Route path='picktickets/:pickTicketNumber' element={<Order />}/>
       </Routes>
     </main>
   );
