@@ -25,15 +25,17 @@ table {
     table-layout: fixed;
     border-collapse: collapse;
     border: 1px solid black;
+    margin-top: .5em;
 }
 
-th {
-    text-align: left;
-    padding-right: 10px;
-}
-
-tr {
+thead {
     border-bottom: 1px solid black;
+}
+
+th, td {
+    text-align: left;
+    padding: 0px 10px;
+    height: 1.5em;
 }
 
 tr:nth-child(even) {
