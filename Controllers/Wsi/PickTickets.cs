@@ -6,22 +6,50 @@ using System.Text.Json;
 namespace intranet.Controllers.Wsi
 {
     [ApiController]
-    [Route("api/wsi/[controller]/{orderNumber?}")]
-    public class Orders : ControllerBase
+    [Route("api/wsi/[controller]")]
+    public class PickTickets : ControllerBase
     {
         private readonly HttpClient wsiClient;
         private readonly JsonSerializerOptions jsonOptions;
 
-        public Orders(IHttpClientFactory clientFactory, JsonSerializerOptions jsonOptions)
+        public PickTickets(IHttpClientFactory clientFactory, JsonSerializerOptions jsonOptions)
         {
             wsiClient = clientFactory.CreateClient("Wsi");
             this.jsonOptions = jsonOptions;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(string? orderNumber)
+        public async Task<IActionResult> GetPickTicketByOrderNumber([FromQuery] string? orderNumber)
         {
-            HttpResponseMessage response = await wsiClient.GetAsync($"/api/orders/{orderNumber}");
+            HttpResponseMessage response;
+
+            if (orderNumber != null)
+            {
+                response = await wsiClient.GetAsync($"/api/picktickets?orderNumber={orderNumber}");
+            } else
+            {
+                response = await wsiClient.GetAsync("/api/picktickets");
+            }
+             
+
+            if (!response.IsSuccessStatusCode)
+            {
+                if ((int)response.StatusCode >= 500)
+                {
+                    return new StatusCodeResult(500);
+                }
+
+                return new NotFoundResult();
+            }
+
+            List<PickTicketModel> orders = JsonSerializer.Deserialize<List<PickTicketModel>>(await response.Content.ReadAsStringAsync(), jsonOptions);
+            return new OkObjectResult(orders);
+        }
+
+        [HttpGet("{pickTicketNumber}")]
+        public async Task<IActionResult> GetPickTicket(string pickTicketNumber)
+        {
+            HttpResponseMessage response = await wsiClient.GetAsync($"/api/picktickets/{pickTicketNumber}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -34,9 +62,9 @@ namespace intranet.Controllers.Wsi
             }
 
             HttpContent content = response.Content;
-            List<PickTicketModel> orders = JsonSerializer.Deserialize<List<PickTicketModel>>(await content.ReadAsStringAsync(), jsonOptions);
+            PickTicketModel order = JsonSerializer.Deserialize<PickTicketModel>(await content.ReadAsStringAsync(), jsonOptions);
 
-            return new OkObjectResult(orders);
+            return new OkObjectResult(order);
         }
 
         [HttpPost]
