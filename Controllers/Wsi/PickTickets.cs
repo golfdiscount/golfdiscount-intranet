@@ -68,12 +68,12 @@ namespace intranet.Controllers.Wsi
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(PickTicketModel order)
+        public async Task<IActionResult> Post(PickTicketPostModel order)
         {
             StringContent orderInfo = new(JsonSerializer.Serialize(order, jsonOptions), System.Text.Encoding.UTF8, "application/json");
             orderInfo.Headers.Remove("Content-Type");
             orderInfo.Headers.Add("Content-Type", "application/json");
-            HttpResponseMessage wsiResponse = await wsiClient.PostAsync("/api/orders", orderInfo);
+            HttpResponseMessage wsiResponse = await wsiClient.PostAsync("/api/picktickets", orderInfo);
 
             if (!wsiResponse.IsSuccessStatusCode)
             {
