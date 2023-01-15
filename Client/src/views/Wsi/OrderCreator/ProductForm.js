@@ -2,43 +2,64 @@ import PropTypes from 'prop-types';
 import { React } from 'react';
 
 function Product(props) {
-  let productInfo = props.productInfo;
-  let products = props.products;
-  const lineNumber = props.lineNumber;
+  const productInfo = props.productInfo;
+  const removeProduct = props.removeProduct;
+  const products = props.products;
   const setProducts = props.setProducts;
 
-  function updateProduct(key, value) {
-    productInfo[key] = value;
-    const productsTemp = products.map(product => {
-      if (product.lineNumber === lineNumber) {
-        product = productInfo;
-      }
-      return product;
-    });
-    setProducts(productsTemp);
+  /**
+   * Updates the value of the product form dynamically based on
+   * input element that triggered it
+   * @param {Event} event Event that triggered this function
+   */
+  function handleInputChange(event) {
+    const target = event.target;
+    const value = target.value;
+    const propertyName = target.name;
+
+    updateProduct(propertyName, value, productInfo.lineNumber, products, setProducts);
   }
 
   return(
     <div className='vertical-form'>
       <label className='text-input'>SKU:
-        <input value={productInfo.sku} onChange={e => updateProduct('sku', e.target.value)} required/>
+        <input value={productInfo.sku} name='sku' onChange={handleInputChange} required/>
       </label>
       <label className='text-input'>Quantity:
-        <input type='number' value={productInfo.units} onChange={e => updateProduct('units', e.target.value)} required/>
+        <input type='number' value={productInfo.units} name='units' onChange={handleInputChange} required/>
       </label>
-      <button type='button' onClick={props.removeProduct}>Remove Product</button>
+      <button type='button' onClick={removeProduct}>Remove Product</button>
       <hr />
     </div>
   );
 }
 
+/**
+ * Updates the properties of a product based on the line number for a product
+ * @param {string} key Name of property to update
+ * @param {string} value Value to set the property to
+ * @param {number} lineNumber Line number of the product
+ * @param {Array} products Array of current products
+ * @param {Function} setProducts Function to update the state of current products
+ */
+function updateProduct(key, value, lineNumber, products, setProducts) {
+  const productsTemp = products.map(product => {
+    if (product.lineNumber === lineNumber) {
+      product[key] = value;
+    }
+    return product;
+  });
+
+  setProducts(productsTemp);
+}
+
 Product.propTypes = {
   productInfo: PropTypes.shape({
+    lineNumber: PropTypes.number,
     sku: PropTypes.string,
     units: PropTypes.number,
   }),
   products: PropTypes.array,
-  lineNumber: PropTypes.number,
   setProducts: PropTypes.func,
   removeProduct: PropTypes.func
 };
