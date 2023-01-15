@@ -1,27 +1,26 @@
 import { React, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import LoadingSpinner from 'components/LoadingSpinner';
 import OrderGrid from './OrderGrid';
+
+import './OrderSearch.css';
 
 /**
  * OrderViewer component with form for searching and order information
  * @returns OrderViewer component
  */
 function OrderSearch() {
-  const [recentOrders, setRecentOrders] = useState(null);
+  const [orders, setOrders] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState();
-  const navigate = useNavigate();
 
-  // Load recent orders from the WSI API
+  // Load orders from the WSI API
   useEffect(() => {
     async function fetchData() {
-      const apiResonse = await fetch('/api/wsi/orders');
-      const recentPickTickets = await apiResonse.json();
+      const recentPickTickets = await getRecentPickTickets();
 
-      setRecentOrders(recentPickTickets);
+      setOrders(recentPickTickets);
       setLoaded(true);
     }
 
@@ -34,14 +33,17 @@ function OrderSearch() {
 
   return (
     <div className='tab-content'>
-      {error}
+      {error && <ErrorMessage error={error} />}
       <div className='tab-inner-content'>
         <h1>Orders</h1>
-        <form onSubmit={async e => { await getOrder(e, navigate, setError); }}>
-          <input required type='text' name='orderNumber'/>
-          <button type='submit'>Submit</button>
+        <form onSubmit={async e => { await searchPickTickets(e, setOrders, setError); }}>
+          <label>
+            Order Number: 
+            <input type='text' name='orderNumber'/>
+          </label>
+          <button type='submit'>Search</button>
         </form>
-        <OrderGrid orders={recentOrders}/>
+        <OrderGrid orders={orders}/>
       </div>
     </div>
 
@@ -55,20 +57,43 @@ function OrderSearch() {
  * @param {Function} setState Function to update state of the current order in the OrderViewer component
  * @param {Function} setError Function to update the error state of the order viewing screen
  */
-async function getOrder(event, navigate, setError) {
+async function searchPickTickets(event, setOrders, setError) {
   event.preventDefault();
 
   const formData = new FormData(event.target);
   const orderNumber = formData.get('orderNumber');
-  const apiResponse = await fetch(`/api/wsi/orders/${orderNumber}`);
 
-  if (apiResponse.status === 200) {
-    navigate(`orders/${orderNumber}`);
-  } else if (apiResponse.status === 404) {
-    setError(<ErrorMessage error={`Order ${orderNumber} not found`} />);
+  if (orderNumber !== null) {
+    try {
+      const pickTickets = await searchPickTicketsByOrder(orderNumber);
+      setOrders(pickTickets);
+      setError(null);
+    } catch (error) {
+      setError(error.message);
+    }
+
   } else {
-    setError(<ErrorMessage error={apiResponse.statusText} />);
+    const pickTickets = await getRecentPickTickets();
+    setOrders(pickTickets);
   }
+
+}
+
+async function getRecentPickTickets() {
+  const apiResponse = await fetch('/api/wsi/picktickets');
+  return await apiResponse.json();
+}
+
+async function searchPickTicketsByOrder(orderNumber) {
+  const apiResponse = await fetch(`/api/wsi/picktickets?orderNumber=${orderNumber}`);
+
+  if (apiResponse.status === 404) {
+    throw Error(`Pick tickets for order ${orderNumber} could not be found`);
+  } else if (apiResponse.status >= 500) {
+    throw Error('There was an error connecting to the backend');
+  }
+
+  return apiResponse.json();
 }
 
 export default OrderSearch;
