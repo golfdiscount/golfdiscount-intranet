@@ -1,7 +1,4 @@
-/**
- * A navigation bar linking to other pages in the SPA
- * @author Harmeet Singh
- */
+import { React } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import 'components/Navbar/Navbar.css';
