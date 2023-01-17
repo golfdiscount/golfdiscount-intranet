@@ -11,6 +11,7 @@ function PickTicket(props) {
   return (
     <div>
       <div>
+        <p>Order Number: {pickTicket.orderNumber}</p>
         <p>Order Date: {orderDate.toLocaleDateString()}</p>
         <p>WSI Order Creation Date: {orderCreationDate.toLocaleString()}</p>
         <p>Shipping Method: {pickTicket.shippingMethod}</p>
