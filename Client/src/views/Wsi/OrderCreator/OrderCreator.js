@@ -99,6 +99,17 @@ function removeProduct(lineNumber, products, setProducts) {
   }
 }
 
+/**
+ * Imports order information from the Magento API into the order form
+ * @param {Event} event Event that triggered this function
+ * @param {string} orderNumber Magento order number to import
+ * @param {Function} setOrderInfo Function to set order information
+ * @param {Function} setCustomerAddress Function to set the customer address
+ * @param {Function} setRecipientAddress Function to set the recipient address
+ * @param {Function} setProducts Function to set the products
+ * @param {Function} setLoaded Function the set the loading state
+ * @param {Function} setError Function to the set current error message
+ */
 async function importOrder(event, orderNumber, setOrderInfo, setCustomerAddress, setRecipientAddress, setProducts, setLoaded, setError) {
   event.preventDefault();
 
