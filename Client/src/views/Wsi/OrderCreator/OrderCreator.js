@@ -43,6 +43,9 @@ function OrderCreator() {
       <div className='order-creator tab-inner-content'>
         <div>
           <h1>Order Creation</h1>
+          <button type='button' onClick={async (e) => await importOrder(e, orderInfo.orderNumber, setOrderInfo, setCustomerAddress, setRecipientAddress, setProducts, setLoaded, setError)}>
+            Import From Magento
+          </button>
           <OrderInfoForm orderInfo={orderInfo} setOrderInfo={setOrderInfo}/>
           <h2>Customer Address</h2>
           <AddressForm address={customerAddress} setAddress={setCustomerAddress}/>
@@ -93,6 +96,44 @@ function removeProduct(lineNumber, products, setProducts) {
   if (products.length !== 1){
     let newProducts = products.filter(product => product.lineNumber !== lineNumber);
     setProducts(newProducts);
+  }
+}
+
+async function importOrder(event, orderNumber, setOrderInfo, setCustomerAddress, setRecipientAddress, setProducts, setLoaded, setError) {
+  event.preventDefault();
+
+  try {
+    setLoaded(false);
+    const apiResponse = await fetch(`/api/magento/orders/${orderNumber}`);
+
+    if (!apiResponse.ok) {
+      throw apiResponse.statusText;
+    }
+
+    const order = await apiResponse.json();
+    const dateString = order.createdAt.substring(0, order.createdAt.indexOf('T'));
+    console.log(dateString);
+
+    setOrderInfo({storeNumber: order.storeNumber, orderNumber: order.orderNumber, orderDate: dateString});
+    setCustomerAddress(order.customer);
+    setRecipientAddress(order.recipient);
+
+    const products = [];
+    for (let i = 0; i < order.products.length; i++) {
+      const product = order.products[i];
+      products.push({
+        sku: product.sku,
+        lineNumber: i + 1
+      });
+    }
+
+    setError(null);
+    setProducts(products);
+  } catch (error) {
+    console.log(error);
+    setError(error);
+  } finally {
+    setLoaded(true);
   }
 }
 
