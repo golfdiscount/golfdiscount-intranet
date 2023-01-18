@@ -22,7 +22,7 @@
 
         public float ShippingTotal { get; set; }
 
-        public List<MagentoProduct> Products { get; set; }
+        public List<LineItemModel> LineItems { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
