@@ -107,31 +107,34 @@ async function importOrder(event, orderNumber, setOrderInfo, setCustomerAddress,
     const apiResponse = await fetch(`/api/magento/orders/${orderNumber}`);
 
     if (!apiResponse.ok) {
+      if (apiResponse.status == 404) {
+        throw `${orderNumber} could not be found in Magento`;
+      }
+
       throw apiResponse.statusText;
     }
 
     const order = await apiResponse.json();
     const dateString = order.createdAt.substring(0, order.createdAt.indexOf('T'));
-    console.log(dateString);
 
     setOrderInfo({storeNumber: order.storeNumber, orderNumber: order.orderNumber, orderDate: dateString});
     setCustomerAddress(order.customer);
     setRecipientAddress(order.recipient);
 
     const products = [];
-    for (let i = 0; i < order.products.length; i++) {
-      const product = order.products[i];
+    for (let i = 0; i < order.lineItems.length; i++) {
+      const product = order.lineItems[i];
       products.push({
         sku: product.sku,
-        lineNumber: i + 1
+        lineNumber: i + 1,
+        units: product.quantity
       });
     }
 
     setError(null);
     setProducts(products);
   } catch (error) {
-    console.log(error);
-    setError(error);
+    setError(error.message);
   } finally {
     setLoaded(true);
   }
