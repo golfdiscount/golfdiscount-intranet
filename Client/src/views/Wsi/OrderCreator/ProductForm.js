@@ -6,6 +6,7 @@ function Product(props) {
   const removeProduct = props.removeProduct;
   const products = props.products;
   const setProducts = props.setProducts;
+  const setError = props.setError;
 
   /**
    * Updates the value of the product form dynamically based on
@@ -23,7 +24,9 @@ function Product(props) {
   return(
     <div className='vertical-form'>
       <label className='text-input'>SKU:
-        <input value={productInfo.sku} name='sku' onChange={handleInputChange} required/>
+        <input value={productInfo.sku} name='sku' 
+          onChange={handleInputChange} 
+          onBlur={async () => await validateProduct(productInfo.sku, setError)} required/>
       </label>
       <label className='text-input'>Quantity:
         <input type='number' value={productInfo.units} name='units' onChange={handleInputChange} required/>
@@ -53,6 +56,16 @@ function updateProduct(key, value, lineNumber, products, setProducts) {
   setProducts(productsTemp);
 }
 
+async function validateProduct(sku, setError) {
+  const apiResponse = await fetch(`/api/magento/products/${sku}`);
+
+  if (!apiResponse.ok) {
+    setError(`${sku} is not a valid SKU`);
+  } else {
+    setError(null);
+  }
+}
+
 Product.propTypes = {
   productInfo: PropTypes.shape({
     lineNumber: PropTypes.number,
@@ -61,7 +74,8 @@ Product.propTypes = {
   }),
   products: PropTypes.array,
   setProducts: PropTypes.func,
-  removeProduct: PropTypes.func
+  removeProduct: PropTypes.func,
+  setError: PropTypes.func
 };
 
 export default Product;
