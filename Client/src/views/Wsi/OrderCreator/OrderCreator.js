@@ -3,6 +3,7 @@ import { React, useState } from 'react';
 import AddressForm from 'components/FormComponents/AddressForm';
 import ErrorMessage from 'components/ErrorMessage/ErrorMessage';
 import LoadingSpinner from 'components/LoadingSpinner';
+import OrderImportMessage from './OrderImportMessage';
 import OrderInfoForm from './OrderInfoForm';
 import ProductForm from './ProductForm';
 import SuccessMessage from 'components/SuccessMessage/SuccessMessage';
@@ -11,6 +12,7 @@ import './OrderCreator.css';
 
 function OrderCreator() {
   const [ loaded, setLoaded ] = useState(true);
+  const [ importable, setImportable ] = useState(false);
   const [ error, setError ] = useState(null);
   const [ success, setSuccess ] = useState(null);
 
@@ -40,13 +42,17 @@ function OrderCreator() {
     <form className='tab-content' onSubmit={e => submitOrder(e, products, setLoaded, setError, setSuccess)}>
       {error && <ErrorMessage error={error} />}
       {success && <SuccessMessage message={success} />}
+      {importable && <OrderImportMessage 
+        importOrder={async () => {
+          await importOrder(orderInfo.orderNumber, setOrderInfo, setCustomerAddress, setRecipientAddress, setProducts, setLoaded, setError);
+          setImportable(false);
+        }}/>}
       <div className='order-creator tab-inner-content'>
         <div>
           <h1>Order Creation</h1>
-          <button type='button' onClick={async (e) => await importOrder(e, orderInfo.orderNumber, setOrderInfo, setCustomerAddress, setRecipientAddress, setProducts, setLoaded, setError)}>
-            Import From Magento
-          </button>
-          <OrderInfoForm orderInfo={orderInfo} setOrderInfo={setOrderInfo}/>
+          <OrderInfoForm orderInfo={orderInfo} 
+            setOrderInfo={setOrderInfo}
+            checkOrder={orderNumber => checkOrder(orderNumber, setImportable)} />
           <h2>Customer Address</h2>
           <AddressForm address={customerAddress} setAddress={setCustomerAddress}/>
           <label>
@@ -100,8 +106,22 @@ function removeProduct(lineNumber, products, setProducts) {
 }
 
 /**
+ * Checks to see if an order can be found in Magento, if it is, and updates state accordingly
+ * @param {string} orderNumber Order number to search for
+ * @param {Function} setImportable Sets the state that indicates whether or not an order is importable
+ */
+async function checkOrder(orderNumber, setImportable) {
+  const apiResponse = await fetch(`/api/magento/orders/${orderNumber}`);
+
+  if (apiResponse.status === 200) {
+    setImportable(true);
+  } else {
+    setImportable(false);
+  }
+}
+
+/**
  * Imports order information from the Magento API into the order form
- * @param {Event} event Event that triggered this function
  * @param {string} orderNumber Magento order number to import
  * @param {Function} setOrderInfo Function to set order information
  * @param {Function} setCustomerAddress Function to set the customer address
@@ -110,9 +130,7 @@ function removeProduct(lineNumber, products, setProducts) {
  * @param {Function} setLoaded Function the set the loading state
  * @param {Function} setError Function to the set current error message
  */
-async function importOrder(event, orderNumber, setOrderInfo, setCustomerAddress, setRecipientAddress, setProducts, setLoaded, setError) {
-  event.preventDefault();
-
+async function importOrder(orderNumber, setOrderInfo, setCustomerAddress, setRecipientAddress, setProducts, setLoaded, setError) {
   try {
     setLoaded(false);
     const apiResponse = await fetch(`/api/magento/orders/${orderNumber}`);
