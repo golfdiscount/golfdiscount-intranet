@@ -112,6 +112,11 @@ function removeProduct(lineNumber, products, setProducts) {
  * @param {Function} setImportable Sets the state that indicates whether or not an order is importable
  */
 async function checkOrder(orderNumber, setImportable) {
+  if (orderNumber.length === 0) {
+    setImportable(false);
+    return;
+  }
+
   const apiResponse = await fetch(`/api/magento/orders/${orderNumber}`);
 
   if (apiResponse.status === 200) {
