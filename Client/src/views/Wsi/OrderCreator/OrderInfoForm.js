@@ -3,6 +3,7 @@ import { React } from 'react';
 
 function OrderInfoForm(props) {
   const orderInfo = props.orderInfo;
+  const checkOrder = props.checkOrder;
   const setOrderInfo = props.setOrderInfo;
 
   function handleInputChange(event) {
@@ -44,7 +45,7 @@ function OrderInfoForm(props) {
       </label>
       <label className='text-input'>
         Order Number:
-        <input name='orderNumber' value={orderInfo.orderNumber} onChange={handleInputChange} required />
+        <input name='orderNumber' value={orderInfo.orderNumber} onChange={handleInputChange} onBlur={() => checkOrder(orderInfo.orderNumber)} required />
       </label>
       <label>
         Order Date:
@@ -64,6 +65,7 @@ function OrderInfoForm(props) {
 }
 
 OrderInfoForm.propTypes = {
+  checkOrder: PropTypes.func,
   orderInfo: PropTypes.shape({
     storeNumber: PropTypes.string,
     orderNumber: PropTypes.string,
