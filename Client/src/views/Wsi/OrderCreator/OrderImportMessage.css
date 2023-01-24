@@ -1,0 +1,13 @@
+.order-import-message {
+    background-color: #5abcf6;
+    display: flex;
+    padding-left: 1vw;
+}
+
+.order-import-message > p {
+    color: black;
+  }
+
+.order-import-message:hover {
+    cursor: pointer;
+}
