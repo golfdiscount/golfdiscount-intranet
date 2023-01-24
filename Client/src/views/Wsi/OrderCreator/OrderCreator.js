@@ -173,6 +173,10 @@ async function importOrder(orderNumber, setOrderInfo, setCustomerAddress, setRec
 /**
  * Submits the order to the WSI API
  * @param {Event} e Form event that called this function
+ * @param {Array<Object>} products List of products for the order to be submitted
+ * @param {Function} setLoaded Function to set the load state of this component
+ * @param {Function} setError Function that handles showing the error banner
+ * @param {Function} setSuccess Function that handles showing the success banner
  */
 async function submitOrder(e, products, setLoaded, setError, setSuccess) {
   e.preventDefault();
