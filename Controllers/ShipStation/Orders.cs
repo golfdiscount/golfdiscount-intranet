@@ -91,7 +91,10 @@ namespace intranet.Controllers.ShipStation
                     });
                 } else
                 {
-                    return new StatusCodeResult(500);
+                    order.Products.Add(new()
+                    {
+                        Sku = item.Sku
+                    });
                 }
             }
 
