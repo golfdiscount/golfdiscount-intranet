@@ -30,7 +30,8 @@ function OrderCreator() {
         removeProduct={() => removeProduct(product.lineNumber, products, setProducts)}
         products={products}
         setProducts={setProducts}
-        productInfo={product}/>
+        productInfo={product}
+        setError={setError} />
     );
   });
 
