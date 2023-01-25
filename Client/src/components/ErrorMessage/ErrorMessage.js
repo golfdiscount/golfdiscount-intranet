@@ -6,7 +6,7 @@ import 'components/ErrorMessage/ErrorMessage.css';
 function ErrorMessage(props) {
   return (
     <div className='error'>
-      <p>Error: {props.error}</p>
+      <p>{props.error}</p>
     </div>
   );
 }
