@@ -18,10 +18,18 @@ function OrderSearch() {
   // Load orders from the WSI API
   useEffect(() => {
     async function fetchData() {
-      const recentPickTickets = await getRecentPickTickets();
+      try {
+        const recentPickTickets = await getRecentPickTickets();
 
-      setOrders(recentPickTickets);
-      setLoaded(true);
+        setOrders(recentPickTickets);
+        setLoaded(true);
+      } catch (error) {
+        setOrders(null);
+        setError(error.message);
+      } finally {
+        setLoaded(true);
+      }
+
     }
 
     fetchData();
@@ -43,7 +51,7 @@ function OrderSearch() {
           </label>
           <button type='submit'>Search</button>
         </form>
-        <OrderGrid orders={orders}/>
+        {orders && <OrderGrid orders={orders}/>}
       </div>
     </div>
 
@@ -81,6 +89,11 @@ async function searchPickTickets(event, setOrders, setError) {
 
 async function getRecentPickTickets() {
   const apiResponse = await fetch('/api/wsi/picktickets');
+
+  if (!apiResponse.ok) {
+    throw new Error('Error fetching data, please try again');
+  }
+
   return await apiResponse.json();
 }
 
