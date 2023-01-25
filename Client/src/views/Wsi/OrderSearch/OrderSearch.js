@@ -19,7 +19,7 @@ function OrderSearch() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const recentPickTickets = await getRecentPickTickets();
+        const recentPickTickets = await getPickTicketsByPage(1, 30);
 
         setOrders(recentPickTickets);
         setLoaded(true);
@@ -81,14 +81,19 @@ async function searchPickTickets(event, setOrders, setError) {
     }
 
   } else {
-    const pickTickets = await getRecentPickTickets();
+    const pickTickets = await getPickTicketsByPage(1, 30);
     setOrders(pickTickets);
   }
-
 }
 
-async function getRecentPickTickets() {
-  const apiResponse = await fetch('/api/wsi/picktickets');
+/**
+ * 
+ * @param {Number} page The page number to receive pick tickets for
+ * @param {Number} pageSize Size of an individual page
+ * @returns {Promise<Array<Object>>} List of pick tickets
+ */
+async function getPickTicketsByPage(page, pageSize) {
+  const apiResponse = await fetch(`/api/wsi/picktickets?page=${page}&pageSize=${pageSize}`);
 
   if (!apiResponse.ok) {
     throw new Error('Error fetching data, please try again');
