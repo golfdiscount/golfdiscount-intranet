@@ -19,18 +19,20 @@ namespace intranet.Controllers.Wsi
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetPickTicketByOrderNumber([FromQuery] string? orderNumber)
+        public async Task<IActionResult> GetPickTicketByOrderNumber([FromQuery] string? orderNumber, [FromQuery] int? page, [FromQuery] int? pageSize)
         {
-            HttpResponseMessage response;
 
             if (orderNumber != null)
             {
-                response = await wsiClient.GetAsync($"/api/picktickets?orderNumber={orderNumber}");
-            } else
-            {
-                response = await wsiClient.GetAsync("/api/picktickets");
+                return await GetPickTicketByOrderNumber(orderNumber);
             }
-             
+
+            return await GetPickTicketByPage(page ?? 1, pageSize ?? 30);
+        }
+
+        private async Task<IActionResult> GetPickTicketByOrderNumber(string orderNumber)
+        {
+            HttpResponseMessage response = await wsiClient.GetAsync($"/api/picktickets?orderNumber={orderNumber}");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -44,6 +46,29 @@ namespace intranet.Controllers.Wsi
 
             List<PickTicketModel> orders = JsonSerializer.Deserialize<List<PickTicketModel>>(await response.Content.ReadAsStringAsync(), jsonOptions);
             return new OkObjectResult(orders);
+        }
+
+        private async Task<IActionResult> GetPickTicketByPage(int page, int pageSize)
+        {
+            if (page < 1)
+            {
+                return new BadRequestObjectResult("Page cannot be less than 1");
+            }
+
+            HttpResponseMessage response = await wsiClient.GetAsync($"/api/picktickets?page={page}&pageSize={pageSize}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                if ((int)response.StatusCode >= 500)
+                {
+                    return new StatusCodeResult(500);
+                }
+
+                return new NotFoundResult();
+            }
+
+            PickTicketCollectionModel collection = JsonSerializer.Deserialize<PickTicketCollectionModel>(await response.Content.ReadAsStringAsync(), jsonOptions);
+            return new OkObjectResult(collection.PickTickets);
         }
 
         [HttpGet("{pickTicketNumber}")]
