@@ -14,15 +14,16 @@ function OrderSearch() {
   const [orders, setOrders] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState();
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(30);
 
   // Load orders from the WSI API
   useEffect(() => {
     async function fetchData() {
       try {
-        const recentPickTickets = await getPickTicketsByPage(1, 30);
-
+        setLoaded(false);
+        const recentPickTickets = await getPickTicketsByPage(pageNumber, pageSize);
         setOrders(recentPickTickets);
-        setLoaded(true);
       } catch (error) {
         setOrders(null);
         setError(error.message);
@@ -33,7 +34,7 @@ function OrderSearch() {
     }
 
     fetchData();
-  }, []);
+  }, [pageNumber, pageSize]);
 
   if (!loaded) {
     return <LoadingSpinner />;
@@ -44,14 +45,14 @@ function OrderSearch() {
       {error && <ErrorMessage error={error} />}
       <div className='tab-inner-content'>
         <h1>Orders</h1>
-        <form onSubmit={async e => { await searchPickTickets(e, setOrders, setError); }}>
+        <form onSubmit={async e => { await searchPickTickets(e, pageNumber, pageSize, setOrders, setError); }}>
           <label>
             Order Number: 
             <input type='text' name='orderNumber'/>
           </label>
           <button type='submit'>Search</button>
         </form>
-        {orders && <OrderGrid orders={orders}/>}
+        {orders && <OrderGrid orders={orders} pageNumber={pageNumber} pageSize={pageSize} setPageNumber={setPageNumber} setPageSize={setPageSize}/>}
       </div>
     </div>
 
@@ -65,11 +66,14 @@ function OrderSearch() {
  * @param {Function} setState Function to update state of the current order in the OrderViewer component
  * @param {Function} setError Function to update the error state of the order viewing screen
  */
-async function searchPickTickets(event, setOrders, setError) {
+async function searchPickTickets(event, pageNumber, pageSize, setOrders, setError) {
   event.preventDefault();
 
   const formData = new FormData(event.target);
   const orderNumber = formData.get('orderNumber');
+
+  console.log(orderNumber);
+  console.log(pageNumber);
 
   if (orderNumber !== null) {
     try {
@@ -81,7 +85,7 @@ async function searchPickTickets(event, setOrders, setError) {
     }
 
   } else {
-    const pickTickets = await getPickTicketsByPage(1, 30);
+    const pickTickets = await getPickTicketsByPage(pageNumber, pageSize);
     setOrders(pickTickets);
   }
 }
