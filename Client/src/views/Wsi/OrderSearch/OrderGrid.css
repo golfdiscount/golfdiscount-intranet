@@ -1,0 +1,11 @@
+.pagination-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.pagination-nav > p {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
