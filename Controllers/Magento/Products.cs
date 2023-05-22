@@ -1,4 +1,5 @@
-﻿using intranet.Models.Magento;
+﻿using intranet.Models;
+using intranet.Models.Magento;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -21,18 +22,26 @@ namespace intranet.Controllers.Magento
         public async Task<IActionResult> Get(string productSku)
         {
             HttpResponseMessage response = await magentoClient.GetAsync($"/api/products/{productSku}");
+            HttpContent content = response.Content;
 
             if (!response.IsSuccessStatusCode)
             {
+                ErrorMessageModel errorMessage = new();
                 if ((int)response.StatusCode >= 500)
                 {
-                    return new StatusCodeResult(500);
+                    errorMessage.Message = "There was an internal server error";
+                    ObjectResult result = new(errorMessage)
+                    {
+                        StatusCode = 500
+                    };
+                    return result;
+
                 }
 
-                return new NotFoundResult();
+                errorMessage.Message = await content.ReadAsStringAsync();
+                return new NotFoundObjectResult(errorMessage);
             }
 
-            HttpContent content = response.Content;
             MagentoProduct product = JsonSerializer.Deserialize<MagentoProduct>(await content.ReadAsStringAsync(), jsonOptions);
 
             return new OkObjectResult(product);

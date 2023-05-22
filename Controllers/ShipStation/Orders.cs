@@ -25,18 +25,24 @@ namespace intranet.Controllers.ShipStation
         public async Task<IActionResult> Get(string orderNumber)
         {
             HttpResponseMessage response = await ssClient.GetAsync($"/orders?orderNumber={orderNumber}");
+            HttpContent content = response.Content;
+            ErrorMessageModel errorMessage = new();
 
             if (!response.IsSuccessStatusCode)
             {
-                if ((int)response.StatusCode > 500)
+                if ((int)response.StatusCode >= 500)
                 {
-                    return new StatusCodeResult((int)response.StatusCode);
+                    errorMessage.Message = "There was an internal server error";
+                    ObjectResult result = new(errorMessage)
+                    {
+                        StatusCode = 500
+                    };
+                    return result;
                 }
-
-                return new BadRequestObjectResult(await response.Content.ReadAsStringAsync());
+                errorMessage.Message = await content.ReadAsStringAsync();
+                return new BadRequestObjectResult(errorMessage);
             }
 
-            HttpContent content = response.Content;
             OrderList orders = JsonSerializer.Deserialize<OrderList>(await content.ReadAsStringAsync(), jsonOptions);
 
             SsOrder ssOrder = null;
@@ -51,7 +57,8 @@ namespace intranet.Controllers.ShipStation
 
             if (ssOrder == null)
             {
-                return new NotFoundObjectResult($"Could not find order {orderNumber}");
+                errorMessage.Message = $"Could not find order {orderNumber} in ShipStation";
+                return new NotFoundObjectResult(errorMessage);
             }
 
             Order order = new()
