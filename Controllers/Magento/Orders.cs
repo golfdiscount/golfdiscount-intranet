@@ -6,12 +6,12 @@ namespace intranet.Controllers.Magento
 {
     [Route("api/magento/[controller]/{orderNumber}")]
     [ApiController]
-    public class OrdersController : ControllerBase
+    public class Orders : ControllerBase
     {
         private readonly HttpClient _magentoClient;
         private readonly JsonSerializerOptions _jsonOptions;
 
-        public OrdersController(IHttpClientFactory clientFactory, JsonSerializerOptions jsonOptions)
+        public Orders(IHttpClientFactory clientFactory, JsonSerializerOptions jsonOptions)
         {
             _magentoClient = clientFactory.CreateClient("Magento");
             _jsonOptions = jsonOptions;
