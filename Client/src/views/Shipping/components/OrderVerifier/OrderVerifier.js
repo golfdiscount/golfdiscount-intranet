@@ -55,22 +55,18 @@ function OrderVerifier() {
 async function getOrder(orderNumber, setOrder, setVerified, setError, setLoaded) {
   orderNumber = orderNumber.trim();
   setLoaded(false);
-  let order = await fetch(`/api/shipstation/orders/${orderNumber}`);
 
+  let errorAudio = new Audio('/error.mp3');
+  const response = await fetch(`/api/shipstation/orders/${orderNumber}`);
+  const order = await response.json();
+  console.log(order);
 
-  if (!order.ok) {
-    if (order.status === 404) {
-      setError(<ErrorMessage error={'Could not pull order from ShipStation, check order number and try again'}/>);
-    } else if (order.status === 500) {
-      setError(<ErrorMessage error={'Internal server error, please try again later'}/>);
-    }
-
+  if (!response.ok) {
+    errorAudio.play();
+    setError(<ErrorMessage error={order.message}/>);
     setOrder();
   } else {
-    order = await order.json();
-
     if (order.orderStatus === 'shipped') {
-      let errorAudio = new Audio('/error.mp3');
       errorAudio.play();
       setError(<ErrorMessage error='Order has already been shipped in ShipStation'/>);
     } else {
