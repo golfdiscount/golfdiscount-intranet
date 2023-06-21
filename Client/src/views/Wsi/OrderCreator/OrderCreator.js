@@ -248,7 +248,8 @@ async function submitOrder(e, products, setLoaded, setError, setSuccess) {
   setLoaded(true);
 
   if (!res.ok) {
-    setError(`There was an error submitting the order: ${await res.text()}`);
+    const responseContent = await res.json();
+    setError(`There was an error submitting the order: ${responseContent.message}`);
     setSuccess(null);
   } else {
     setError(null);
