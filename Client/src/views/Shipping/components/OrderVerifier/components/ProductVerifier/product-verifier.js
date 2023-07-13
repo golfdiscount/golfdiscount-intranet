@@ -53,11 +53,12 @@ ProductVerifier.propTypes = {
 /**
  * Searches through a list of products and adds 1 to verified quantity of
  * the product if the UPC matches
- * @param {String} upc UPC to search for
+ * @param {String} query UPC to search for
  * @param {Array} products Products in the current order
  * @param {Function} setProducts Function to update state of current products
  */
 function verifyProduct(query, products, setProducts) {
+  query = query.toUpperCase();
   let foundProduct = false;
   let productsTemp = products.map(product => product);
 
